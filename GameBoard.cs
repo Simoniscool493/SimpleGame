@@ -15,6 +15,12 @@ namespace SimpleGame
         public GameBoard()
         {
             MakeBasic();
+
+            for(int i=0;i<10;i++)
+            {
+                activeBoard[i] = new char[10];
+            }
+
             ResetBoard();
         }
 
@@ -56,8 +62,15 @@ namespace SimpleGame
 
         public void ResetBoard()
         {
-            activeBoard = (char[][])board.Clone();
+            for (int i = 0; i < board.Count(); i++)
+            {
+                for (int j = 0; j < board[0].Count(); j++)
+                {
+                    activeBoard[j][i] = board[j][i];
+                }
+            }
         }
+
 
         public ItemAtPoint GetPositionInDirection(Direction direction,int x,int y)
         {

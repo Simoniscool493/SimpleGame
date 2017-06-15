@@ -11,20 +11,25 @@ namespace SimpleGame
         private int _currentY;
         private int _timerLength;
 
-        public GameRunner(bool shouldIPause,bool shouldIPrint,int startX,int startY,int timerLength)
+        public GameRunner(bool shouldIPause,bool shouldIPrint,int timerLength)
         {
             _shouldIPause = shouldIPause;
             _shouldIPrint = shouldIPrint;
-            _currentX = startX;
-            _currentY = startY;
             _timerLength = timerLength;
         }
 
-        public int RunPlayerOnBoard(IGridPlayer p,GameBoard b)
+        public int RunPlayerOnBoard(IGridPlayer p,GameBoard b,int startX,int startY)
         {
+            _currentX = startX;
+            _currentY = startY;
             b.ResetBoard();
+
             int numFoodEaten = 0;
-            PrintCurrentState(b, numFoodEaten);
+
+            if (_shouldIPrint)
+            {
+                PrintCurrentState(b, numFoodEaten);
+            }
 
             for (int i = 0; i < _timerLength; i++)
             {
@@ -33,6 +38,8 @@ namespace SimpleGame
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
                 {
+                    Console.WriteLine("Ate food");
+
                     numFoodEaten++;
                 }
 
@@ -48,7 +55,11 @@ namespace SimpleGame
                 }
             }
 
-            Console.WriteLine("Done");
+            if (_shouldIPrint)
+            {
+                Console.WriteLine("Done");
+            }
+
 
             return numFoodEaten;
         }

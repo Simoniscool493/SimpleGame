@@ -69,10 +69,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Deciders\DecisionMatrix.cs" />
+    <Compile Include="Deciders\IDecider.cs" />
+    <Compile Include="Deciders\MatrixDecider.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="GameRunner.cs" />
+    <Compile Include="GeneticAlgorithm\AlgorithmRunner.cs" />
     <Compile Include="GridConstants.cs" />
+    <Compile Include="Players\AiGridPlayer.cs" />
     <Compile Include="Players\IGridPlayer.cs" />
     <Compile Include="ItemAtPoint.cs" />
     <Compile Include="Players\ManualGridPlayer.cs" />
