@@ -57,6 +57,12 @@ namespace SimpleGame.GeneticAlgorithm
             }
         }
 
+        public void RunSample(GameBoard b,int timerLength)
+        {
+            new GameRunner(true, true, timerLength).RunPlayerOnBoard(new AiGridPlayer(new MatrixDecider(_theGeneration[0].Matrix)),b,0,0);
+
+        }
+
         public void Kill(int numToKill)
         {
             var sortredGen = _theGeneration.OrderBy(g => g.Score);

@@ -16,14 +16,16 @@ namespace SimpleGame.GeneticAlgorithm
         private int _numToKillPerGeneration;
         private int _numInGeneration;
         private double _mutationRate;
+        private int _timerLength;
 
-        public GeneticAlgorithmRunner(bool shouldILog,int numGenerations,int numToKill,int numInGeneration,double mutationRate)
+        public GeneticAlgorithmRunner(bool shouldILog,int numGenerations,int numToKill,int numInGeneration,double mutationRate,int timerLength)
         {
             _shouldILog = shouldILog;
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
             _numInGeneration = numInGeneration;
             _mutationRate = mutationRate;
+            _timerLength = timerLength;
         }
 
         public Generation Train(GameBoard g)
@@ -39,6 +41,7 @@ namespace SimpleGame.GeneticAlgorithm
             for (int j=0;j<_numGenerations;j++)
             {
                 RunGeneration(g,currentGeneration);
+                currentGeneration.RunSample(g,_timerLength);
             }
 
             return currentGeneration;
@@ -46,8 +49,7 @@ namespace SimpleGame.GeneticAlgorithm
 
         private void RunGeneration(GameBoard g,Generation currentGeneration)
         {
-            var scores = new Dictionary<DecisionMatrix, int>();
-            var runner = new GameRunner(false,false,10);
+            var runner = new GameRunner(false,false,_timerLength);
 
             currentGeneration.ScoreGeneration(runner,g);
             currentGeneration.Kill(_numToKillPerGeneration);

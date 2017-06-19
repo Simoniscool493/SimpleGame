@@ -11,7 +11,7 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-            var genAlg = new GeneticAlgorithmRunner(false,1000,5,30,0.1);
+            var genAlg = new GeneticAlgorithmRunner(false,1000,5,10,0.1,20);
             var board = new GameBoard();
 
             var final = genAlg.Train(board);
