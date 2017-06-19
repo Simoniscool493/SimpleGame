@@ -75,7 +75,8 @@
     <Compile Include="Direction.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="GameRunner.cs" />
-    <Compile Include="GeneticAlgorithm\AlgorithmRunner.cs" />
+    <Compile Include="GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
+    <Compile Include="GeneticAlgorithm\Generation.cs" />
     <Compile Include="GridConstants.cs" />
     <Compile Include="Players\AiGridPlayer.cs" />
     <Compile Include="Players\IGridPlayer.cs" />

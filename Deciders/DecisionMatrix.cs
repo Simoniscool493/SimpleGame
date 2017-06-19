@@ -9,16 +9,16 @@ namespace SimpleGame
 {
     class DecisionMatrix
     {
+        private static Random r = new Random();
         private Dictionary<Tuple<ItemAtPoint, ItemAtPoint, ItemAtPoint, ItemAtPoint>, Direction> _theMatrix;
 
-        protected DecisionMatrix(Dictionary<Tuple<ItemAtPoint, ItemAtPoint, ItemAtPoint, ItemAtPoint>, Direction> matrix)
+        public DecisionMatrix(Dictionary<Tuple<ItemAtPoint, ItemAtPoint, ItemAtPoint, ItemAtPoint>, Direction> matrix)
         {
             _theMatrix = matrix;
         }
 
         public static DecisionMatrix GetRandomMatrix()
         {
-            var r = new Random();
             var randomMatrix = new Dictionary<Tuple<ItemAtPoint, ItemAtPoint, ItemAtPoint, ItemAtPoint>, Direction>();
 
             var itemsAtPoint = typeof(ItemAtPoint).GetEnumValues();
@@ -44,6 +44,11 @@ namespace SimpleGame
         public Direction Decide(ItemAtPoint[] upDownLeftRight)
         {
             return _theMatrix[new Tuple<ItemAtPoint, ItemAtPoint, ItemAtPoint, ItemAtPoint>(upDownLeftRight[0], upDownLeftRight[1], upDownLeftRight[2], upDownLeftRight[3])];
+        }
+
+        public Direction Get(Tuple<ItemAtPoint,ItemAtPoint,ItemAtPoint,ItemAtPoint> index)
+        {
+            return _theMatrix[index];
         }
     }
 }
