@@ -1,8 +1,4 @@
-﻿using Accord.MachineLearning.DecisionTrees.Learning;
-using Accord.MachineLearning.VectorMachines.Learning;
-using Accord.Neuro;
-using Accord.Statistics.Kernels;
-using SimpleGame.GeneticAlgorithm;
+﻿using SimpleGame.GeneticAlgorithm;
 using System;
 
 namespace SimpleGame
@@ -12,7 +8,7 @@ namespace SimpleGame
         static void Main(string[] args)
         {
             var genAlg = new GeneticAlgorithmRunner(false,1000,5,10,0.1,20);
-            var board = new GameBoard();
+            var board = new FoodEatingGameBoard();
 
             var final = genAlg.Train(board);
 

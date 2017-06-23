@@ -17,3 +17,9 @@ C:\Users\Simon\Documents\Visual Studio 2015\Projects\SimpleGame\SimpleGame\bin\D
 C:\Users\Simon\Documents\Visual Studio 2015\Projects\SimpleGame\SimpleGame\bin\Debug\Accord.Math.Core.xml
 C:\Users\Simon\Documents\Visual Studio 2015\Projects\SimpleGame\SimpleGame\bin\Debug\Accord.Neuro.xml
 C:\Users\Simon\Documents\Visual Studio 2015\Projects\SimpleGame\SimpleGame\bin\Debug\Accord.Statistics.xml
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\obj\Debug\SimpleGame.exe
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\obj\Debug\SimpleGame.pdb
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\bin\Debug\SimpleGame.exe.config
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\bin\Debug\SimpleGame.exe
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\bin\Debug\SimpleGame.pdb
+C:\Users\Simon\Desktop\Programming\Emulator Project\SimpleGame\obj\Debug\SimpleGame.csprojResolveAssemblyReference.cache

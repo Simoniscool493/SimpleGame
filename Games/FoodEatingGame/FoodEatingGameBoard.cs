@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SimpleGame
 {
-    class GameBoard
+    class FoodEatingGameBoard
     {
         public char O = GridConstants.EmptySpaceChar;
         public char F = GridConstants.FoodChar;
@@ -12,7 +12,7 @@ namespace SimpleGame
         char[][] board = new char[10][];
         char[][] activeBoard = new char[10][];
 
-        public GameBoard()
+        public FoodEatingGameBoard()
         {
             MakeBasic();
 
@@ -70,7 +70,6 @@ namespace SimpleGame
                 }
             }
         }
-
 
         public ItemAtPoint GetPositionInDirection(Direction direction,int x,int y)
         {

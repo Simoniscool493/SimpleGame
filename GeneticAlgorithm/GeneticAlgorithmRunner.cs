@@ -28,7 +28,7 @@ namespace SimpleGame.GeneticAlgorithm
             _timerLength = timerLength;
         }
 
-        public Generation Train(GameBoard g)
+        public Generation Train(FoodEatingGameBoard g)
         {
             Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
 
@@ -47,9 +47,9 @@ namespace SimpleGame.GeneticAlgorithm
             return currentGeneration;
         }
 
-        private void RunGeneration(GameBoard g,Generation currentGeneration)
+        private void RunGeneration(FoodEatingGameBoard g,Generation currentGeneration)
         {
-            var runner = new GameRunner(false,false,_timerLength);
+            var runner = new FoodEatingGameRunner(false,false,_timerLength);
 
             currentGeneration.ScoreGeneration(runner,g);
             currentGeneration.Kill(_numToKillPerGeneration);

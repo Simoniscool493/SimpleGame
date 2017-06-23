@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SimpleGame.Abstracts;
+using System;
+using System.Threading;
 
 namespace SimpleGame
 {
-    class GameRunner
+    class FoodEatingGameRunner
     {
         private bool _shouldIPause;
         private bool _shouldIPrint;
@@ -11,14 +13,14 @@ namespace SimpleGame
         private int _currentY;
         private int _timerLength;
 
-        public GameRunner(bool shouldIPause,bool shouldIPrint,int timerLength)
+        public FoodEatingGameRunner(bool shouldIPause,bool shouldIPrint,int timerLength)
         {
             _shouldIPause = shouldIPause;
             _shouldIPrint = shouldIPrint;
             _timerLength = timerLength;
         }
 
-        public int RunPlayerOnBoard(IGridPlayer p,GameBoard b,int startX,int startY)
+        public int RunPlayerOnBoard(IGridPlayer p,FoodEatingGameBoard b,int startX,int startY)
         {
             _currentX = startX;
             _currentY = startY;
@@ -47,6 +49,7 @@ namespace SimpleGame
                 {
                     Console.Clear();
                     PrintCurrentState(b, numFoodEaten);
+                    Thread.Sleep(50);
                 }
 
                 if (_shouldIPause)
@@ -64,7 +67,7 @@ namespace SimpleGame
             return numFoodEaten;
         }
 
-        public bool MoveInDirectionAndCheckIfAteFood(Direction d,GameBoard b)
+        public bool MoveInDirectionAndCheckIfAteFood(Direction d,FoodEatingGameBoard b)
         {
             var wasThereFood = false;
             var newPosition = b.GetPositionInDirection(d, _currentX, _currentY);
@@ -106,12 +109,12 @@ namespace SimpleGame
             }
         }
 
-        public void PrintCurrentState(GameBoard b,int foodEaten)
+        public void PrintCurrentState(FoodEatingGameBoard b,int foodEaten)
         {
             b.PrintWithPlayerPosition(_currentX, _currentY,foodEaten);
         }
 
-        public ItemAtPoint[] GetDataAtCurrentPosition(GameBoard b)
+        public ItemAtPoint[] GetDataAtCurrentPosition(FoodEatingGameBoard b)
         {
             var top = b.GetItemAtActiveBoard(_currentX, _currentY-1);
             var bottom = b.GetItemAtActiveBoard(_currentX, _currentY+1);

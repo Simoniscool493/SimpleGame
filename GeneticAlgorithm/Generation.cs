@@ -44,7 +44,7 @@ namespace SimpleGame.GeneticAlgorithm
             _theGeneration.Add(new Species(matrix));
         }
 
-        public void ScoreGeneration(GameRunner r,GameBoard b)
+        public void ScoreGeneration(FoodEatingGameRunner r,FoodEatingGameBoard b)
         {
             foreach (var matrix in _theGeneration)
             {
@@ -57,9 +57,9 @@ namespace SimpleGame.GeneticAlgorithm
             }
         }
 
-        public void RunSample(GameBoard b,int timerLength)
+        public void RunSample(FoodEatingGameBoard b,int timerLength)
         {
-            new GameRunner(true, true, timerLength).RunPlayerOnBoard(new AiGridPlayer(new MatrixDecider(_theGeneration[0].Matrix)),b,0,0);
+            new FoodEatingGameRunner(false, true, timerLength).RunPlayerOnBoard(new AiGridPlayer(new MatrixDecider(_theGeneration[0].Matrix)),b,0,0);
 
         }
 
