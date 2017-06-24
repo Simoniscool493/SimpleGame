@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AI\DecisionTrees\DecisionTreeLearner.cs" />
     <Compile Include="Deciders\DecisionMatrix.cs" />
     <Compile Include="Deciders\IDecider.cs" />
     <Compile Include="Deciders\MatrixDecider.cs" />
@@ -43,8 +44,8 @@
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoard.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameOutput.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameRunner.cs" />
-    <Compile Include="GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
-    <Compile Include="GeneticAlgorithm\Generation.cs" />
+    <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
+    <Compile Include="AI\GeneticAlgorithm\Generation.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
     <Compile Include="Players\AiGridPlayer.cs" />
     <Compile Include="Players\IGridPlayer.cs" />
