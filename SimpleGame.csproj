@@ -43,11 +43,6 @@
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoard.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameOutput.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameRunner.cs" />
-    <Compile Include="Abstracts\IGameInput.cs" />
-    <Compile Include="Abstracts\IGameObject.cs" />
-    <Compile Include="Abstracts\IGameOutput.cs" />
-    <Compile Include="Abstracts\IGamePlayer.cs" />
-    <Compile Include="Games\IInputOutputMapper.cs" />
     <Compile Include="GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
     <Compile Include="GeneticAlgorithm\Generation.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />

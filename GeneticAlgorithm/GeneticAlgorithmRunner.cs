@@ -41,8 +41,9 @@ namespace SimpleGame.GeneticAlgorithm
             for (int j=0;j<_numGenerations;j++)
             {
                 RunGeneration(g,currentGeneration);
-                currentGeneration.RunSample(g,_timerLength);
             }
+
+            currentGeneration.RunSample(g, _timerLength);
 
             return currentGeneration;
         }

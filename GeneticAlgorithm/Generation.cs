@@ -14,7 +14,7 @@ namespace SimpleGame.GeneticAlgorithm
         private int _maxSize;
         private double _mutationRate;
 
-        class Species
+        public class Species
         {
             public bool IsScored = false;
             public DecisionMatrix Matrix;
@@ -59,8 +59,24 @@ namespace SimpleGame.GeneticAlgorithm
 
         public void RunSample(FoodEatingGameBoard b,int timerLength)
         {
-            new FoodEatingGameRunner(false, true, timerLength).RunPlayerOnBoard(new AiGridPlayer(new MatrixDecider(_theGeneration[0].Matrix)),b,0,0);
+            new FoodEatingGameRunner(false, true, timerLength).RunPlayerOnBoard(new AiGridPlayer(new MatrixDecider(GetBestSpecies().Matrix)),b,0,0);
+        }
 
+        public Species GetBestSpecies()
+        {
+            int highestScore = 0;
+            Species best = _theGeneration[0];
+
+            foreach(Species s in _theGeneration)
+            {
+                if(s.Score>highestScore)
+                {
+                    highestScore = s.Score;
+                    best = s;
+                }
+            }
+
+            return best;
         }
 
         public void Kill(int numToKill)

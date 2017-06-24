@@ -1,5 +1,4 @@
-﻿using SimpleGame.Abstracts;
-using System;
+﻿using System;
 using System.Threading;
 
 namespace SimpleGame
@@ -40,8 +39,6 @@ namespace SimpleGame
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
                 {
-                    Console.WriteLine("Ate food");
-
                     numFoodEaten++;
                 }
 

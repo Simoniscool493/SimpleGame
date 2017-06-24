@@ -7,10 +7,14 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-            var genAlg = new GeneticAlgorithmRunner(false,1000,5,10,0.1,20);
+            var genAlg = new GeneticAlgorithmRunner(false,100000,1,5,0.08,50);
             var board = new FoodEatingGameBoard();
 
+            Console.CursorVisible = false;
+
             var final = genAlg.Train(board);
+
+            new FoodEatingGameRunner(false, true, 50).RunPlayerOnBoard(new ManualGridPlayer(), board, 0, 0);
 
             Console.ReadLine();
         }
