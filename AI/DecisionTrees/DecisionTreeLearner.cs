@@ -22,7 +22,7 @@ namespace SimpleGame.AI.DecisionTrees
             public int Y;
             public int ColorNumber;
 
-            public DataPoint(int x,int y,int colorNumber)
+            public DataPoint(int x, int y, int colorNumber)
             {
                 X = x;
                 Y = y;
@@ -41,7 +41,7 @@ namespace SimpleGame.AI.DecisionTrees
             public int Number;
             public bool IsX;
 
-            public SplitDecision(SidesOfGraph sides,int number,bool isX)
+            public SplitDecision(SidesOfGraph sides, int number, bool isX)
             {
                 Sides = sides;
                 Number = number;
@@ -56,7 +56,7 @@ namespace SimpleGame.AI.DecisionTrees
             public double NumberToCompare;
             public bool IsX;
             public bool IsEnd;
-            public int ColorToGoTo;
+            public int ColorToGoTo = -1;
 
             public TreeNode(TreeNode left, TreeNode right, double number, bool isX)
             {
@@ -73,7 +73,7 @@ namespace SimpleGame.AI.DecisionTrees
                 IsEnd = true;
             }
 
-            public int GetColorNumberFor(int x,int y)
+            public int GetColorNumberFor(int x, int y)
             {
                 if (IsEnd)
                     return ColorToGoTo;
@@ -85,9 +85,9 @@ namespace SimpleGame.AI.DecisionTrees
                         return RightNode.GetColorNumberFor(x, y);
                 else
                     if (y < NumberToCompare)
-                        return LeftNode.GetColorNumberFor(x, y);
-                    else
-                        return RightNode.GetColorNumberFor(x, y);
+                    return LeftNode.GetColorNumberFor(x, y);
+                else
+                    return RightNode.GetColorNumberFor(x, y);
 
                 throw new Exception();
             }
@@ -99,7 +99,7 @@ namespace SimpleGame.AI.DecisionTrees
             public GraphSection SecondSide;
             public bool IsHorizontal;
 
-            public SidesOfGraph(GraphSection first, GraphSection second,bool isHorizontal)
+            public SidesOfGraph(GraphSection first, GraphSection second, bool isHorizontal)
             {
                 FirstSide = first;
                 SecondSide = second;
@@ -115,7 +115,7 @@ namespace SimpleGame.AI.DecisionTrees
                 var oddsOfFirstSide = (double)FirstSide.Count() / section.Count();
                 var oddsOfSecondSide = (double)SecondSide.Count() / section.Count();
 
-                var output = (oddsOfFirstSide+(oldEntropy-newEntropy1)) + (oddsOfSecondSide+(oldEntropy-newEntropy2));
+                var output = oddsOfFirstSide * (oldEntropy - newEntropy1) + oddsOfSecondSide * (oldEntropy - newEntropy2);
                 return output;
             }
         }
@@ -133,9 +133,9 @@ namespace SimpleGame.AI.DecisionTrees
 
                 double total = 0;
 
-                if(freqReds!=0)
+                if (freqReds != 0)
                 {
-                    total += (freqReds * (Math.Log(1/(freqReds),2)));
+                    total += (freqReds * (Math.Log(1 / (freqReds), 2)));
                 }
                 if (freqGreens != 0)
                 {
@@ -151,7 +151,7 @@ namespace SimpleGame.AI.DecisionTrees
 
             public double GetFrequencyOfColorNumber(int colorNumber)
             {
-                return (this.Where(p => p.ColorNumber == colorNumber).Count())/this.Count();
+                return ((double)this.Where(p => p.ColorNumber == colorNumber).Count()) / this.Count();
             }
 
             public int GetMostFrequentColorNumber()
@@ -176,9 +176,9 @@ namespace SimpleGame.AI.DecisionTrees
                 GraphSection firstSide = new GraphSection();
                 GraphSection secondSide = new GraphSection();
 
-                foreach(var point in this)
+                foreach (var point in this)
                 {
-                    if(point.X < number)
+                    if (point.X <= number)
                     {
                         firstSide.Add(point);
                     }
@@ -198,7 +198,7 @@ namespace SimpleGame.AI.DecisionTrees
 
                 foreach (var point in this)
                 {
-                    if (point.Y < number)
+                    if (point.Y <= number)
                     {
                         firstSide.Add(point);
                     }
@@ -218,14 +218,15 @@ namespace SimpleGame.AI.DecisionTrees
                 SidesOfGraph currentBestSplits = null;
                 var isBestX = false;
 
-                foreach(var point in this)
+                foreach (var point in this)
                 {
                     var splitsX = SplitX(point.X);
                     var splitsY = SplitY(point.Y);
+
                     var bestDifferenceForX = splitsX.GetDifferenceInEntropy(this);
                     var bestDifferenceForY = splitsY.GetDifferenceInEntropy(this);
 
-                    if(bestDifferenceForY>bestDifference)
+                    if (bestDifferenceForY > bestDifference)
                     {
                         bestDifference = bestDifferenceForY;
                         currentBestSplits = splitsY;
@@ -242,7 +243,12 @@ namespace SimpleGame.AI.DecisionTrees
                     }
                 }
 
-                if(currentBestSplits==null)
+                if (currentBestSplits == null)
+                {
+                    return null;
+                }
+
+                if (currentBestSplits.FirstSide.Count == 0 || currentBestSplits.SecondSide.Count == 0)
                 {
                     throw new Exception();
                 }
@@ -250,13 +256,25 @@ namespace SimpleGame.AI.DecisionTrees
                 return new SplitDecision(currentBestSplits, currentBestNumberToSplitAt, isBestX);
             }
 
-            public TreeNode BuildDecisionTree(int depth,int maxDepth)
+            public TreeNode BuildDecisionTree(int depth, int maxDepth)
             {
-                if (depth > maxDepth)
+                if(this.Count==0)
+                {
+                    throw new Exception();
+                }
+
+                if (depth > maxDepth || this.Count==1)
+                {
                     return new TreeNode(GetMostFrequentColorNumber());
+                }
                 else
                 {
                     var splits = GetBestSplits();
+
+                    if(splits==null)
+                    {
+                        return new TreeNode(GetMostFrequentColorNumber());
+                    }
                     var leftNode = splits.Sides.FirstSide.BuildDecisionTree(depth + 1, maxDepth);
                     var rightNode = splits.Sides.SecondSide.BuildDecisionTree(depth + 1, maxDepth);
                     return new TreeNode(leftNode, rightNode, splits.Number, splits.IsX);
@@ -267,7 +285,7 @@ namespace SimpleGame.AI.DecisionTrees
             {
                 var copy = new GraphSection();
 
-                foreach(var point in this)
+                foreach (var point in this)
                 {
                     copy.Add(new DataPoint(point.X, point.Y, point.ColorNumber));
                 }
@@ -275,17 +293,17 @@ namespace SimpleGame.AI.DecisionTrees
                 return copy;
             }
 
-            public GraphSection GetCopyWithNoise(double mutationRate,Random r)
+            public GraphSection GetCopyWithNoise(double mutationRate, Random r)
             {
                 var copy = GetDeepCopy();
                 var numberOfPointstoMutate = (int)(mutationRate * copy.Count());
 
-                for(int i=0;i<numberOfPointstoMutate;i++)
+                for (int i = 0; i < numberOfPointstoMutate; i++)
                 {
                     var pointToChange = copy[r.Next(0, copy.Count)];
                     int numberToChangeTo;
 
-                    if(r.Next(0,2)==1)
+                    if (r.Next(0, 2) == 1)
                     {
                         numberToChangeTo = r.Next(0, GridWidth);
                         pointToChange.X = numberToChangeTo;
@@ -303,28 +321,28 @@ namespace SimpleGame.AI.DecisionTrees
 
         class ListOfTrees : List<TreeNode>
         {
-            public Dictionary<Tuple<int,int>,int> GetAverageOfTrees()
+            public Dictionary<Tuple<int, int>, int> GetAverageOfTrees()
             {
                 var output = new Dictionary<Tuple<int, int>, int>();
 
-                for(int y=0;y<GridHeight;y++)
+                for (int y = 0; y < GridHeight; y++)
                 {
                     for (int x = 0; x < GridWidth; x++)
                     {
-                        output[new Tuple<int, int>(x, y)] = GetAverageOfTreesForOnePoint(x,y);
+                        output[new Tuple<int, int>(x, y)] = GetAverageOfTreesForOnePoint(x, y);
                     }
                 }
 
                 return output;
             }
 
-            public int GetAverageOfTreesForOnePoint(int x,int y)
+            public int GetAverageOfTreesForOnePoint(int x, int y)
             {
                 var numReds = 0;
                 var numGreens = 0;
                 var numBlues = 0;
 
-                foreach(var tree in this)
+                foreach (var tree in this)
                 {
                     var colorValue = tree.GetColorNumberFor(x, y);
                     if (colorValue == 0)
@@ -358,11 +376,40 @@ namespace SimpleGame.AI.DecisionTrees
 
         public static void Demonstrate()
         {
+            var learner = new DecisionTreeLearner();
+
+            var data = new GraphSection()
+            {
+                new DataPoint(0,0,0),new DataPoint(1,0,1),
+                new DataPoint(0,1,2),new DataPoint(1,1,3),
+            };
+
+            data = GetRandomGraph(new Random(), 20);
+
+            var tree = data.BuildDecisionTree(0, 10);
+
+            tree.GetColorNumberFor(0, 0);
+
+
+
 
         }
 
-        public static GraphSection GetRandomGraph()
+        private static GraphSection GetRandomGraph(Random r, int length)
         {
+            var output = new GraphSection();
 
+            for (int i = 0; i < length; i++)
+            {
+                var x = r.Next(0, GridWidth);
+                var y = r.Next(0, GridHeight);
+                var color = r.Next(0, 2+1);
+
+                output.Add(new DataPoint(x, y, color));
+            }
+
+            return output;
         }
+    }
+}
 
