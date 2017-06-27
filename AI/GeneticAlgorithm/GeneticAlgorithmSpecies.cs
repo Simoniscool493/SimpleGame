@@ -30,7 +30,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             foreach(var key in species1.Matrix.GetKeys())
             {
-                if(r.Next()>mutationRate)
+                if(r.Next() >mutationRate)
                 {
                 }
             }
