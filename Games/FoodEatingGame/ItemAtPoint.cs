@@ -1,6 +1,6 @@
 ﻿namespace SimpleGame
 {
-    enum ItemAtPoint
+    public enum ItemAtPoint
     {
         OutOfBounds,
         Nothing,

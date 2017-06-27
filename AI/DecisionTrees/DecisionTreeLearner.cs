@@ -389,10 +389,6 @@ namespace SimpleGame.AI.DecisionTrees
             var tree = data.BuildDecisionTree(0, 10);
 
             tree.GetColorNumberFor(0, 0);
-
-
-
-
         }
 
         private static GraphSection GetRandomGraph(Random r, int length)
@@ -409,6 +405,10 @@ namespace SimpleGame.AI.DecisionTrees
             }
 
             return output;
+        }
+
+        private static void PrintTreeNode(TreeNode t,int width,int height)
+        {
         }
     }
 }

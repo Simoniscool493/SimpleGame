@@ -37,16 +37,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI\DecisionTrees\DecisionTreeLearner.cs" />
-    <Compile Include="Deciders\DecisionMatrix.cs" />
-    <Compile Include="Deciders\IDecider.cs" />
-    <Compile Include="Deciders\MatrixDecider.cs" />
+    <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmSpecies.cs" />
+    <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="DataPayloads\DiscreteDataPayloadInfo.cs" />
+    <Compile Include="DataPayloads\DiscreteIOInfo.cs" />
+    <Compile Include="DataPayloads\DoublesDataPayload.cs" />
+    <Compile Include="DataPayloads\DiscreteDataPayload.cs" />
+    <Compile Include="AI\DecisionMatrix.cs" />
+    <Compile Include="AI\MatrixDecider.cs" />
     <Compile Include="Games\FoodEatingGame\Direction.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoard.cs" />
-    <Compile Include="Games\FoodEatingGame\FoodEatingGameOutput.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameRunner.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
-    <Compile Include="AI\GeneticAlgorithm\Generation.cs" />
+    <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmGeneration.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
+    <Compile Include="Games\IGameState.cs" />
+    <Compile Include="Games\IDecider.cs" />
+    <Compile Include="Games\IDiscreteDecider.cs" />
+    <Compile Include="Games\IDiscreteGame.cs" />
     <Compile Include="Players\AiGridPlayer.cs" />
     <Compile Include="Players\IGridPlayer.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
@@ -58,6 +66,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

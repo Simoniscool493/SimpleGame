@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SimpleGame.Games.FoodEatingGame;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace SimpleGame
 {
-    class FoodEatingGameBoard
+    class FoodEatingGameBoard : IGameState
     {
         public char O = GridConstants.EmptySpaceChar;
         public char F = GridConstants.FoodChar;
@@ -13,16 +14,28 @@ namespace SimpleGame
         char[][] board = new char[13][];
         char[][] activeBoard = new char[13][];
 
-        public FoodEatingGameBoard()
+        public FoodEatingGameBoard(bool isRandom)
         {
-            MakeRandom();
+            if (isRandom)
+            {
+                MakeRandom();
+            }
+            else
+            {
+                MakeBasic();
+            }
 
-            for(int i=0;i<board.Length;i++)
+            for (int i=0;i<board.Length;i++)
             {
                 activeBoard[i] = new char[board[0].Length];
             }
 
             ResetBoard();
+        }
+
+        public static FoodEatingGameBoard GetRandomBoard()
+        {
+            return new FoodEatingGameBoard(true);
         }
 
         void MakeBasic()

@@ -1,10 +1,15 @@
-﻿using System;
+﻿using SimpleGame.DataPayloads;
+using SimpleGame.Games;
+using System;
 using System.Threading;
+using System.Linq;
+using SimpleGame.Games.FoodEatingGame;
 
 namespace SimpleGame
 {
-    class FoodEatingGameRunner
+    class FoodEatingGameRunner : IDiscreteGame
     {
+        private FoodEatingGameBoard b;
         private bool _shouldIPause;
         private bool _shouldIPrint;
 
@@ -12,18 +17,21 @@ namespace SimpleGame
         private int _currentY;
         private int _timerLength;
 
-        public FoodEatingGameRunner(bool shouldIPause,bool shouldIPrint,int timerLength)
+        public FoodEatingGameRunner(FoodEatingGameBoard b,bool shouldIPause,bool shouldIPrint,int timerLength)
         {
+            this.b = b;
             _shouldIPause = shouldIPause;
             _shouldIPrint = shouldIPrint;
             _timerLength = timerLength;
         }
 
-        public int RunPlayerOnBoard(IGridPlayer p,FoodEatingGameBoard b,int startX,int startY)
+        public int Score(IDiscreteDecider p,IGameState s)
         {
-            _currentX = startX;
-            _currentY = startY;
+            var b = (s as FoodEatingGameBoard);
+
             b.ResetBoard();
+            _currentX = 0;
+            _currentY = 0;
 
             int numFoodEaten = 0;
 
@@ -34,8 +42,8 @@ namespace SimpleGame
 
             for (int i = 0; i < _timerLength; i++)
             {
-                var dataAtCurrentPosition = GetDataAtCurrentPosition(b);
-                var direction = p.GetDirection(dataAtCurrentPosition);
+                var dataAtCurrentPosition = new DiscreteDataPayload(GetDataAtCurrentPosition(b).Select(e=>(int)e).ToArray());
+                var direction = (Direction)p.Decide(dataAtCurrentPosition).SingleItem;
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
                 {
@@ -119,6 +127,11 @@ namespace SimpleGame
             var right = b.GetItemAtActiveBoard(_currentX+1, _currentY);
 
             return new[] { top, bottom, left, right };
+        }
+
+        public IGameState GetRandomTrainableState()
+        {
+            return FoodEatingGameBoard.GetRandomBoard();
         }
     }
 }

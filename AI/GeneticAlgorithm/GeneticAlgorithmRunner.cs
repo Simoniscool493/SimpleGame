@@ -1,4 +1,7 @@
-﻿using SimpleGame.Deciders;
+﻿using SimpleGame.DataPayloads;
+using SimpleGame.Deciders;
+using SimpleGame.Games;
+using SimpleGame.Games.FoodEatingGame;
 using SimpleGame.Players;
 using System;
 using System.Collections.Generic;
@@ -11,48 +14,49 @@ namespace SimpleGame.GeneticAlgorithm
 {
     class GeneticAlgorithmRunner
     {
-        private bool _shouldILog;
+        private DiscreteDataPayloadInfo _inputInfo;
+        private DiscreteDataPayloadInfo _outputInfo;
+
         private int _numGenerations;
         private int _numToKillPerGeneration;
         private int _numInGeneration;
         private double _mutationRate;
-        private int _timerLength;
 
-        public GeneticAlgorithmRunner(bool shouldILog,int numGenerations,int numToKill,int numInGeneration,double mutationRate,int timerLength)
+        public GeneticAlgorithmRunner(DiscreteDataPayloadInfo inputInfo,DiscreteDataPayloadInfo outputInfo,int numGenerations,int numToKill,int numInGeneration,double mutationRate)
         {
-            _shouldILog = shouldILog;
+            _inputInfo = inputInfo;
+            _outputInfo = outputInfo;
+
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
             _numInGeneration = numInGeneration;
             _mutationRate = mutationRate;
-            _timerLength = timerLength;
         }
 
-        public Generation Train(FoodEatingGameBoard g)
+        public Generation Train(IDiscreteGame g)
         {
+            var trainableState = g.GetRandomTrainableState();
+            var r = new Random();
+
             Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
 
             for(int i=0;i<_numInGeneration;i++)
             {
-                var randomMatrix = DecisionMatrix.GetRandomMatrix();
+                var randomMatrix = DecisionMatrix.GetRandomIOMapping(_inputInfo,_outputInfo);
                 currentGeneration.Add(randomMatrix);
             }
 
             for (int j=0;j<_numGenerations;j++)
             {
-                RunGeneration(g,currentGeneration);
+                RunGeneration(g,trainableState,currentGeneration);
             }
-
-            currentGeneration.RunSample(g, _timerLength);
 
             return currentGeneration;
         }
 
-        private void RunGeneration(FoodEatingGameBoard g,Generation currentGeneration)
+        private void RunGeneration(IDiscreteGame g,IGameState s,Generation currentGeneration)
         {
-            var runner = new FoodEatingGameRunner(false,false,_timerLength);
-
-            currentGeneration.ScoreGeneration(runner,g);
+            currentGeneration.ScoreGeneration(g, s);
             currentGeneration.Kill(_numToKillPerGeneration);
             currentGeneration.Multiply();
         }

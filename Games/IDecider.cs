@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleGame.Deciders
+namespace SimpleGame.Games
 {
     interface IDecider
     {
-        Direction GetDirection(ItemAtPoint[] upDownLeftright);
     }
 }
