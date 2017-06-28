@@ -11,7 +11,7 @@ namespace SimpleGame.Games
     {
         int Score(IDiscreteDecider decider,IGameState state);
 
-        IGameState GetRandomTrainableState();
+        IGameState GetState();
 
 
     }

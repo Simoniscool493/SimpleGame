@@ -23,26 +23,34 @@ namespace SimpleGame.GeneticAlgorithm
 
         private List<GeneticAlgorithmSpecies> _theGeneration = new List<GeneticAlgorithmSpecies>();
 
-        public Generation(int maxSize,double mutationRate)
+        public Generation(DiscreteDataPayloadInfo inputInfo, DiscreteDataPayloadInfo outputInfo,int maxSize,double mutationRate)
         {
+            _inputInfo = inputInfo;
+            _outputInfo = outputInfo;
+
             _maxSize = maxSize;
             _mutationRate = mutationRate;
         }
 
-        public void Add(DecisionMatrix matrix)
+        public void PopulateWithRandoms()
         {
-            _theGeneration.Add(new GeneticAlgorithmSpecies(matrix));
+            while(_theGeneration.Count < _maxSize)
+            {
+                var randomMatrix = DecisionMatrix.GetRandomIOMapping(_inputInfo, _outputInfo);
+                Add(randomMatrix);
+            }
         }
 
-        public void ScoreGeneration(IDiscreteGame r,IGameState s)
+        public void ScoreGeneration(IDiscreteGame g,IGameState s)
         {
             foreach (var matrix in _theGeneration)
             {
                 if(!matrix.IsScored)
                 {
-                    var score = r.Score(matrix, s);
+                    var score = g.Score(matrix, s);
                     matrix.Score = score;
                     matrix.IsScored = true;
+                    s.Reset();
                 }
             }
         }
@@ -85,9 +93,14 @@ namespace SimpleGame.GeneticAlgorithm
             var parent1 = _theGeneration[_r.Next(0, _theGeneration.Count())];
             var parent2 = _theGeneration[_r.Next(0, _theGeneration.Count())];
 
-            var child = GeneticAlgorithmSpecies.Cross(parent1, parent2, _mutationRate);
+            var child = GeneticAlgorithmSpecies.Cross(parent1, parent2, _mutationRate,_r);
 
+            return child;
+        }
 
+        private void Add(DecisionMatrix matrix)
+        {
+            _theGeneration.Add(new GeneticAlgorithmSpecies(matrix));
         }
     }
 }

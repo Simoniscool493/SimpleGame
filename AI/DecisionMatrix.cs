@@ -14,9 +14,16 @@ namespace SimpleGame
         private static Random r = new Random();
         private Dictionary<DiscreteDataPayload,DiscreteDataPayload> _theMatrix;
 
+        public Type InputType;
+        public Type OutputType;
+
         public DecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix)
         {
             _theMatrix = matrix;
+
+            InputType = matrix.Keys.First().UnderlyingType;
+            OutputType = matrix.Values.First().UnderlyingType;
+
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)

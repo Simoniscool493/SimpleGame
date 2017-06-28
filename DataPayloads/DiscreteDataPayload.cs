@@ -9,6 +9,7 @@ namespace SimpleGame.DataPayloads
     class DiscreteDataPayload
     {
         public int[] Data;
+        public Type UnderlyingType;
 
         public int SingleItem
         {
@@ -23,12 +24,13 @@ namespace SimpleGame.DataPayloads
             }
         }
 
-        public DiscreteDataPayload(int[] data)
+        public DiscreteDataPayload(Type underlyingType,int[] data)
         {
+            UnderlyingType = underlyingType;
             Data = data;
         }
 
-        public override bool Equals(object obj)
+        /*public override bool Equals(object obj)
         {
             var payloadToCompare = (obj as DiscreteDataPayload);
 
@@ -38,6 +40,6 @@ namespace SimpleGame.DataPayloads
             }
 
             return false;
-        }
+        }*/
     }
 }

@@ -30,7 +30,7 @@ namespace SimpleGame
                 activeBoard[i] = new char[board[0].Length];
             }
 
-            ResetBoard();
+            Reset();
         }
 
         public static FoodEatingGameBoard GetRandomBoard()
@@ -103,7 +103,7 @@ namespace SimpleGame
             activeBoard[y][x] = O;
         }
 
-        public void ResetBoard()
+        public void Reset()
         {
             for (int i = 0; i < board[0].Count(); i++)
             {

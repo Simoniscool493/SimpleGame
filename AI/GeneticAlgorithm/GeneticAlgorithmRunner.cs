@@ -35,16 +35,12 @@ namespace SimpleGame.GeneticAlgorithm
 
         public Generation Train(IDiscreteGame g)
         {
-            var trainableState = g.GetRandomTrainableState();
+            var trainableState = g.GetState();
             var r = new Random();
 
-            Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
+            Generation currentGeneration = new Generation(_inputInfo,_outputInfo,_numInGeneration,_mutationRate);
 
-            for(int i=0;i<_numInGeneration;i++)
-            {
-                var randomMatrix = DecisionMatrix.GetRandomIOMapping(_inputInfo,_outputInfo);
-                currentGeneration.Add(randomMatrix);
-            }
+            currentGeneration.PopulateWithRandoms();
 
             for (int j=0;j<_numGenerations;j++)
             {

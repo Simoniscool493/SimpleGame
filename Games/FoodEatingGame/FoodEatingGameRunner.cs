@@ -29,7 +29,6 @@ namespace SimpleGame
         {
             var b = (s as FoodEatingGameBoard);
 
-            b.ResetBoard();
             _currentX = 0;
             _currentY = 0;
 
@@ -42,7 +41,7 @@ namespace SimpleGame
 
             for (int i = 0; i < _timerLength; i++)
             {
-                var dataAtCurrentPosition = new DiscreteDataPayload(GetDataAtCurrentPosition(b).Select(e=>(int)e).ToArray());
+                var dataAtCurrentPosition = new DiscreteDataPayload(typeof(ItemAtPoint),GetDataAtCurrentPosition(b).Select(e=>(int)e).ToArray());
                 var direction = (Direction)p.Decide(dataAtCurrentPosition).SingleItem;
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
@@ -129,9 +128,12 @@ namespace SimpleGame
             return new[] { top, bottom, left, right };
         }
 
-        public IGameState GetRandomTrainableState()
+        static FoodEatingGameBoard randomBoard = FoodEatingGameBoard.GetRandomBoard();
+
+        public IGameState GetState()
         {
-            return FoodEatingGameBoard.GetRandomBoard();
+            randomBoard.Reset();
+            return randomBoard;
         }
     }
 }
