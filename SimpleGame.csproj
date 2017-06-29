@@ -40,7 +40,7 @@
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
-    <Compile Include="DataPayloads\DiscreteData\DecisionMatrix\RandomDecider.cs" />
+    <Compile Include="DataPayloads\DiscreteData\RandomDiscreteDecider.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayloadInfo.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteIOInfo.cs" />
     <Compile Include="DataPayloads\DoublesDataPayload.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmGeneration.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
     <Compile Include="Games\IGameState.cs" />
-    <Compile Include="DataPayloads\DiscreteData\DecisionMatrix\IDiscreteDecider.cs" />
+    <Compile Include="DataPayloads\DiscreteData\IDiscreteDecider.cs" />
     <Compile Include="Games\IDiscreteGame.cs" />
     <Compile Include="Players\AiGridPlayer.cs" />
     <Compile Include="Players\IGridPlayer.cs" />

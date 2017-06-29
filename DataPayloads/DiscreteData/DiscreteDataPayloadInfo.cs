@@ -26,7 +26,7 @@ namespace SimpleGame.DataPayloads
 
                 for(int i=0;i< PayloadLength; i++)
                 {
-                    output.Add((int)values.GetValue(r.Next(0, values.Length-1)));
+                    output.Add((int)values.GetValue(r.Next(0, values.Length)));
                 }
 
                 return new DiscreteDataPayload(PayloadType,output.ToArray());

@@ -64,7 +64,7 @@ namespace SimpleGame
                 {
                     Console.Clear();
                     PrintCurrentState(b, numFoodEaten);
-                    Thread.Sleep(50);
+                    Thread.Sleep(150);
                 }
             }
 
