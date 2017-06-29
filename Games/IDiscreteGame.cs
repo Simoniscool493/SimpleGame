@@ -1,4 +1,5 @@
-﻿using SimpleGame.Games.FoodEatingGame;
+﻿using SimpleGame.DataPayloads;
+using SimpleGame.Games.FoodEatingGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace SimpleGame.Games
 {
     interface IDiscreteGame
     {
+        DiscreteIOInfo IOInfo { get; }
+
         int Score(IDiscreteDecider decider,IGameState state);
 
-        IGameState GetState();
+        void Demonstrate(IDiscreteDecider decider, IGameState state);
 
-
+        IGameState GetNextStateForTraining();
     }
 }

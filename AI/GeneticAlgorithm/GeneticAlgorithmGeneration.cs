@@ -14,8 +14,7 @@ namespace SimpleGame.GeneticAlgorithm
 {
     class Generation
     {
-        private DiscreteDataPayloadInfo _inputInfo;
-        private DiscreteDataPayloadInfo _outputInfo;
+        private DiscreteIOInfo _ioInfo;
 
         private Random _r = new Random();
         private int _maxSize;
@@ -23,21 +22,19 @@ namespace SimpleGame.GeneticAlgorithm
 
         private List<GeneticAlgorithmSpecies> _theGeneration = new List<GeneticAlgorithmSpecies>();
 
-        public Generation(DiscreteDataPayloadInfo inputInfo, DiscreteDataPayloadInfo outputInfo,int maxSize,double mutationRate)
+        public Generation(DiscreteIOInfo IOInfo,int maxSize,double mutationRate)
         {
-            _inputInfo = inputInfo;
-            _outputInfo = outputInfo;
-
+            _ioInfo = IOInfo;
             _maxSize = maxSize;
             _mutationRate = mutationRate;
         }
 
-        public void PopulateWithRandoms()
+        public void PopulateWithRandoms(Random r)
         {
             while(_theGeneration.Count < _maxSize)
             {
-                var randomMatrix = DecisionMatrix.GetRandomIOMapping(_inputInfo, _outputInfo);
-                Add(randomMatrix);
+                var randomMatrix = DecisionMatrix.GetRandomIOMapping(r,_ioInfo);
+                this.Add(randomMatrix);
             }
         }
 

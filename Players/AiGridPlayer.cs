@@ -5,21 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SimpleGame.Games.FoodEatingGame;
+using SimpleGame.Games;
+using SimpleGame.DataPayloads;
 
 namespace SimpleGame.Players
 {
-    class AiGridPlayer : IGridPlayer
+    class AiGridPlayer
     {
-        public IDecider Decider;
+        public IDiscreteDecider Decider;
 
-        public AiGridPlayer(IDecider decider)
+        public AiGridPlayer(IDiscreteDecider decider)
         {
             Decider = decider;
         }
 
-        public Direction GetDirection(ItemAtPoint[] upDownLeftright)
+        public Direction GetDirection(int[] upDownLeftright)
         {
-            return Decider.GetDirection(upDownLeftright);
+            var payload = new DiscreteDataPayload(typeof(ItemAtPoint), upDownLeftright);
+            return (Direction)Decider.Decide(payload).SingleItem;
         }
+
     }
 }

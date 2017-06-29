@@ -8,28 +8,28 @@ namespace SimpleGame.DataPayloads
 {
     class DiscreteDataPayloadInfo
     {
-        private int payloadLength;
-        private Type payloadType;
+        public int PayloadLength;
+        public Type PayloadType;
 
         public DiscreteDataPayloadInfo(Type pType,int pLength)
         {
-            payloadLength = pLength;
-            payloadType = pType;
+            PayloadLength = pLength;
+            PayloadType = pType;
         }
 
         public DiscreteDataPayload GetRandomInstance(Random r)
         {
-            if(payloadType.IsEnum)
+            if(PayloadType.IsEnum)
             {
-                var values = payloadType.GetEnumValues();
+                var values = PayloadType.GetEnumValues();
                 var output = new List<int>();
 
-                for(int i=0;i<payloadLength;i++)
+                for(int i=0;i< PayloadLength; i++)
                 {
-                    output.Add(r.Next(0, values.Length));
+                    output.Add((int)values.GetValue(r.Next(0, values.Length-1)));
                 }
 
-                return new DiscreteDataPayload(output.ToArray());
+                return new DiscreteDataPayload(PayloadType,output.ToArray());
             }
 
             throw new Exception();

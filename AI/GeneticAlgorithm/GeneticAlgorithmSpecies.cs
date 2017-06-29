@@ -40,7 +40,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 if(r.Next() > mutationRate)
                 {
                     var value = outputValues.GetValue(r.Next(0, outputValues.Length));
-                    var valueAsIntArray = (int[])value;
+                    var valueAsIntArray = new int[] { ((int)value) };
                     childMatrix[key] = new DiscreteDataPayload(species1.Matrix.OutputType,valueAsIntArray);
                 }
                 else if(r.Next()>0.5)

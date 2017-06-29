@@ -9,23 +9,34 @@ namespace SimpleGame
 {
     class FoodEatingGameRunner : IDiscreteGame
     {
-        private FoodEatingGameBoard b;
-        private bool _shouldIPause;
-        private bool _shouldIPrint;
+        public DiscreteIOInfo IOInfo { get; }
 
         private int _currentX;
         private int _currentY;
         private int _timerLength;
 
-        public FoodEatingGameRunner(FoodEatingGameBoard b,bool shouldIPause,bool shouldIPrint,int timerLength)
+        public FoodEatingGameRunner(int timerLength)
         {
-            this.b = b;
-            _shouldIPause = shouldIPause;
-            _shouldIPrint = shouldIPrint;
             _timerLength = timerLength;
+
+            IOInfo = new DiscreteIOInfo
+            (
+                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),4),
+                outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1)
+            );
+        }
+
+        public void Demonstrate(IDiscreteDecider p, IGameState s)
+        {
+            PlayGame(p, s, true);
         }
 
         public int Score(IDiscreteDecider p,IGameState s)
+        {
+            return PlayGame(p, s,false);
+        }
+
+        private int PlayGame(IDiscreteDecider p,IGameState s,bool isDemonstration)
         {
             var b = (s as FoodEatingGameBoard);
 
@@ -34,7 +45,7 @@ namespace SimpleGame
 
             int numFoodEaten = 0;
 
-            if (_shouldIPrint)
+            if (isDemonstration)
             {
                 PrintCurrentState(b, numFoodEaten);
             }
@@ -49,24 +60,13 @@ namespace SimpleGame
                     numFoodEaten++;
                 }
 
-                if(_shouldIPrint)
+                if(isDemonstration)
                 {
                     Console.Clear();
                     PrintCurrentState(b, numFoodEaten);
                     Thread.Sleep(50);
                 }
-
-                if (_shouldIPause)
-                {
-                    Console.ReadLine();
-                }
             }
-
-            if (_shouldIPrint)
-            {
-                Console.WriteLine("Done");
-            }
-
 
             return numFoodEaten;
         }
@@ -130,7 +130,7 @@ namespace SimpleGame
 
         static FoodEatingGameBoard randomBoard = FoodEatingGameBoard.GetRandomBoard();
 
-        public IGameState GetState()
+        public IGameState GetNextStateForTraining()
         {
             randomBoard.Reset();
             return randomBoard;

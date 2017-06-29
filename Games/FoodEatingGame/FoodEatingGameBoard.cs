@@ -33,9 +33,11 @@ namespace SimpleGame
             Reset();
         }
 
+        static FoodEatingGameBoard tempRandomBoard = new FoodEatingGameBoard(true);
+
         public static FoodEatingGameBoard GetRandomBoard()
         {
-            return new FoodEatingGameBoard(true);
+            return tempRandomBoard;
         }
 
         void MakeBasic()

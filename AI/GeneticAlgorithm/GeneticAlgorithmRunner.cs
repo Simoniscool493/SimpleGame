@@ -1,4 +1,5 @@
-﻿using SimpleGame.DataPayloads;
+﻿using SimpleGame.AI;
+using SimpleGame.DataPayloads;
 using SimpleGame.Deciders;
 using SimpleGame.Games;
 using SimpleGame.Games.FoodEatingGame;
@@ -12,42 +13,36 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.GeneticAlgorithm
 {
-    class GeneticAlgorithmRunner
+    class GeneticAlgorithmRunner : IDiscreteDecisionModel
     {
-        private DiscreteDataPayloadInfo _inputInfo;
-        private DiscreteDataPayloadInfo _outputInfo;
-
         private int _numGenerations;
         private int _numToKillPerGeneration;
         private int _numInGeneration;
         private double _mutationRate;
 
-        public GeneticAlgorithmRunner(DiscreteDataPayloadInfo inputInfo,DiscreteDataPayloadInfo outputInfo,int numGenerations,int numToKill,int numInGeneration,double mutationRate)
+        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,double mutationRate)
         {
-            _inputInfo = inputInfo;
-            _outputInfo = outputInfo;
-
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
             _numInGeneration = numInGeneration;
             _mutationRate = mutationRate;
         }
 
-        public Generation Train(IDiscreteGame g)
+        public IDiscreteDecider Train(IDiscreteGame g)
         {
-            var trainableState = g.GetState();
+            var trainableState = g.GetNextStateForTraining();
             var r = new Random();
 
-            Generation currentGeneration = new Generation(_inputInfo,_outputInfo,_numInGeneration,_mutationRate);
+            Generation currentGeneration = new Generation(g.IOInfo,_numInGeneration,_mutationRate);
 
-            currentGeneration.PopulateWithRandoms();
+            currentGeneration.PopulateWithRandoms(r);
 
             for (int j=0;j<_numGenerations;j++)
             {
                 RunGeneration(g,trainableState,currentGeneration);
             }
 
-            return currentGeneration;
+            return currentGeneration.GetBestSpecies();
         }
 
         private void RunGeneration(IDiscreteGame g,IGameState s,Generation currentGeneration)
