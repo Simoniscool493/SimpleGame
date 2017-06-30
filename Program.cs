@@ -10,8 +10,8 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-            var genAlg = new GeneticAlgorithmRunner(5000, 10, 30, 0.2);
-            var runner = new FoodEatingGameRunner(40);
+            var genAlg = new GeneticAlgorithmRunner(10000, 10, 30, 0.1);
+            var runner = new FoodEatingGameRunner(100);
 
             var deider = genAlg.Train(runner);
 

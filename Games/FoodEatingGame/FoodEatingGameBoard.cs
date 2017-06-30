@@ -11,8 +11,8 @@ namespace SimpleGame
         public char O = GridConstants.EmptySpaceChar;
         public char F = GridConstants.FoodChar;
 
-        char[][] board = new char[13][];
-        char[][] activeBoard = new char[13][];
+        char[][] board = new char[15][];
+        char[][] activeBoard = new char[15][];
 
         public FoodEatingGameBoard(bool isRandom)
         {
@@ -63,11 +63,11 @@ namespace SimpleGame
         {
             var r = new Random();
 
-            for(int i=0;i<13;i++)
+            for(int i=0;i<board.Length;i++)
             {
                 List<char> row = new List<char>();
 
-                for (int j = 0; j < 13; j++)
+                for (int j = 0; j < board.Length; j++)
                 {
                     if(r.Next(0,2)==0)
                     {
@@ -164,7 +164,7 @@ namespace SimpleGame
                 {
                     if(x==j && y==i)
                     {
-                        Console.Write('P');
+                        Console.Write(GridConstants.PlayerChar);
                     }
                     else
                     {
