@@ -1,14 +1,9 @@
-﻿using SimpleGame.DataPayloads;
-using SimpleGame.Games.FoodEatingGame;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Deciders.Discrete;
 
 namespace SimpleGame.Games
 {
-    interface IDiscreteGame
+    public interface IDiscreteGame
     {
         DiscreteIOInfo IOInfo { get; }
 

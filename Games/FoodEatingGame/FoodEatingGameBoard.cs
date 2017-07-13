@@ -1,10 +1,9 @@
-﻿using SimpleGame.Games.FoodEatingGame;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SimpleGame
+namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameBoard : IGameState
     {

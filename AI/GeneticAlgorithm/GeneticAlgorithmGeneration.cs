@@ -1,53 +1,45 @@
-﻿using SimpleGame.AI.GeneticAlgorithm;
-using SimpleGame.DataPayloads;
-using SimpleGame.Deciders;
+﻿using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Deciders.DecisionMatrix;
 using SimpleGame.Games;
-using SimpleGame.Games.FoodEatingGame;
-using SimpleGame.Players;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SimpleGame.GeneticAlgorithm
+namespace SimpleGame.AI.GeneticAlgorithm
 {
     class Generation
     {
-        private DiscreteIOInfo _ioInfo;
-
         private Random _r = new Random();
         private int _maxSize;
         private double _mutationRate;
 
-        private List<GeneticAlgorithmSpecies> _theGeneration = new List<GeneticAlgorithmSpecies>();
+        private List<GeneticAlgorithmSpecies> _thisGeneration = new List<GeneticAlgorithmSpecies>();
 
-        public Generation(DiscreteIOInfo IOInfo,int maxSize,double mutationRate)
+        public Generation(int maxSize,double mutationRate)
         {
-            _ioInfo = IOInfo;
             _maxSize = maxSize;
             _mutationRate = mutationRate;
         }
 
-        public void PopulateWithRandoms(Random r)
+        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo)
         {
-            while(_theGeneration.Count < _maxSize)
+            while(_thisGeneration.Count < _maxSize)
             {
-                var randomMatrix = DecisionMatrix.GetRandomIOMapping(r,_ioInfo);
-                this.Add(randomMatrix);
+                var randomMatrix = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
+                this.Add(new GeneticAlgorithmSpecies(randomMatrix));
             }
         }
 
-        public void ScoreGeneration(IDiscreteGame g,IGameState s)
+        public void ScoreGeneration(IDiscreteGame game,IGameState state)
         {
-            foreach (var matrix in _theGeneration)
+            foreach (var species in _thisGeneration)
             {
-                if(!matrix.IsScored)
+                if(!species.IsScored)
                 {
-                    var score = g.Score(matrix, s);
-                    matrix.Score = score;
-                    matrix.IsScored = true;
-                    s.Reset();
+                    species.Score = game.Score(species, state);
+                    species.IsScored = true;
+                    state.Reset();
                 }
             }
         }
@@ -55,9 +47,9 @@ namespace SimpleGame.GeneticAlgorithm
         public GeneticAlgorithmSpecies GetBestSpecies()
         {
             int highestScore = 0;
-            GeneticAlgorithmSpecies best = _theGeneration[0];
+            GeneticAlgorithmSpecies best = _thisGeneration[0];
 
-            foreach(GeneticAlgorithmSpecies s in _theGeneration)
+            foreach(GeneticAlgorithmSpecies s in _thisGeneration)
             {
                 if(s.Score>highestScore)
                 {
@@ -71,33 +63,31 @@ namespace SimpleGame.GeneticAlgorithm
 
         public void Kill(int numToKill)
         {
-            var sortredGen = _theGeneration.OrderBy(g => g.Score);
-            var maricesToKill = sortredGen.Take(numToKill);
-            _theGeneration.RemoveAll(g=>maricesToKill.Contains(g));
+            var sortredGen = _thisGeneration.OrderBy(species => species.Score);
+            var lisfOfSpeciesToKill = sortredGen.Take(numToKill);
+            _thisGeneration.RemoveAll(species => lisfOfSpeciesToKill.Contains(species));
         }
 
         public void Multiply()
         {
-            while(_theGeneration.Count()<_maxSize)
+            while(_thisGeneration.Count()<_maxSize)
             {
                 var newSpecies = GetNewSpeciesFromSpeciesInThisGeneration();
-                _theGeneration.Add(newSpecies);
+                _thisGeneration.Add(newSpecies);
             }
         }
 
         private GeneticAlgorithmSpecies GetNewSpeciesFromSpeciesInThisGeneration()
         {
-            var parent1 = _theGeneration[_r.Next(0, _theGeneration.Count())];
-            var parent2 = _theGeneration[_r.Next(0, _theGeneration.Count())];
+            var parent1 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
+            var parent2 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
 
-            var child = GeneticAlgorithmSpecies.Cross(parent1, parent2, _mutationRate,_r);
-
-            return child;
+            return GeneticAlgorithmSpecies.Cross(parent1, parent2, _mutationRate,_r);
         }
 
-        private void Add(DecisionMatrix matrix)
+        private void Add(GeneticAlgorithmSpecies species)
         {
-            _theGeneration.Add(new GeneticAlgorithmSpecies(matrix));
+            _thisGeneration.Add(species);
         }
     }
 }

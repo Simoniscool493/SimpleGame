@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleGame.AI.DecisionTrees
 {
@@ -372,7 +370,6 @@ namespace SimpleGame.AI.DecisionTrees
                 return '8';
             throw new Exception();
         }
-
 
         public static void Demonstrate()
         {

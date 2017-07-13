@@ -1,10 +1,7 @@
-﻿using SimpleGame.DataPayloads;
-using SimpleGame.Deciders;
+﻿using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Deciders.DecisionMatrix;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleGame.AI.GeneticAlgorithm
 {
@@ -15,9 +12,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
         public int Score;
 
         public GeneticAlgorithmSpecies(DecisionMatrix matrix)
-            : base(matrix)
-        {
-        }
+            : base(matrix) { }
 
         public override string ToString()
         {

@@ -1,11 +1,7 @@
-﻿using SimpleGame.Games;
+﻿using SimpleGame.DataPayloads.DiscreteData;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SimpleGame.DataPayloads.DiscreteData.DecisionMatrix
+namespace SimpleGame.Deciders.Discrete
 {
     class RandomDiscreteDecider : IDiscreteDecider
     {

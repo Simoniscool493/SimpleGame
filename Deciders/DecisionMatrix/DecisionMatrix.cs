@@ -1,15 +1,11 @@
-﻿using SimpleGame.Games;
+﻿using SimpleGame.DataPayloads.DiscreteData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using SimpleGame.DataPayloads;
 
-namespace SimpleGame
+namespace SimpleGame.Deciders.DecisionMatrix
 {
-    class DecisionMatrix : IDiscreteDecider
+    class DecisionMatrix
     {
         private static Random r = new Random();
         private Dictionary<DiscreteDataPayload,DiscreteDataPayload> _theMatrix;

@@ -1,8 +1,6 @@
-﻿using SimpleGame.AI.DecisionTrees;
-using SimpleGame.DataPayloads;
-using SimpleGame.DataPayloads.DiscreteData.DecisionMatrix;
-using SimpleGame.GeneticAlgorithm;
-using System;
+﻿
+using SimpleGame.AI.GeneticAlgorithm;
+using SimpleGame.Games.FoodEatingGame;
 
 namespace SimpleGame
 {

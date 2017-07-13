@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SimpleGame.DataPayloads
+namespace SimpleGame.DataPayloads.DiscreteData
 {
-    class DiscreteDataPayload
+    public class DiscreteDataPayload
     {
         public int[] Data;
         public Type UnderlyingType;

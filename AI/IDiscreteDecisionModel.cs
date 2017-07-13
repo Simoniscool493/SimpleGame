@@ -1,9 +1,5 @@
-﻿using SimpleGame.Games;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SimpleGame.Deciders.Discrete;
+using SimpleGame.Games;
 
 namespace SimpleGame.AI
 {

@@ -1,4 +1,4 @@
-﻿namespace SimpleGame
+﻿namespace SimpleGame.Games.FoodEatingGame
 {
     class GridConstants
     {

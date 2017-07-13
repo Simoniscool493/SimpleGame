@@ -1,19 +1,10 @@
-﻿using SimpleGame.AI;
-using SimpleGame.DataPayloads;
-using SimpleGame.Deciders;
+﻿using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
-using SimpleGame.Games.FoodEatingGame;
-using SimpleGame.Players;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace SimpleGame.GeneticAlgorithm
+namespace SimpleGame.AI.GeneticAlgorithm
 {
-    class GeneticAlgorithmRunner : IDiscreteDecisionModel
+    public class GeneticAlgorithmRunner : IDiscreteDecisionModel
     {
         private int _numGenerations;
         private int _numToKillPerGeneration;
@@ -28,26 +19,26 @@ namespace SimpleGame.GeneticAlgorithm
             _mutationRate = mutationRate;
         }
 
-        public IDiscreteDecider Train(IDiscreteGame g)
+        public IDiscreteDecider Train(IDiscreteGame game)
         {
-            var trainableState = g.GetNextStateForTraining();
+            var trainableState = game.GetNextStateForTraining();
             var r = new Random();
 
-            Generation currentGeneration = new Generation(g.IOInfo,_numInGeneration,_mutationRate);
+            Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
 
-            currentGeneration.PopulateWithRandoms(r);
+            currentGeneration.PopulateWithRandoms(r,game.IOInfo);
 
             for (int j=0;j<_numGenerations;j++)
             {
-                RunGeneration(g,trainableState,currentGeneration);
+                RunGeneration(game, trainableState,currentGeneration);
             }
 
             return currentGeneration.GetBestSpecies();
         }
 
-        private void RunGeneration(IDiscreteGame g,IGameState s,Generation currentGeneration)
+        private void RunGeneration(IDiscreteGame game,IGameState state,Generation currentGeneration)
         {
-            currentGeneration.ScoreGeneration(g, s);
+            currentGeneration.ScoreGeneration(game, state);
             currentGeneration.Kill(_numToKillPerGeneration);
             currentGeneration.Multiply();
         }

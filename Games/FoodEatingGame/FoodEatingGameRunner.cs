@@ -1,11 +1,10 @@
-﻿using SimpleGame.DataPayloads;
-using SimpleGame.Games;
-using System;
+﻿using System;
 using System.Threading;
 using System.Linq;
-using SimpleGame.Games.FoodEatingGame;
+using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Deciders.Discrete;
 
-namespace SimpleGame
+namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameRunner : IDiscreteGame
     {
