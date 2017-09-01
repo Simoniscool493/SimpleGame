@@ -19,9 +19,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
             _mutationRate = mutationRate;
         }
 
-        public IDiscreteDecider Train(IDiscreteGame game)
+        public IDiscreteDecider Train(IDiscreteGame game,IGameStateProvider provider,bool showProgress)
         {
-            var trainableState = game.GetNextStateForTraining();
+            var trainableState = provider.GetStateForNextGeneration();
             var r = new Random();
 
             Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
@@ -31,6 +31,12 @@ namespace SimpleGame.AI.GeneticAlgorithm
             for (int j=0;j<_numGenerations;j++)
             {
                 RunGeneration(game, trainableState,currentGeneration);
+
+                if(showProgress)
+                {
+                    game.Demonstrate(currentGeneration.GetBestSpecies(), trainableState);
+                    trainableState.Reset();
+                }
             }
 
             return currentGeneration.GetBestSpecies();

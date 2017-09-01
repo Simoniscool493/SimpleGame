@@ -7,66 +7,49 @@ namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameBoard : IGameState
     {
-        public char O = GridConstants.EmptySpaceChar;
-        public char F = GridConstants.FoodChar;
+        private const int defaultHeight = 20;
+        private const int defaultWidth = 20;
 
-        char[][] board = new char[15][];
-        char[][] activeBoard = new char[15][];
+        private char O = GridConstants.EmptySpaceChar;
+        private char F = GridConstants.FoodChar;
 
-        public FoodEatingGameBoard(bool isRandom)
+        private char[][] _baseGrid = new char[defaultHeight][];
+        private char[][] _activeGrid = new char[defaultWidth][];
+
+        protected FoodEatingGameBoard(bool isRandom)
         {
             if (isRandom)
             {
-                MakeRandom();
+                _baseGrid = GetRandomGrid();
             }
             else
             {
-                MakeBasic();
+                _baseGrid = LoadGridFromFile();
             }
 
-            for (int i=0;i<board.Length;i++)
+            for (int i=0;i<_baseGrid.Length;i++)
             {
-                activeBoard[i] = new char[board[0].Length];
+                _activeGrid[i] = new char[_baseGrid[0].Length];
             }
 
             Reset();
         }
-
-        static FoodEatingGameBoard tempRandomBoard = new FoodEatingGameBoard(true);
-
-        public static FoodEatingGameBoard GetRandomBoard()
+        
+        private char[][] LoadGridFromFile()
         {
-            return tempRandomBoard;
+            throw new NotImplementedException();
         }
 
-        void MakeBasic()
+        private char[][] GetRandomGrid()
         {
-            board[0] = new[] { O, O, O, O, O, O, O, O, O, F };
-            board[1] = new[] { F, F, F, F, F, F, F, O, O, O };
-            board[2] = new[] { O, O, O, O, O, O, F, O, O, O };
-            board[3] = new[] { O, O, F, F, F, F, F, O, O, O };
-            board[4] = new[] { O, O, O, O, O, O, F, O, O, O };
-            board[5] = new[] { O, O, O, O, O, O, F, F, F, O };
-            board[6] = new[] { O, O, O, O, O, O, F, O, O, O };
-            board[7] = new[] { O, F, O, O, O, F, F, O, O, O };
-            board[8] = new[] { O, O, O, O, O, O, O, O, O, O };
-            board[9] = new[] { O, O, O, O, O, O, O, O, O, O };
-
-            board[10] = new[] { F, O, O, O, F, O, O, O, F, O };
-            board[11] = new[] { O, F, O, F, O, F, O, F, O, F };
-            board[12] = new[] { O, O, F, O, O, O, F, O, O, O };
-
-        }
-
-        void MakeRandom()
-        {
+            char[][] randomGrid = new char[defaultHeight][];
             var r = new Random();
 
-            for(int i=0;i<board.Length;i++)
+            for(int i=0;i< defaultHeight;i++)
             {
                 List<char> row = new List<char>();
 
-                for (int j = 0; j < board.Length; j++)
+                for (int j = 0; j < defaultWidth; j++)
                 {
                     if(r.Next(0,2)==0)
                     {
@@ -78,57 +61,54 @@ namespace SimpleGame.Games.FoodEatingGame
                     }
                 }
 
-                board[i] = row.ToArray();
+                randomGrid[i] = row.ToArray();
             }
+
+            return randomGrid;
+        }
+
+        public static FoodEatingGameBoard GetRandomBoard()
+        {
+            return new FoodEatingGameBoard(isRandom: true);
         }
 
         public ItemAtPoint GetItemAtActiveBoard(int x,int y)
         {
-            if(x<0 || y<0 || x>activeBoard[0].Length-1 || y>activeBoard.Length-1)
+            if(x<0 || y<0 || x>_activeGrid[0].Length-1 || y>_activeGrid.Length-1)
             {
                 return ItemAtPoint.OutOfBounds;
             }
 
-            var charToCheck = activeBoard[y][x];
+            var charToCheck = _activeGrid[y][x];
 
             return ParseItemAtPoint(charToCheck);
         }
 
         public void ClearItemAtActiveBoard(int x, int y)
         {
-            if (x < 0 || y < 0 || x > activeBoard[0].Length-1 || y > activeBoard.Length-1)
+            if (x < 0 || y < 0 || x > _activeGrid[0].Length-1 || y > _activeGrid.Length-1)
             {
                 throw new Exception();
             }
 
-            activeBoard[y][x] = O;
+            _activeGrid[y][x] = O;
         }
 
         public void Reset()
         {
-            for (int i = 0; i < board[0].Count(); i++)
+            try
             {
-                for (int j = 0; j < board.Count(); j++)
+                for (int i = 0; i < _baseGrid[0].Count(); i++)
                 {
-                    activeBoard[j][i] = board[j][i];
+                    for (int j = 0; j < _baseGrid.Count(); j++)
+                    {
+                        _activeGrid[j][i] = _baseGrid[j][i];
+                    }
                 }
             }
-        }
-
-        public ItemAtPoint GetPositionInDirection(Direction direction,int x,int y)
-        {
-            switch (direction)
+            catch(Exception)
             {
-                case Direction.Up:
-                    return GetItemAtActiveBoard(x, y-1);
-                case Direction.Down:
-                    return GetItemAtActiveBoard(x, y+1);
-                case Direction.Left:
-                    return GetItemAtActiveBoard(x-1, y);
-                case Direction.Right:
-                    return GetItemAtActiveBoard(x+1, y);
-                default:
-                    throw new Exception();
+                Console.WriteLine("Board arrays probably out of bounds.");
             }
         }
 
@@ -146,20 +126,37 @@ namespace SimpleGame.Games.FoodEatingGame
             throw new Exception();
         }
 
+        public ItemAtPoint GetPositionInDirection(Direction direction, int x, int y)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return GetItemAtActiveBoard(x, y - 1);
+                case Direction.Down:
+                    return GetItemAtActiveBoard(x, y + 1);
+                case Direction.Left:
+                    return GetItemAtActiveBoard(x - 1, y);
+                case Direction.Right:
+                    return GetItemAtActiveBoard(x + 1, y);
+                default:
+                    throw new Exception();
+            }
+        }
+
         public void PrintWithPlayerPosition(int x,int y,int numFoodEaten)
         {
-            for(int k=0;k<activeBoard[0].Count()+2;k++)
+            for(int k=0;k<_activeGrid[0].Count()+2;k++)
             {
                 Console.Write(GridConstants.BorderChar);
             }
 
             Console.WriteLine();
 
-            for (int i = 0 ; i < activeBoard.Count(); i++)
+            for (int i = 0 ; i < _activeGrid.Count(); i++)
             {
                 Console.Write(GridConstants.BorderChar);
 
-                for (int j = 0; j < activeBoard[0].Count(); j++)
+                for (int j = 0; j < _activeGrid[0].Count(); j++)
                 {
                     if(x==j && y==i)
                     {
@@ -167,7 +164,7 @@ namespace SimpleGame.Games.FoodEatingGame
                     }
                     else
                     {
-                        Console.Write(activeBoard[i][j]);
+                        Console.Write(_activeGrid[i][j]);
                     }
                 }
 
@@ -175,7 +172,7 @@ namespace SimpleGame.Games.FoodEatingGame
                 Console.WriteLine();
             }
 
-            for (int k = 0; k < activeBoard[0].Count() + 2; k++)
+            for (int k = 0; k < _activeGrid[0].Count() + 2; k++)
             {
                 Console.Write(GridConstants.BorderChar);
             }
@@ -188,7 +185,7 @@ namespace SimpleGame.Games.FoodEatingGame
         {
             var sb = new StringBuilder();
 
-            foreach (char[] line in board)
+            foreach (char[] line in _baseGrid)
             {
                 foreach (char point in line)
                 {

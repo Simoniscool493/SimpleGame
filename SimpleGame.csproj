@@ -53,10 +53,12 @@
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmGeneration.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
+    <Compile Include="Games\FoodEatingGame\SingleRandomFoodEatingGameStateProvider.cs" />
     <Compile Include="Games\IGameState.cs" />
     <Compile Include="Deciders\Discrete\IDiscreteDecider.cs" />
     <Compile Include="Games\IDiscreteGame.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
+    <Compile Include="Games\IGameStateProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

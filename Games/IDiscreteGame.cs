@@ -10,7 +10,5 @@ namespace SimpleGame.Games
         int Score(IDiscreteDecider decider,IGameState state);
 
         void Demonstrate(IDiscreteDecider decider, IGameState state);
-
-        IGameState GetNextStateForTraining();
     }
 }

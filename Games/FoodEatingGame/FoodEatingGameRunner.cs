@@ -126,13 +126,5 @@ namespace SimpleGame.Games.FoodEatingGame
 
             return new[] { top, bottom, left, right };
         }
-
-        static FoodEatingGameBoard randomBoard = FoodEatingGameBoard.GetRandomBoard();
-
-        public IGameState GetNextStateForTraining()
-        {
-            randomBoard.Reset();
-            return randomBoard;
-        }
     }
 }
