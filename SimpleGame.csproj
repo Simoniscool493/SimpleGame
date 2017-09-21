@@ -49,16 +49,18 @@
     <Compile Include="Deciders\DecisionMatrix\MatrixDecider.cs" />
     <Compile Include="Games\FoodEatingGame\Direction.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoard.cs" />
-    <Compile Include="Games\FoodEatingGame\FoodEatingGameRunner.cs" />
+    <Compile Include="Games\FoodEatingGame\FoodEatingGameBoardIOAdapter.cs" />
+    <Compile Include="Games\FoodEatingGame\FoodEatingGameManager.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmGeneration.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
     <Compile Include="Games\FoodEatingGame\SingleRandomFoodEatingGameStateProvider.cs" />
-    <Compile Include="Games\IGameState.cs" />
+    <Compile Include="Games\IDiscreteGameIOAdapter.cs" />
+    <Compile Include="Games\IDiscreteGameState.cs" />
     <Compile Include="Deciders\Discrete\IDiscreteDecider.cs" />
-    <Compile Include="Games\IDiscreteGame.cs" />
+    <Compile Include="Games\IDiscreteGameManager.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
-    <Compile Include="Games\IGameStateProvider.cs" />
+    <Compile Include="Games\IDiscreteGameStateProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -31,7 +31,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             }
         }
 
-        public void ScoreGeneration(IDiscreteGame game,IGameState state)
+        public void ScoreGeneration(IDiscreteGameManager game,IDiscreteGameState state)
         {
             foreach (var species in _thisGeneration)
             {

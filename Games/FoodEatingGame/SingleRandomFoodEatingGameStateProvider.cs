@@ -1,10 +1,10 @@
 ﻿namespace SimpleGame.Games.FoodEatingGame
 {
-    class SingleRandomFoodEatingGameStateProvider : IGameStateProvider
+    class SingleRandomFoodEatingGameStateProvider : IDiscreteGameStateProvider
     {
         private FoodEatingGameBoard _singleRandomBoard = FoodEatingGameBoard.GetRandomBoard();
 
-        public IGameState GetStateForNextGeneration()
+        public IDiscreteGameState GetStateForNextGeneration()
         {
             _singleRandomBoard.Reset();
             return _singleRandomBoard;

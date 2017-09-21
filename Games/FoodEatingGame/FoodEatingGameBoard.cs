@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SimpleGame.Games.FoodEatingGame
 {
-    class FoodEatingGameBoard : IGameState
+    class FoodEatingGameBoard : IDiscreteGameState
     {
         private const int defaultHeight = 20;
         private const int defaultWidth = 20;
@@ -15,6 +15,11 @@ namespace SimpleGame.Games.FoodEatingGame
 
         private char[][] _baseGrid = new char[defaultHeight][];
         private char[][] _activeGrid = new char[defaultWidth][];
+
+        private int? _playerX = 0;
+        private int? _playerY = 0;
+
+        private bool _foodEaten = false;
 
         protected FoodEatingGameBoard(bool isRandom)
         {
@@ -51,13 +56,13 @@ namespace SimpleGame.Games.FoodEatingGame
 
                 for (int j = 0; j < defaultWidth; j++)
                 {
-                    if(r.Next(0,2)==0)
+                    if(r.Next(0,3)==0)
                     {
-                        row.Add(GridConstants.EmptySpaceChar);
+                        row.Add(GridConstants.FoodChar);
                     }
                     else
                     {
-                        row.Add(GridConstants.FoodChar);
+                        row.Add(GridConstants.EmptySpaceChar);
                     }
                 }
 
@@ -105,6 +110,10 @@ namespace SimpleGame.Games.FoodEatingGame
                         _activeGrid[j][i] = _baseGrid[j][i];
                     }
                 }
+
+                _playerX = 0;
+                _playerY = 0;
+                _foodEaten = false;
             }
             catch(Exception)
             {
@@ -126,6 +135,51 @@ namespace SimpleGame.Games.FoodEatingGame
             throw new Exception();
         }
 
+        public int[] GetPlayerData()
+        {
+            var pX = _playerX.Value;
+            var pY = _playerY.Value;
+
+            var top = (int)GetItemAtActiveBoard(pX, pY - 1);
+            var bottom = (int)GetItemAtActiveBoard(pX, pY + 1);
+            var left = (int)GetItemAtActiveBoard(pX - 1, pY);
+            var right = (int)GetItemAtActiveBoard(pX + 1, pY);
+
+            var isThereFood = _foodEaten ? 1 : 0;
+
+            return new[] { top, bottom, left, right, isThereFood };
+        }
+
+        public void MovePlayer(Direction d)
+        {
+            _foodEaten = false;
+
+            switch (d)
+            {
+                case Direction.Up:
+                    _playerY--;
+                    break;
+                case Direction.Down:
+                    _playerY++;
+                    break;
+                case Direction.Left:
+                    _playerX--;
+                    break;
+                case Direction.Right:
+                    _playerX++;
+                    break;
+                default:
+                    throw new Exception();
+            }
+
+            if(GetItemAtActiveBoard(_playerX.Value,_playerY.Value) == ItemAtPoint.Food)
+            {
+                _foodEaten = true;
+                ClearItemAtActiveBoard(_playerX.Value, _playerY.Value);
+            }
+        }
+
+
         public ItemAtPoint GetPositionInDirection(Direction direction, int x, int y)
         {
             switch (direction)
@@ -143,9 +197,12 @@ namespace SimpleGame.Games.FoodEatingGame
             }
         }
 
-        public void PrintWithPlayerPosition(int x,int y,int numFoodEaten)
+        public void PrintWithPlayerPosition(int numFoodEaten)
         {
-            for(int k=0;k<_activeGrid[0].Count()+2;k++)
+            int x = _playerX.Value;
+            int y = _playerY.Value;
+
+            for (int k=0;k<_activeGrid[0].Count()+2;k++)
             {
                 Console.Write(GridConstants.BorderChar);
             }

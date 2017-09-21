@@ -5,6 +5,6 @@ namespace SimpleGame.AI
 {
     interface IDiscreteDecisionModel
     {
-        IDiscreteDecider Train(IDiscreteGame g,IGameStateProvider provider, bool showProgress,int demonstrateEveryXIterations);
+        IDiscreteDecider Train(IDiscreteGameManager g,IDiscreteGameStateProvider provider, bool showProgress,int demonstrateEveryXIterations);
     }
 }

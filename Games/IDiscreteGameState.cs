@@ -1,6 +1,6 @@
 ﻿namespace SimpleGame.Games
 {
-    public interface IGameState
+    public interface IDiscreteGameState
     { 
         void Reset();
     }

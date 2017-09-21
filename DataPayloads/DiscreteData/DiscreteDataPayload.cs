@@ -27,6 +27,12 @@ namespace SimpleGame.DataPayloads.DiscreteData
             Data = data;
         }
 
+        public DiscreteDataPayload(Type underlyingType, int data)
+        {
+            UnderlyingType = underlyingType;
+            Data = new int[] { data };
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
