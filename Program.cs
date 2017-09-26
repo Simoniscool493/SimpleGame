@@ -1,6 +1,8 @@
 ﻿
 using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.Games.FoodEatingGame;
+using SimpleGame.Games.SimplePacman;
+using System;
 
 namespace SimpleGame
 {
@@ -8,6 +10,13 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
+
+            var instance = new PacmanInstance();
+
+
+            Console.ReadLine();
+
+            return;
             var genAlg = new GeneticAlgorithmRunner
             (
                 numGenerations: 10000, 

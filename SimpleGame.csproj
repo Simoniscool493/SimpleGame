@@ -61,13 +61,25 @@
     <Compile Include="Games\IDiscreteGameManager.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
     <Compile Include="Games\IDiscreteGameStateProvider.cs" />
+    <Compile Include="Games\SimplePacman\PacmanInstance.cs" />
+    <Compile Include="Games\SimplePacman\PacmanIOAdapter.cs" />
+    <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\GamesToTestOn\pacman\Pacman\Pacman.csproj">
+      <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
+      <Name>Pacman</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
