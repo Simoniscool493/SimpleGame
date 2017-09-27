@@ -9,6 +9,8 @@ namespace SimpleGame.Games
 
         IDiscreteGameIOAdapter IOADapter { get; }
 
+        IDiscreteGameStateProvider StateProvider { get; }
+
         int Score(IDiscreteDecider decider,IDiscreteGameState state);
 
         void Demonstrate(IDiscreteDecider decider, IDiscreteGameState state);

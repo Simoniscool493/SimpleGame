@@ -29,3 +29,17 @@ C:\Users\Simon\Desktop\College\Final Year Project\Code\SimpleGame\bin\Debug\Simp
 C:\Users\Simon\Desktop\College\Final Year Project\Code\SimpleGame\obj\Debug\SimpleGame.csprojResolveAssemblyReference.cache
 C:\Users\Simon\Desktop\College\Final Year Project\Code\SimpleGame\obj\Debug\SimpleGame.exe
 C:\Users\Simon\Desktop\College\Final Year Project\Code\SimpleGame\obj\Debug\SimpleGame.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.csprojResolveAssemblyReference.cache
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\DirectShowLib-2005.dll
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\EVRPresenter32.dll
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\EVRPresenter64.dll
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\SimpleGame.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\SimpleGame.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\SimpleGame.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Pacman.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\nunit.framework.dll
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Pacman.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Pacman.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\nunit.framework.xml
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.pdb

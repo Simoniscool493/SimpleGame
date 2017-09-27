@@ -22,12 +22,22 @@ namespace SimpleGame.AI.GeneticAlgorithm
             _mutationRate = mutationRate;
         }
 
-        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo)
+        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo,bool isLazy)
         {
             while(_thisGeneration.Count < _maxSize)
             {
-                var randomMatrix = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
-                this.Add(new GeneticAlgorithmSpecies(randomMatrix));
+                IDecisionMatrix randomMatrix = null;
+
+                if(isLazy)
+                {
+                    randomMatrix = DecisionMatrix.GetLazyIOMapping(r, gameIOInfo);
+                }
+                else
+                {
+                    randomMatrix = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
+                }
+
+                Add(new GeneticAlgorithmSpecies(randomMatrix));
             }
         }
 

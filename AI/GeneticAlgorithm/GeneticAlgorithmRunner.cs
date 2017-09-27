@@ -10,13 +10,15 @@ namespace SimpleGame.AI.GeneticAlgorithm
         private int _numToKillPerGeneration;
         private int _numInGeneration;
         private double _mutationRate;
+        private bool _IsLazy;
 
-        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,double mutationRate)
+        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,double mutationRate,bool isLazy)
         {
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
             _numInGeneration = numInGeneration;
             _mutationRate = mutationRate;
+            _IsLazy = isLazy;
         }
 
         public IDiscreteDecider Train(IDiscreteGameManager game,IDiscreteGameStateProvider provider,bool showProgress,int demonstrateEveryXIterations)
@@ -26,7 +28,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
 
-            currentGeneration.PopulateWithRandoms(r,game.IOInfo);
+            currentGeneration.PopulateWithRandoms(r,game.IOInfo,_IsLazy);
 
             for (int generationCounter=0; generationCounter < _numGenerations; generationCounter++)
             {

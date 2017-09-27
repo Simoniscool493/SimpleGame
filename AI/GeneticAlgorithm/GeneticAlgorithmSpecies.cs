@@ -8,10 +8,10 @@ namespace SimpleGame.AI.GeneticAlgorithm
     class GeneticAlgorithmSpecies : MatrixDecider
     {
         public bool IsScored = false;
-        public DecisionMatrix Matrix => matrix;
+        public IDecisionMatrix Matrix => matrix;
         public int Score;
 
-        public GeneticAlgorithmSpecies(DecisionMatrix matrix)
+        public GeneticAlgorithmSpecies(IDecisionMatrix matrix)
             : base(matrix) { }
 
         public override string ToString()

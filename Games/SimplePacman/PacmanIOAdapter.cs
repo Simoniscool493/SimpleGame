@@ -11,12 +11,17 @@ namespace SimpleGame.Games.SimplePacman
     {
         public DiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
-            throw new NotImplementedException();
+            var state = (PacmanInstance)genericState;
+
+            return new DiscreteDataPayload(typeof(PacmanPointData), state.GetStatus());
+
         }
 
         public void SendInput(IDiscreteGameState genericState, DiscreteDataPayload input)
         {
-            throw new NotImplementedException();
+            var state = (PacmanInstance)genericState;
+
+            state.SendInput((Direction)input.Data[0]);
         }
     }
 }

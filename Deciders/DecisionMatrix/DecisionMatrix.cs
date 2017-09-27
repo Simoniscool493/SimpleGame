@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
-    class DecisionMatrix
+    class DecisionMatrix : IDecisionMatrix
     {
         private static Random r = new Random();
         private Dictionary<DiscreteDataPayload,DiscreteDataPayload> _theMatrix;
 
-        public Type InputType;
-        public Type OutputType;
+        public Type InputType { get; }
+        public Type OutputType { get; }
 
         public DecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix)
         {
@@ -32,7 +32,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
             return _theMatrix.Keys;
         }
 
-        public static DecisionMatrix GetRandomIOMapping(Random r,DiscreteIOInfo IOInfo)
+        public static IDecisionMatrix GetRandomIOMapping(Random r,DiscreteIOInfo IOInfo)
         {
             var permutator = new PermutationMechanism(IOInfo.InputInfo);
             var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
@@ -48,6 +48,12 @@ namespace SimpleGame.Deciders.DecisionMatrix
             }
 
             return new DecisionMatrix(matrix);
+        }
+
+        public static IDecisionMatrix GetLazyIOMapping(Random r, DiscreteIOInfo IOInfo)
+        {
+            var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
+            return new LazyDecisionMatrix(matrix,IOInfo);
         }
 
         class PermutationMechanism

@@ -1,6 +1,8 @@
-﻿namespace SimpleGame.Games
+﻿using System;
+
+namespace SimpleGame.Games
 {
-    public interface IDiscreteGameState
+    public interface IDiscreteGameState : IDisposable
     { 
         void Reset();
     }

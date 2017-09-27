@@ -121,6 +121,11 @@ namespace SimpleGame.Games.FoodEatingGame
             }
         }
 
+        public void Dispose()
+        {
+            //Nothing to dispose
+        }
+
         public ItemAtPoint ParseItemAtPoint(char c)
         {
             if(c==GridConstants.FoodChar)

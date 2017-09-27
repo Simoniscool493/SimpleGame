@@ -13,6 +13,8 @@ namespace SimpleGame.Games.FoodEatingGame
         private FoodEatingGameBoardIOAdapter _IOAdapter = new FoodEatingGameBoardIOAdapter();
         public IDiscreteGameIOAdapter IOADapter => _IOAdapter;
 
+        public IDiscreteGameStateProvider StateProvider => new SingleRandomFoodEatingGameStateProvider();
+
         private int _timerLength;
 
         public FoodEatingGameManager(int timerLength)

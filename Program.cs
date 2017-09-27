@@ -10,23 +10,17 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-
-            var instance = new PacmanInstance();
-
-
-            Console.ReadLine();
-
-            return;
             var genAlg = new GeneticAlgorithmRunner
             (
-                numGenerations: 10000, 
-                numToKill: 10, 
-                numInGeneration: 30, 
-                mutationRate: 0.1
+                numGenerations: 10, 
+                numToKill: 2, 
+                numInGeneration: 5, 
+                mutationRate: 0.1,
+                isLazy: true
             );
 
-            var runner = new FoodEatingGameManager(timerLength: 20);
-            var stateProvider = new SingleRandomFoodEatingGameStateProvider();
+            var runner = new PacmanManager();
+            var stateProvider = runner.StateProvider;
 
             var decider = genAlg.Train(runner, stateProvider, showProgress: true, demonstrateEveryXIterations: 2500);
 

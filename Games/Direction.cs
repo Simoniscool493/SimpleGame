@@ -1,4 +1,4 @@
-﻿namespace SimpleGame.Games.FoodEatingGame
+﻿namespace SimpleGame.Games
 {
     enum Direction
     {

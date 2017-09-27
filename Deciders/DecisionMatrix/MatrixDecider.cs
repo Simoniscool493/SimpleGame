@@ -5,9 +5,9 @@ namespace SimpleGame.Deciders.DecisionMatrix
 {
     class MatrixDecider : IDiscreteDecider
     {
-        protected DecisionMatrix matrix;
+        protected IDecisionMatrix matrix;
 
-        public MatrixDecider(DecisionMatrix d)
+        public MatrixDecider(IDecisionMatrix d)
         {
             matrix = d;
         }
