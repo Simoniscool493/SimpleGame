@@ -3,5 +3,7 @@
     public interface IDiscreteGameStateProvider
     {
         IDiscreteGameState GetStateForNextGeneration();
+
+        IDiscreteGameState GetStateForDemonstration();
     }
 }

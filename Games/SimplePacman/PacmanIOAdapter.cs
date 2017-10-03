@@ -11,7 +11,7 @@ namespace SimpleGame.Games.SimplePacman
     {
         public DiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
-            var state = (PacmanInstance)genericState;
+            var state = (IPacmanInstance)genericState;
 
             return new DiscreteDataPayload(typeof(PacmanPointData), state.GetStatus());
 
@@ -19,7 +19,7 @@ namespace SimpleGame.Games.SimplePacman
 
         public void SendInput(IDiscreteGameState genericState, DiscreteDataPayload input)
         {
-            var state = (PacmanInstance)genericState;
+            var state = (IPacmanInstance)genericState;
 
             state.SendInput((Direction)input.Data[0]);
         }

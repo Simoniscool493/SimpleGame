@@ -1,4 +1,5 @@
-﻿using SimpleGame.Deciders.Discrete;
+﻿using SimpleGame.Deciders;
+using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
 using System;
 
@@ -10,15 +11,15 @@ namespace SimpleGame.AI.GeneticAlgorithm
         private int _numToKillPerGeneration;
         private int _numInGeneration;
         private double _mutationRate;
-        private bool _IsLazy;
+        private DeciderType _deciderType;
 
-        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,double mutationRate,bool isLazy)
+        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,double mutationRate,DeciderType deciderType)
         {
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
             _numInGeneration = numInGeneration;
             _mutationRate = mutationRate;
-            _IsLazy = isLazy;
+            _deciderType = deciderType;
         }
 
         public IDiscreteDecider Train(IDiscreteGameManager game,IDiscreteGameStateProvider provider,bool showProgress,int demonstrateEveryXIterations)
@@ -26,9 +27,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
             var trainableState = provider.GetStateForNextGeneration();
             var r = new Random();
 
-            Generation currentGeneration = new Generation(_numInGeneration,_mutationRate);
+            Generation currentGeneration = new Generation(_numInGeneration,_mutationRate,r);
 
-            currentGeneration.PopulateWithRandoms(r,game.IOInfo,_IsLazy);
+            currentGeneration.PopulateWithRandoms(r,game.IOInfo,_deciderType);
 
             for (int generationCounter=0; generationCounter < _numGenerations; generationCounter++)
             {
@@ -36,8 +37,8 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
                 if(showProgress && ((generationCounter % demonstrateEveryXIterations) == 0))
                 {
-                    game.Demonstrate(currentGeneration.GetBestSpecies(), trainableState);
-                    trainableState.Reset();
+                    //game.Demonstrate(currentGeneration.GetBestSpecies(), trainableState);
+                    //trainableState.Reset();
                 }
             }
 

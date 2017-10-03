@@ -8,9 +8,14 @@ namespace SimpleGame.Games.SimplePacman
 {
     class PacmanStateProvider : IDiscreteGameStateProvider
     {
+        public IDiscreteGameState GetStateForDemonstration()
+        {
+            return new PacmanDemoInstance();
+        }
+
         public IDiscreteGameState GetStateForNextGeneration()
         {
-            return new PacmanInstance();
+            return new PacmanHeadlessInstance();
         }
     }
 }

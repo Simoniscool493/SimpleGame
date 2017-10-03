@@ -28,18 +28,39 @@ namespace SimpleGame.Games.SimplePacman
         }
         public void Demonstrate(IDiscreteDecider decider, IDiscreteGameState state)
         {
+            var pacmanState = state as PacmanDemoInstance;
+            if(pacmanState==null)
+            {
+                throw new Exception("This is not a demonstration state");
+            }
+            state.Reset();
+
+            while (true)
+            {
+                var status = IOADapter.GetOutput(state);
+
+                if (status.Data[0] == PacmanConstants.GAME_OVER)
+                {
+                    return;
+                }
+
+                var direction = decider.Decide(status);
+                IOADapter.SendInput(state, direction);
+
+                Thread.Sleep(250);
+            }
         }
 
         public int Score(IDiscreteDecider decider, IDiscreteGameState state)
         {
-            var pacmanState = (PacmanInstance)state;
+            var pacmanState = (IPacmanInstance)state;
             state.Reset();
-
+            
             while(true)
             {
                 var status = IOADapter.GetOutput(state);
 
-                if(status.SingleItem==PacmanConstants.GAME_OVER)
+                if(status.Data[0]==PacmanConstants.GAME_OVER)
                 {
                     return status.Data[1] + (status.Data[2]*255);
                 }
@@ -47,7 +68,14 @@ namespace SimpleGame.Games.SimplePacman
                 var direction = decider.Decide(status);
                 IOADapter.SendInput(state,direction);
 
-                Thread.SpinWait(20);
+                if(pacmanState is PacmanHeadlessInstance)
+                {
+                    ((PacmanHeadlessInstance)state).Tick();
+                }
+                else
+                {
+                    Thread.Sleep(250);
+                }
             }
         }
     }

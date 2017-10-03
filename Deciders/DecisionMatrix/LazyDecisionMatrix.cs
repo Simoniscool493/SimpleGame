@@ -12,18 +12,12 @@ namespace SimpleGame.Deciders.DecisionMatrix
         private static Random r = new Random();
         private Dictionary<DiscreteDataPayload, DiscreteDataPayload> _theMatrix;
 
-        public DiscreteIOInfo IOInfo;
-        public Type InputType { get; }
-        public Type OutputType { get; }
-
+        public DiscreteIOInfo IOInfo { get; }
 
         public LazyDecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix,DiscreteIOInfo ioInfo)
         {
             _theMatrix = matrix;
             IOInfo = ioInfo;
-            InputType = matrix.Keys.First().UnderlyingType;
-            OutputType = matrix.Values.First().UnderlyingType;
-
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)
@@ -40,9 +34,14 @@ namespace SimpleGame.Deciders.DecisionMatrix
             }
         }
 
-        public IEnumerable<DiscreteDataPayload> GetKeys()
+        public Dictionary<DiscreteDataPayload, DiscreteDataPayload>.KeyCollection GetKeys()
         {
-            throw new NotImplementedException();
+            return _theMatrix.Keys;
+        }
+
+        public bool ContainsKey(DiscreteDataPayload d)
+        {
+            return _theMatrix.ContainsKey(d);
         }
     }
 }

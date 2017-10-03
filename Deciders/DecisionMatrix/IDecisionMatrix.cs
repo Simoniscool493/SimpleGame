@@ -10,9 +10,8 @@ namespace SimpleGame.Deciders.DecisionMatrix
 {
     interface IDecisionMatrix : IDiscreteDecider
     {
-         Type InputType { get; }
-         Type OutputType { get; }
+        Dictionary<DiscreteDataPayload, DiscreteDataPayload>.KeyCollection GetKeys();
 
-         IEnumerable<DiscreteDataPayload> GetKeys();
+        bool ContainsKey(DiscreteDataPayload d);
     }
 }

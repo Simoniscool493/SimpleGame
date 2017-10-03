@@ -11,15 +11,21 @@ using System.Timers;
 
 namespace SimpleGame.Games.SimplePacman
 {
-    class PacmanInstance : IDiscreteGameState
+    class PacmanDemoInstance : IPacmanInstance
     {
-        Process pacmanProcess;
+        private static NamedPipeServerStream stream;
+         
+        private Random r = new Random();
+        private Process pacmanProcess;
+        private bool isDemonstration;
 
-        NamedPipeServerStream stream;
-        Random r = new Random();
-
-        public PacmanInstance()
+        public PacmanDemoInstance()
         {
+            if(stream==null)
+            {
+                stream = new NamedPipeServerStream("PacmanPipe", PipeDirection.InOut);
+            }
+
             Reset();
         }
 
@@ -29,16 +35,22 @@ namespace SimpleGame.Games.SimplePacman
 
             pacmanProcess = new Process();
             pacmanProcess.StartInfo = new ProcessStartInfo(typeof(PacmanLauncher).Assembly.Location);
+            if(!isDemonstration)
+            {
+                pacmanProcess.StartInfo.Arguments = "testingMode";
+            }
             pacmanProcess.Start();
 
-            stream = new NamedPipeServerStream("PacmanPipe", PipeDirection.InOut);
             stream.WaitForConnection();
         }
 
         public void Dispose()
         {
-            stream?.Close();
-            pacmanProcess?.Close();
+            if(stream.IsConnected)
+            {
+                stream?.Disconnect();
+            }
+            pacmanProcess?.Kill();
         }
 
         public void SendInput(Direction d)

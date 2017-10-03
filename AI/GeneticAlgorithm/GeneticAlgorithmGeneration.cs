@@ -1,5 +1,7 @@
 ﻿using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Deciders;
 using SimpleGame.Deciders.DecisionMatrix;
+using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
 
 using System;
@@ -16,28 +18,33 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private List<GeneticAlgorithmSpecies> _thisGeneration = new List<GeneticAlgorithmSpecies>();
 
-        public Generation(int maxSize,double mutationRate)
+        public Generation(int maxSize,double mutationRate,Random r)
         {
             _maxSize = maxSize;
             _mutationRate = mutationRate;
+            _r = r;
         }
 
-        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo,bool isLazy)
+        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo,DeciderType deciderType)
         {
             while(_thisGeneration.Count < _maxSize)
             {
-                IDecisionMatrix randomMatrix = null;
+                IDiscreteDecider startingDecider = null;
 
-                if(isLazy)
+                switch(deciderType)
                 {
-                    randomMatrix = DecisionMatrix.GetLazyIOMapping(r, gameIOInfo);
-                }
-                else
-                {
-                    randomMatrix = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
+                    case DeciderType.Matrix:
+                        startingDecider = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
+                        break;
+                    case DeciderType.LazyMatrix:
+                        startingDecider = DecisionMatrix.GetLazyIOMapping(r, gameIOInfo);
+                        break;
+                    case DeciderType.Random:
+                        startingDecider = new RandomDiscreteDecider(r, gameIOInfo);
+                        break;
                 }
 
-                Add(new GeneticAlgorithmSpecies(randomMatrix));
+                Add(new GeneticAlgorithmSpecies(startingDecider,deciderType));
             }
         }
 
@@ -48,6 +55,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 if(!species.IsScored)
                 {
                     species.Score = game.Score(species, state);
+
                     species.IsScored = true;
                     state.Reset();
                 }
@@ -92,7 +100,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             var parent1 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
             var parent2 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
 
-            return GeneticAlgorithmSpecies.Cross(parent1, parent2, _mutationRate,_r);
+            return parent1.Cross(parent2, _mutationRate,_r);
         }
 
         private void Add(GeneticAlgorithmSpecies species)

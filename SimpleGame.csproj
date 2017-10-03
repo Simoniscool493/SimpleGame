@@ -40,6 +40,7 @@
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="Deciders\DeciderType.cs" />
     <Compile Include="Deciders\DecisionMatrix\IDecisionMatrix.cs" />
     <Compile Include="Deciders\DecisionMatrix\LazyDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\RandomDiscreteDecider.cs" />
@@ -63,8 +64,10 @@
     <Compile Include="Games\IDiscreteGameManager.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
     <Compile Include="Games\IDiscreteGameStateProvider.cs" />
+    <Compile Include="Games\SimplePacman\Instances\IPacmanInstance.cs" />
     <Compile Include="Games\SimplePacman\PacmanConstants.cs" />
-    <Compile Include="Games\SimplePacman\PacmanInstance.cs" />
+    <Compile Include="Games\SimplePacman\Instances\PacmanHeadlessInstance.cs" />
+    <Compile Include="Games\SimplePacman\Instances\PacmanDemoInstance.cs" />
     <Compile Include="Games\SimplePacman\PacmanIOAdapter.cs" />
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
