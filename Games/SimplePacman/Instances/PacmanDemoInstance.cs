@@ -15,7 +15,7 @@ namespace SimpleGame.Games.SimplePacman
     {
         private static NamedPipeServerStream stream;
          
-        private Random r = new Random();
+        private static Random r = new Random();
         private Process pacmanProcess;
         private bool isDemonstration;
 
@@ -62,7 +62,7 @@ namespace SimpleGame.Games.SimplePacman
 
         public int[] GetStatus()
         {
-            stream.Write(new byte[] { PacmanConstants.STATUS_REQUEST }, 0, 1);
+            //stream.Write(new byte[] { PacmanConstants.STATUS_REQUEST }, 0, 1);
 
             byte[] status = new byte[8];
             stream.Read(status, 0, 8);

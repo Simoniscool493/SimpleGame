@@ -16,7 +16,7 @@ namespace SimpleGame.Games.SimplePacman
 
         public void SendInput(Direction d)
         {
-            ActualPacmanGameInstance.Instance.pacman.moveQueue.Enqueue((int)(d+1));
+            ActualPacmanGameInstance.Instance.SendInput((int)(d+1));
         }
 
         public int[] GetStatus()

@@ -8,6 +8,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
     class DecisionMatrix : IDecisionMatrix
     {
         private static Random r = new Random();
+
         private Dictionary<DiscreteDataPayload,DiscreteDataPayload> _theMatrix;
 
         public DiscreteIOInfo IOInfo { get; }

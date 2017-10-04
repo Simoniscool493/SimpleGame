@@ -82,7 +82,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             {
                 foreach (var key in matrix2.GetKeys())
                 {
-                    if (matrix1.ContainsKey(key))
+                    if (!matrix1.ContainsKey(key))
                     {
                         childMatrix[key] = matrix2.Decide(key);
                     }

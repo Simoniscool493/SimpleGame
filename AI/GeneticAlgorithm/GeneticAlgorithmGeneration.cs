@@ -12,7 +12,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 {
     class Generation
     {
-        private Random _r = new Random();
+        private Random _r;
         private int _maxSize;
         private double _mutationRate;
 
@@ -25,7 +25,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             _r = r;
         }
 
-        public void PopulateWithRandoms(Random r,DiscreteIOInfo gameIOInfo,DeciderType deciderType)
+        public void PopulateWithRandoms(DiscreteIOInfo gameIOInfo,DeciderType deciderType)
         {
             while(_thisGeneration.Count < _maxSize)
             {
@@ -34,13 +34,13 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 switch(deciderType)
                 {
                     case DeciderType.Matrix:
-                        startingDecider = DecisionMatrix.GetRandomIOMapping(r, gameIOInfo);
+                        startingDecider = DecisionMatrix.GetRandomIOMapping(_r, gameIOInfo);
                         break;
                     case DeciderType.LazyMatrix:
-                        startingDecider = DecisionMatrix.GetLazyIOMapping(r, gameIOInfo);
+                        startingDecider = DecisionMatrix.GetLazyIOMapping(_r, gameIOInfo);
                         break;
                     case DeciderType.Random:
-                        startingDecider = new RandomDiscreteDecider(r, gameIOInfo);
+                        startingDecider = new RandomDiscreteDecider(_r, gameIOInfo);
                         break;
                 }
 
@@ -48,16 +48,31 @@ namespace SimpleGame.AI.GeneticAlgorithm
             }
         }
 
-        public void ScoreGeneration(IDiscreteGameManager game,IDiscreteGameState state)
+        public void ScoreGeneration(IDiscreteGameManager game, IDiscreteGameState state, int numOfTimesToTestASpecies)
         {
             foreach (var species in _thisGeneration)
             {
-                if(!species.IsScored)
+                if (!species.IsScored)
                 {
-                    species.Score = game.Score(species, state);
+                    if (numOfTimesToTestASpecies == 1)
+                    {
+                        species.Score = game.Score(species, state);
 
-                    species.IsScored = true;
-                    state.Reset();
+                        species.IsScored = true;
+                        state.Reset();
+                    }
+                    else
+                    {
+                        var scoreList = new List<int>();
+
+                        for (int i = 0; i < numOfTimesToTestASpecies; i++)
+                        {
+                            scoreList.Add(game.Score(species, state));
+                            state.Reset();
+                        }
+
+                        species.Score = scoreList.Sum() / numOfTimesToTestASpecies;
+                    }
                 }
             }
         }
