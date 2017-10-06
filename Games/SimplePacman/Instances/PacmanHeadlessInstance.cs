@@ -24,11 +24,6 @@ namespace SimpleGame.Games.SimplePacman
             return ActualPacmanGameInstance.Instance.GetStatus();
         }
 
-        public void Tick()
-        {
-            ActualPacmanGameInstance.Instance.Tick();
-        }
-
         public void Dispose()
         {
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
 using System.Threading;
+using log4net;
 
 namespace SimpleGame.Games.SimplePacman
 {
@@ -48,6 +49,7 @@ namespace SimpleGame.Games.SimplePacman
 
                 if (status.Data[0]==PacmanConstants.GAME_OVER)
                 {
+                    state.Dispose();
                     return status.Data[1] + (status.Data[2]*255);
                 }
 
@@ -58,26 +60,27 @@ namespace SimpleGame.Games.SimplePacman
                 {
                     Thread.Sleep(100);
                 }
-
             }
         }
 
-        public int RunWithLogging(IDiscreteDecider decider, IDiscreteGameState state)
+        public int RunWithLogging(ILog logger,IDiscreteDecider decider, IDiscreteGameState state)
         {
+            logger.Debug("\n\nRunning a " + state.GetType() + "\n\n");
             while (true)
             {
                 var status = IOADapter.GetOutput(state);
-                Console.WriteLine("Game state is " + status.Data.Select(i => i.ToString()).Aggregate((i, j) => (i + " " + j)));
+                logger.Debug("Game state is " + status.Data.Select(i => i.ToString()).Aggregate((i, j) => (i + " " + j)));
 
                 if (status.Data[0] == PacmanConstants.GAME_OVER)
                 {
-                    Console.WriteLine("\nGame ended\n");
+                    logger.Debug("Game ended");
+                    state.Dispose();
                     return status.Data[1] + (status.Data[2] * 255);
                 }
 
                 var direction = decider.Decide(status);
                 IOADapter.SendInput(state, direction);
-                Console.WriteLine("Sent " + (Direction)direction.SingleItem);
+                logger.Debug("Sent " + (Direction)direction.SingleItem);
 
                 if (!(state is PacmanHeadlessInstance))
                 {

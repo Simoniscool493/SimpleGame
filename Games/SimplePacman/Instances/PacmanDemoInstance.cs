@@ -17,14 +17,16 @@ namespace SimpleGame.Games.SimplePacman
          
         private static Random r = new Random();
         private Process pacmanProcess;
-        private bool isDemonstration;
+        private bool isHookedIn;
 
-        public PacmanDemoInstance()
+        public PacmanDemoInstance(bool attachToExistingInstance)
         {
             if(stream==null)
             {
                 stream = new NamedPipeServerStream("PacmanPipe", PipeDirection.InOut);
             }
+
+            isHookedIn = attachToExistingInstance;
 
             Reset();
         }
@@ -33,13 +35,13 @@ namespace SimpleGame.Games.SimplePacman
         {
             Dispose();
 
-            pacmanProcess = new Process();
-            pacmanProcess.StartInfo = new ProcessStartInfo(typeof(PacmanLauncher).Assembly.Location);
-            if(!isDemonstration)
+            if(!isHookedIn)
             {
-                pacmanProcess.StartInfo.Arguments = "testingMode";
+                pacmanProcess = new Process();
+                pacmanProcess.StartInfo = new ProcessStartInfo(typeof(PacmanLauncher).Assembly.Location);
+                pacmanProcess.StartInfo.Arguments = "pipedInstance";
+                pacmanProcess.Start();
             }
-            pacmanProcess.Start();
 
             stream.WaitForConnection();
         }
@@ -55,7 +57,7 @@ namespace SimpleGame.Games.SimplePacman
 
         public void SendInput(Direction d)
         {
-            byte[] toSend = { (byte)d };
+            byte[] toSend = { (byte)(d+1) };
 
             stream.Write(toSend, 0, 1);
         }

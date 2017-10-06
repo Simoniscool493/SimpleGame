@@ -16,7 +16,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
         private int _maxSize;
         private double _mutationRate;
 
-        private List<GeneticAlgorithmSpecies> _thisGeneration = new List<GeneticAlgorithmSpecies>();
+        public List<GeneticAlgorithmSpecies> ThisGeneration = new List<GeneticAlgorithmSpecies>();
 
         public Generation(int maxSize,double mutationRate,Random r)
         {
@@ -27,7 +27,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         public void PopulateWithRandoms(DiscreteIOInfo gameIOInfo,DeciderType deciderType)
         {
-            while(_thisGeneration.Count < _maxSize)
+            while(ThisGeneration.Count < _maxSize)
             {
                 IDiscreteDecider startingDecider = null;
 
@@ -50,7 +50,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         public void ScoreGeneration(IDiscreteGameManager game, IDiscreteGameState state, int numOfTimesToTestASpecies)
         {
-            foreach (var species in _thisGeneration)
+            foreach (var species in ThisGeneration)
             {
                 if (!species.IsScored)
                 {
@@ -80,9 +80,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
         public GeneticAlgorithmSpecies GetBestSpecies()
         {
             int highestScore = 0;
-            GeneticAlgorithmSpecies best = _thisGeneration[0];
+            GeneticAlgorithmSpecies best = ThisGeneration[0];
 
-            foreach(GeneticAlgorithmSpecies s in _thisGeneration)
+            foreach(GeneticAlgorithmSpecies s in ThisGeneration)
             {
                 if(s.Score>highestScore)
                 {
@@ -96,31 +96,31 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         public void Kill(int numToKill)
         {
-            var sortredGen = _thisGeneration.OrderBy(species => species.Score);
+            var sortredGen = ThisGeneration.OrderBy(species => species.Score);
             var lisfOfSpeciesToKill = sortredGen.Take(numToKill);
-            _thisGeneration.RemoveAll(species => lisfOfSpeciesToKill.Contains(species));
+            ThisGeneration.RemoveAll(species => lisfOfSpeciesToKill.Contains(species));
         }
 
         public void Multiply()
         {
-            while(_thisGeneration.Count()<_maxSize)
+            while(ThisGeneration.Count()<_maxSize)
             {
                 var newSpecies = GetNewSpeciesFromSpeciesInThisGeneration();
-                _thisGeneration.Add(newSpecies);
+                ThisGeneration.Add(newSpecies);
             }
         }
 
         private GeneticAlgorithmSpecies GetNewSpeciesFromSpeciesInThisGeneration()
         {
-            var parent1 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
-            var parent2 = _thisGeneration[_r.Next(0, _thisGeneration.Count())];
+            var parent1 = ThisGeneration[_r.Next(0, ThisGeneration.Count())];
+            var parent2 = ThisGeneration[_r.Next(0, ThisGeneration.Count())];
 
             return parent1.Cross(parent2, _mutationRate,_r);
         }
 
         private void Add(GeneticAlgorithmSpecies species)
         {
-            _thisGeneration.Add(species);
+            ThisGeneration.Add(species);
         }
     }
 }

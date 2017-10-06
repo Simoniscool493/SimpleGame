@@ -56,5 +56,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
             currentGeneration.Kill(_numToKillPerGeneration);
             currentGeneration.Multiply();
         }
+
     }
 }

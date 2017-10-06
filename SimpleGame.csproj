@@ -72,6 +72,7 @@
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
+    <Compile Include="SimpleGameLoggerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,6 +86,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>packages\Log4Net\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>

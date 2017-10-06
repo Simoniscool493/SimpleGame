@@ -10,12 +10,18 @@ namespace SimpleGame.Games.SimplePacman
     {
         public IDiscreteGameState GetStateForDemonstration()
         {
-            return new PacmanDemoInstance();
+            return new PacmanDemoInstance(attachToExistingInstance: false);
         }
 
         public IDiscreteGameState GetStateForNextGeneration()
         {
             return new PacmanHeadlessInstance();
         }
+
+        public IDiscreteGameState HookInToExistingState()
+        {
+            return new PacmanDemoInstance(attachToExistingInstance: true);
+        }
+
     }
 }
