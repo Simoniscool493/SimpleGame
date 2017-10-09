@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using log4net;
 using Pacman;
+using SimpleGame.Metrics;
 
 namespace SimpleGame
 {
@@ -20,29 +21,34 @@ namespace SimpleGame
             var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
 
-            var genAlg = new GeneticAlgorithmRunner
+            /*var genAlg = new GeneticAlgorithmRunner
             (
-                numGenerations: 1000,
-                numToKill: 15,
-                numInGeneration: 30,
+                numGenerations: 20000,
+                numToKill: 13,
+                numInGeneration: 20,
                 numOfTimesToTestASpecies: 1,
-                mutationRate: 0.1,
+                mutationRate: 0.2,
                 deciderType: DeciderType.LazyMatrix
-            );
+            );*/
 
 
             var runner = new PacmanManager();
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
+            var tester = new SimpleGameTester();
+
+            tester.GeneticAlgorithmTests(runner,stateProvider);
 
             //runner.Demonstrate(new SimpleGame.Deciders.Discrete.RandomDiscreteDecider(new Random(), runner.IOInfo), stateProvider.GetStateForDemonstration());
             //Console.ReadLine();
             //return;
 
-            var decider = genAlg.Train(runner, stateProvider, showProgress: false, demonstrateEveryXIterations: 0);
+            //var decider = genAlg.Train(runner, stateProvider, showProgress: true, demonstrateEveryXIterations: 250);
+            //ActualPacmanGameInstance.isLogging = true;
 
-            ActualPacmanGameInstance.isLogging = true;
+            //var state = stateProvider.GetStateForDemonstration();
+            //runner.Demonstrate(decider, state);
+            //state.Dispose();
 
-            runner.Demonstrate(decider, stateProvider.GetStateForDemonstration());
 
             Console.WriteLine("Finished.");
             Console.ReadLine();

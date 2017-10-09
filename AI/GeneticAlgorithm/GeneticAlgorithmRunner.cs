@@ -1,6 +1,7 @@
 ﻿using SimpleGame.Deciders;
 using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
+using SimpleGame.Metrics;
 using System;
 
 namespace SimpleGame.AI.GeneticAlgorithm
@@ -36,25 +37,27 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             for (int generationCounter=0; generationCounter < _numGenerations; generationCounter++)
             {
-                RunGeneration(game, trainableState,currentGeneration);
+                var avg = RunGeneration(game, trainableState,currentGeneration);
 
-                if(showProgress && ((generationCounter % demonstrateEveryXIterations) == 0))
+                if(showProgress && ((generationCounter % demonstrateEveryXIterations) == 0) && generationCounter!=0)
                 {
-                    //game.Demonstrate(currentGeneration.GetBestSpecies(), trainableState);
+                    game.Demonstrate(currentGeneration.GetBestSpecies(), provider.GetStateForDemonstration());
                     //trainableState.Reset();
                 }
 
-                Console.WriteLine("Best species scored " + currentGeneration.GetBestSpecies().Score);
+                Console.WriteLine("Generation " + (generationCounter + 1) + ". Best " + currentGeneration.GetBestSpecies().Score + " Avg: " + avg);
             }
 
             return currentGeneration.GetBestSpecies();
         }
 
-        private void RunGeneration(IDiscreteGameManager game,IDiscreteGameState state,Generation currentGeneration)
+        protected virtual int RunGeneration(IDiscreteGameManager game,IDiscreteGameState state,Generation currentGeneration)
         {
             currentGeneration.ScoreGeneration(game, state,_numOfTimesToTestASpecies);
             currentGeneration.Kill(_numToKillPerGeneration);
             currentGeneration.Multiply();
+
+            return currentGeneration.GetAverageScore();
         }
 
     }

@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SimpleGame.AI.GeneticAlgorithm
 {
-    class Generation
+    public class Generation
     {
         private Random _r;
         private int _maxSize;
@@ -108,6 +108,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 var newSpecies = GetNewSpeciesFromSpeciesInThisGeneration();
                 ThisGeneration.Add(newSpecies);
             }
+        }
+
+        public int GetAverageScore()
+        {
+            return (int)Math.Round(ThisGeneration.Where(sp=>sp.IsScored).Select((sp) => sp.Score).Average());
         }
 
         private GeneticAlgorithmSpecies GetNewSpeciesFromSpeciesInThisGeneration()

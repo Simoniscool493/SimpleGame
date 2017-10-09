@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI\DecisionTrees\DecisionTreeLearner.cs" />
+    <Compile Include="AI\GeneticAlgorithm\EvaluationGeneticAlgorithmRunner.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
@@ -72,6 +73,8 @@
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
+    <Compile Include="Metrics\GeneticAlgorithmPerfromanceRecorder.cs" />
+    <Compile Include="Metrics\SimpleGameTester.cs" />
     <Compile Include="SimpleGameLoggerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

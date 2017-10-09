@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace SimpleGame.AI.GeneticAlgorithm
 {
-    class GeneticAlgorithmSpecies : IDiscreteDecider
+    public class GeneticAlgorithmSpecies : IDiscreteDecider
     {
         public bool IsScored = false;
         public IDiscreteDecider BaseDecider;
@@ -21,11 +21,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
         {
             BaseDecider = matrix;
             _deciderType = deciderType;
-
-            if(deciderType == DeciderType.Matrix)
-            {
-                Console.WriteLine();
-            }
         }
 
         public override string ToString()

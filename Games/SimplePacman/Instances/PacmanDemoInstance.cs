@@ -52,6 +52,7 @@ namespace SimpleGame.Games.SimplePacman
             {
                 stream?.Disconnect();
             }
+
             pacmanProcess?.Kill();
         }
 
