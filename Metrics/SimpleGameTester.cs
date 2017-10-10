@@ -17,7 +17,7 @@ namespace SimpleGame.Metrics
         {
             var genAlg = new EvaluationGeneticAlgorithmRunner
             (
-                numGenerations: 100,
+                numGenerations: 5,
                 numToKill: 13,
                 numInGeneration: 20,
                 numOfTimesToTestASpecies: 1,
@@ -26,48 +26,41 @@ namespace SimpleGame.Metrics
                 recorder: null
             );
 
-            var result1 = TestThisConfiguration(5, runner, stateProvider, genAlg);
-
-            var result2 = TestThisConfiguration(10, runner, stateProvider, genAlg);
-
-            var result3 = TestThisConfiguration(20, runner, stateProvider, genAlg);
-
-
-
-
+            var result2 = TestGeneticAlgorithm
+            (
+                runner, stateProvider, genAlg, 
+                timesToTest: 100, 
+                incrementToTestWith: 100
+            );
 
         }
 
-        public GeneticAlgorithmPerformanceResult TestThisConfiguration(int timesToTest,IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider,EvaluationGeneticAlgorithmRunner genAlg)
+        public GenAlgTestResults TestGeneticAlgorithm(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider,EvaluationGeneticAlgorithmRunner genAlg,
+            int timesToTest, int incrementToTestWith)
         {
-            var tests = new List<GeneticAlgorithmPerfromanceRecorder>();
+            var tests = new GenAlgTestResults();
 
             for (int i = 0; i < timesToTest; i++)
             {
-                var recorder1 = new GeneticAlgorithmPerfromanceRecorder();
-                genAlg.Recorder = recorder1;
-                genAlg.Train(runner, stateProvider, false, 0);
-                tests.Add(recorder1);
+                var recorder = RunSingleGeneticAlgorithmTrainingSession(runner, stateProvider, genAlg, incrementToTestWith);
+                tests.Add(recorder);
             }
 
-            return new GeneticAlgorithmPerformanceResult(tests.Select(t => t.AverageIncreasePerGen).Average(),tests.Select(t => t.AverageGenerationTime).Average());
+            return tests;
         }
 
-        public class GeneticAlgorithmPerformanceResult
+        private GenAlgTrainingSessionRecorder RunSingleGeneticAlgorithmTrainingSession(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, EvaluationGeneticAlgorithmRunner genAlg,int incrementToTestWith)
         {
-            public double AverageIncreasePerGen;
-            public double AverageGenerationTime;
+            var recorder = new GenAlgTrainingSessionRecorder(incrementToTestWith);
+            genAlg.Recorder = recorder;
 
-            public GeneticAlgorithmPerformanceResult(double averageIncreasePerGen,double averageGenerationTime)
-            {
-                AverageGenerationTime = averageGenerationTime;
-                AverageIncreasePerGen = averageIncreasePerGen;
-            }
+            recorder.TotalTimer.Start();
+            genAlg.Train(runner, stateProvider, false, 0);
+            recorder.TotalTimer.Stop();
 
-            public override string ToString()
-            {
-                return $"AverageGenerationTime: {AverageGenerationTime.ToString("0.00")} AverageIncreasePerGen: {AverageIncreasePerGen.ToString("0.00")}";
-            }
+            recorder.TotalTimeTaken = recorder.TotalTimer.Elapsed;
+
+            return recorder;
         }
     }
 }

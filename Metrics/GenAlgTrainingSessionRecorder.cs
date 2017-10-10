@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace SimpleGame.Metrics
 {
-    public class GeneticAlgorithmPerfromanceRecorder
+    public class GenAlgTrainingSessionRecorder
     {
         public class GenerationData
         {
@@ -22,14 +22,27 @@ namespace SimpleGame.Metrics
 
         public double AverageIncreasePerGen => ((double)(Record.Last().AverageScore - Record.First().AverageScore)) / (double)Record.Count;
         public double AverageGenerationTime => Record.Select(gt => gt.TimeTakenInMillis).Average();
+        public double LearningPerSecond => (double)(Record.Last().BestScore) / (double)(TotalTimeTaken.TotalSeconds);
+        public int BestScore => Record.Last().BestScore;
 
+        public TimeSpan TotalTimeTaken;
+
+        public Stopwatch TotalTimer;
         public Stopwatch GenTimer;
         public List<GenerationData> Record;
+        public List<GenAlgSnapshot> Results;
 
-        public GeneticAlgorithmPerfromanceRecorder()
+        private int _incrementToTestWith;
+        private int GenerationCounter = 0;
+
+        public GenAlgTrainingSessionRecorder(int incrementToTestWith)
         {
+            _incrementToTestWith = incrementToTestWith;
+
             Record = new List<GenerationData>();
+            Results = new List<GenAlgSnapshot>();
             GenTimer = new Stopwatch();
+            TotalTimer = new Stopwatch();
         }
 
         public void LogGeneration(int avgScore,int bestScore,long timeTaken)
@@ -40,11 +53,19 @@ namespace SimpleGame.Metrics
                 AverageScore = avgScore,
                 TimeTakenInMillis = timeTaken
             });
+
+            if(GenerationCounter % _incrementToTestWith==0)
+            {
+                var result = new GenAlgSnapshot(GenerationCounter,AverageIncreasePerGen,AverageGenerationTime,LearningPerSecond,bestScore);
+                Results.Add(result);
+            }
+
+            GenerationCounter++;
         }
 
         public override string ToString()
         {
-            return $"AverageGenerationTime: {AverageGenerationTime} AverageIncreasePerGen: {AverageIncreasePerGen}";
+            return $"Best: {BestScore} Inc: {AverageIncreasePerGen} LPS: {LearningPerSecond.ToString("0")} AverageGenerationTime: {AverageGenerationTime} TotalTime: {TotalTimeTaken}";
         }
     }
 }

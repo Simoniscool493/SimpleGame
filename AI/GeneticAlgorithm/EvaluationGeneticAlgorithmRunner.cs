@@ -11,9 +11,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
 {
     public class EvaluationGeneticAlgorithmRunner : GeneticAlgorithmRunner
     {
-        public GeneticAlgorithmPerfromanceRecorder Recorder;
+        public GenAlgTrainingSessionRecorder Recorder;
 
-        public EvaluationGeneticAlgorithmRunner(int numGenerations, int numToKill, int numInGeneration, int numOfTimesToTestASpecies, double mutationRate, DeciderType deciderType, GeneticAlgorithmPerfromanceRecorder recorder)
+        public EvaluationGeneticAlgorithmRunner(int numGenerations, int numToKill, int numInGeneration, int numOfTimesToTestASpecies, double mutationRate, DeciderType deciderType, GenAlgTrainingSessionRecorder recorder)
             : base(numGenerations, numToKill, numInGeneration, numOfTimesToTestASpecies, mutationRate, deciderType)
         {
             Recorder = recorder;
