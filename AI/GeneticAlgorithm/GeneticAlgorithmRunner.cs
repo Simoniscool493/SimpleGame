@@ -26,7 +26,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
         }
 
         
-        public IDiscreteDecider Train(IDiscreteGameManager game,IDiscreteGameStateProvider provider,bool showProgress,int demonstrateEveryXIterations)
+        public IDiscreteDecider Train(IDiscreteGameManager game,IDiscreteGameStateProvider provider,bool showGameProgress,bool printBasicInfo,int demonstrateEveryXIterations)
         {
             var trainableState = provider.GetStateForNextGeneration();
             var r = new Random();
@@ -39,13 +39,16 @@ namespace SimpleGame.AI.GeneticAlgorithm
             {
                 var avg = RunGeneration(game, trainableState,currentGeneration);
 
-                if(showProgress && ((generationCounter % demonstrateEveryXIterations) == 0) && generationCounter!=0)
+                if(showGameProgress && ((generationCounter % demonstrateEveryXIterations) == 0) && generationCounter!=0)
                 {
                     game.Demonstrate(currentGeneration.GetBestSpecies(), provider.GetStateForDemonstration());
                     //trainableState.Reset();
                 }
 
-                Console.WriteLine("Generation " + (generationCounter + 1) + ". Best " + currentGeneration.GetBestSpecies().Score + " Avg: " + avg);
+                if(printBasicInfo)
+                {
+                    Console.WriteLine("Generation " + (generationCounter + 1) + ". Best " + currentGeneration.GetBestSpecies().Score + " Avg: " + avg);
+                }
             }
 
             return currentGeneration.GetBestSpecies();

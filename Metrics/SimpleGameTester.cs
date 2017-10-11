@@ -13,49 +13,60 @@ namespace SimpleGame.Metrics
 {
     class SimpleGameTester
     {
-        public void GeneticAlgorithmTests(IDiscreteGameManager runner,IDiscreteGameStateProvider stateProvider)
+        public static GenAlgTestingOverallResults TestGeneticAlgorithm(GenAlgTestingStartParamaters parameterList, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider)
         {
-            var genAlg = new EvaluationGeneticAlgorithmRunner
-            (
-                numGenerations: 5,
-                numToKill: 13,
-                numInGeneration: 20,
-                numOfTimesToTestASpecies: 1,
-                mutationRate: 0.2,
-                deciderType: DeciderType.LazyMatrix,
-                recorder: null
-            );
+            var output = new GenAlgTestingOverallResults();
+            var allPermutations = parameterList.GetAllPermutations();
 
-            var result2 = TestGeneticAlgorithm
-            (
-                runner, stateProvider, genAlg, 
-                timesToTest: 100, 
-                incrementToTestWith: 100
-            );
+            foreach(var perm in allPermutations)
+            {
+                output[perm] = TestSingleSetOfParamaters(parameterList.TimesToTestEachConfiguration, parameterList.IncrementToRecord, perm, runner, stateProvider);
+            }
 
+            return output;
         }
 
-        public GenAlgTestResults TestGeneticAlgorithm(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider,EvaluationGeneticAlgorithmRunner genAlg,
-            int timesToTest, int incrementToTestWith)
+        private static GenAlgTestResults TestSingleSetOfParamaters(int timesToTest,int incrementToRecord,int[] paramaters, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider)
         {
             var tests = new GenAlgTestResults();
 
+            var numGenerationsParamater = paramaters[0];
+            var percentToKillParamater = paramaters[1];
+            var generationSizeParamater = paramaters[2];
+            var iterationsOfTestingPerSpeciesParamater = paramaters[3];
+            var mutationPercentParamater = paramaters[4];
+            var deciderTypeParamater = (DeciderType)paramaters[5];
+
+            int numToKillParamater = (int)Math.Floor(((percentToKillParamater / (double)100) * generationSizeParamater));
+            double mutationRateParamater = mutationPercentParamater / (double)100;
+
+            var genAlg = new EvaluationGeneticAlgorithmRunner
+            (
+                numGenerations: numGenerationsParamater,
+                numToKill: numToKillParamater,
+                numInGeneration: generationSizeParamater,
+                numOfTimesToTestASpecies: iterationsOfTestingPerSpeciesParamater,
+                mutationRate: mutationRateParamater,
+                deciderType: deciderTypeParamater,
+                recorder: null
+            );
+
             for (int i = 0; i < timesToTest; i++)
             {
-                var recorder = RunSingleGeneticAlgorithmTrainingSession(runner, stateProvider, genAlg, incrementToTestWith);
+                var recorder = RunSingleGeneticAlgorithmTrainingSession(runner, stateProvider, genAlg, incrementToRecord);
                 tests.Add(recorder);
             }
 
             return tests;
         }
 
-        private GenAlgTrainingSessionRecorder RunSingleGeneticAlgorithmTrainingSession(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, EvaluationGeneticAlgorithmRunner genAlg,int incrementToTestWith)
+        private static GenAlgTrainingSessionRecorder RunSingleGeneticAlgorithmTrainingSession(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, EvaluationGeneticAlgorithmRunner genAlg,int incrementToTestWith)
         {
             var recorder = new GenAlgTrainingSessionRecorder(incrementToTestWith);
             genAlg.Recorder = recorder;
 
             recorder.TotalTimer.Start();
-            genAlg.Train(runner, stateProvider, false, 0);
+            genAlg.Train(runner, stateProvider, false,false, 0);
             recorder.TotalTimer.Stop();
 
             recorder.TotalTimeTaken = recorder.TotalTimer.Elapsed;

@@ -54,7 +54,7 @@ namespace SimpleGame.Metrics
                 TimeTakenInMillis = timeTaken
             });
 
-            if(GenerationCounter % _incrementToTestWith==0)
+            if(_incrementToTestWith > 0 && GenerationCounter % _incrementToTestWith==0)
             {
                 var result = new GenAlgSnapshot(GenerationCounter,AverageIncreasePerGen,AverageGenerationTime,LearningPerSecond,bestScore);
                 Results.Add(result);

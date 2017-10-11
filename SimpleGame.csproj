@@ -73,10 +73,14 @@
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
+    <Compile Include="Metrics\GenAlgTestingOverallResults.cs" />
+    <Compile Include="Metrics\GenAlgTestingStartParamaters.cs" />
     <Compile Include="Metrics\GenAlgTestResults.cs" />
     <Compile Include="Metrics\GenAlgTrainingSessionRecorder.cs" />
     <Compile Include="Metrics\SimpleGameTester.cs" />
     <Compile Include="Metrics\GenAlgSnapshot.cs" />
+    <Compile Include="Permutation\DiscreteDataPayloadPermutator.cs" />
+    <Compile Include="Permutation\PermutationMechanism.cs" />
     <Compile Include="SimpleGameLoggerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

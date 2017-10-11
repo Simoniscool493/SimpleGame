@@ -1,4 +1,5 @@
 ﻿using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Permutation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
 
         public static IDecisionMatrix GetRandomIOMapping(Random r,DiscreteIOInfo IOInfo)
         {
-            var permutator = new PermutationMechanism(IOInfo.InputInfo);
+            var permutator = new DiscreteDataPayloadPermutator(IOInfo.InputInfo);
             var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
             var isRunning = true;
 
@@ -59,50 +60,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
             return new LazyDecisionMatrix(matrix,IOInfo);
         }
 
-        class PermutationMechanism
-        {
-            private Array _enumValues;
-            public int[] PermutationCounter;
-            public int NumberOfEnumValues;
-
-            public PermutationMechanism(DiscreteDataPayloadInfo enumInfo)
-            {
-                _enumValues = enumInfo.PayloadType.GetEnumValues();
-                PermutationCounter = new int[enumInfo.PayloadLength];
-                NumberOfEnumValues = enumInfo.PayloadType.GetEnumValues().Length;
-            }
-
-            public DiscreteDataPayload GetAsEnum(Type enumType)
-            {
-                List<int> output = new List<int>();
-
-                for(int i=0;i<PermutationCounter.Length;i++)
-                {
-                    var enumNumber = PermutationCounter[i];
-                    var value = (int)_enumValues.GetValue(enumNumber);
-                    output.Add(value);
-                }
-
-                return new DiscreteDataPayload(enumType, output.ToArray());
-            }
-
-            public bool TryIncrement(int orderOfMagnitide)
-            {
-                if(orderOfMagnitide>=PermutationCounter.Length)
-                {
-                    return false;
-                }
-
-                PermutationCounter[orderOfMagnitide]++;
-                if(PermutationCounter[orderOfMagnitide]>=NumberOfEnumValues)
-                {
-                    PermutationCounter[orderOfMagnitide] = 0;
-                    return TryIncrement(orderOfMagnitide + 1);
-                }
-
-                return true;
-            }
-        }
+        
 
     }
 }
