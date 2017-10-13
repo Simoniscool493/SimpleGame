@@ -1,5 +1,8 @@
-﻿namespace SimpleGame.DataPayloads.DiscreteData
+﻿using System;
+
+namespace SimpleGame.DataPayloads.DiscreteData
 {
+    [Serializable()]
     public class DiscreteIOInfo
     {
         public DiscreteDataPayloadInfo InputInfo;

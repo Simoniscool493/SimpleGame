@@ -44,6 +44,7 @@
     <Compile Include="Deciders\DeciderType.cs" />
     <Compile Include="Deciders\DecisionMatrix\IDecisionMatrix.cs" />
     <Compile Include="Deciders\DecisionMatrix\LazyDecisionMatrix.cs" />
+    <Compile Include="Deciders\Discrete\DiscreteDeciderLoader.cs" />
     <Compile Include="Deciders\Discrete\RandomDiscreteDecider.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayloadInfo.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteIOInfo.cs" />

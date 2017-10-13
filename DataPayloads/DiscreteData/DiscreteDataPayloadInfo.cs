@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace SimpleGame.DataPayloads.DiscreteData
 {
+    [Serializable()]
     public class DiscreteDataPayloadInfo
     {
         public int PayloadLength;

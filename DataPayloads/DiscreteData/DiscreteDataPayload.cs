@@ -3,6 +3,7 @@ using System.Text;
 
 namespace SimpleGame.DataPayloads.DiscreteData
 {
+    [Serializable()]
     public class DiscreteDataPayload
     {
         public int[] Data;

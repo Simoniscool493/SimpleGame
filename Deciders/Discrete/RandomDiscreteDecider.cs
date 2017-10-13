@@ -1,5 +1,7 @@
 ﻿using SimpleGame.DataPayloads.DiscreteData;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleGame.Deciders.Discrete
 {
@@ -18,5 +20,14 @@ namespace SimpleGame.Deciders.Discrete
         {
             return IOInfo.OutputInfo.GetRandomInstance(_r);
         }
+
+        public void SaveToFile(string fileName)
+        {
+            Stream saver = File.OpenWrite(fileName);
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(saver, this);
+            saver.Close();
+        }
+
     }
 }

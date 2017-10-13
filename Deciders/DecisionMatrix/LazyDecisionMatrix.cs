@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SimpleGame.DataPayloads.DiscreteData;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
+    [Serializable()]
     class LazyDecisionMatrix : IDecisionMatrix
     {
         private static Random r = new Random();
@@ -43,5 +46,14 @@ namespace SimpleGame.Deciders.DecisionMatrix
         {
             return _theMatrix.ContainsKey(d);
         }
+
+        public void SaveToFile(string fileName)
+        {
+            Stream saver = File.OpenWrite(fileName);
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(saver, this);
+            saver.Close();
+        }
+
     }
 }

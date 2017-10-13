@@ -4,9 +4,12 @@ using SimpleGame.Deciders.DecisionMatrix;
 using SimpleGame.Deciders.Discrete;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleGame.AI.GeneticAlgorithm
 {
+    [Serializable()]
     public class GeneticAlgorithmSpecies : IDiscreteDecider
     {
         public bool IsScored = false;
@@ -93,5 +96,14 @@ namespace SimpleGame.AI.GeneticAlgorithm
         {
             return BaseDecider.Decide(input);
         }
+
+        public void SaveToFile(string fileName)
+        {
+            Stream saver = File.OpenWrite(fileName);
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(saver, this);
+            saver.Close();
+        }
+
     }
 }
