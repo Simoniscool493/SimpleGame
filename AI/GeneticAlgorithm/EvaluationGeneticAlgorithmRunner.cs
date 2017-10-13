@@ -33,6 +33,14 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             Recorder.GenTimer.Reset();
 
+            var bestSpecies = currentGeneration.GetBestSpecies();
+
+            if ((bestSpecies.Score >= Recorder.ScoreToReach))
+            {
+                Recorder.GensToScore = _generationCounter;
+                _earlyStopFlag = true;
+            }
+
             return gen;
         }
     }

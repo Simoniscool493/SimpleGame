@@ -3,6 +3,7 @@ using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.Deciders;
 using SimpleGame.Games;
 using SimpleGame.Games.SimplePacman;
+using SimpleGame.Metrics.GenAlg.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,24 +14,33 @@ namespace SimpleGame.Metrics
 {
     class SimpleGameTester
     {
-        public static GenAlgTestingOverallResults TestGeneticAlgorithm(GenAlgTestingStartParamaters parameterList, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider)
+        public static GenAlgTestingOverallResults TestGeneticAlgorithm(GenAlgTestingStartParamaters parameterList, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, int scoreToReach)
         {
-            var output = new GenAlgTestingOverallResults(parameterList);
+            var output = new GenAlgTestingOverallResults(parameterList,scoreToReach);
             var allPermutations = parameterList.GetAllPermutations();
 
-            foreach(var perm in allPermutations)
+            foreach (var perm in allPermutations)
             {
-                output[perm] = TestSingleSetOfParamaters(parameterList.TimesToTestEachConfiguration, parameterList.IncrementToRecord, perm, runner, stateProvider);
+                output[perm] = TestSingleSetOfParamaters(parameterList.TimesToTestEachConfiguration, parameterList.IncrementToRecord, perm, runner, stateProvider,scoreToReach);
             }
 
             return output;
         }
 
-        private static GenAlgTestResults TestSingleSetOfParamaters(int timesToTest,int incrementToRecord,int[] paramaters, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider)
+        private static GenAlgTestResults TestSingleSetOfParamaters(int timesToTest,int incrementToRecord,int[] paramaters, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider,int scoreToReach)
         {
-            var tests = new GenAlgTestResults();
+            GenAlgTestResults tests;
 
-            var numGenerationsParamater = paramaters[0];
+            if(scoreToReach>0)
+            {
+                tests = new GenAlgToScoreTestResults();
+            }
+            else
+            {
+                tests = new GenAlgSpecifiedGenerationNumTestResults();
+            }
+
+            var numGenerationsParamater = (scoreToReach>0) ? int.MaxValue : paramaters[0];
             var percentToKillParamater = paramaters[1];
             var generationSizeParamater = paramaters[2];
             var iterationsOfTestingPerSpeciesParamater = paramaters[3];
@@ -58,16 +68,17 @@ namespace SimpleGame.Metrics
 
             for (int i = 0; i < timesToTest; i++)
             {
-                var recorder = RunSingleGeneticAlgorithmTrainingSession(runner, stateProvider, genAlg, incrementToRecord);
+                var recorder = RunSingleGeneticAlgorithmTrainingSession(runner, stateProvider, genAlg, incrementToRecord,scoreToReach);
                 tests.Add(recorder);
             }
 
             return tests;
         }
 
-        private static GenAlgTrainingSessionRecorder RunSingleGeneticAlgorithmTrainingSession(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, EvaluationGeneticAlgorithmRunner genAlg,int incrementToTestWith)
+        private static GenAlgTrainingSessionRecorder RunSingleGeneticAlgorithmTrainingSession(IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, EvaluationGeneticAlgorithmRunner genAlg,int incrementToTestWith,int scoreToReach)
         {
-            var recorder = new GenAlgTrainingSessionRecorder(incrementToTestWith);
+            GenAlgTrainingSessionRecorder recorder = new GenAlgTrainingSessionRecorder(incrementToTestWith, scoreToReach);
+
             genAlg.Recorder = recorder;
 
             recorder.TotalTimer.Start();

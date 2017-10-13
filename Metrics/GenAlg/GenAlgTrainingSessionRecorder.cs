@@ -19,7 +19,9 @@ namespace SimpleGame.Metrics
                 return $"Best: {BestScore} Average: {AverageScore} Time in millis: {TimeTakenInMillis}";
             }
         }
-        public double jk { get { return 4; } }
+
+        public int? ScoreToReach;
+        public int? GensToScore;
 
         public double AverageIncreasePerGen => ((double)(Record.Last().AverageScore - Record.First().AverageScore)) / (double)Record.Count;
         public double AverageGenerationTime => Record.Select(gt => gt.TimeTakenInMillis).Average();
@@ -45,9 +47,9 @@ namespace SimpleGame.Metrics
         public List<GenAlgSnapshot> Results;
 
         private int _incrementToTestWith;
-        private int GenerationCounter = 0;
+        private int _generationCounter = 0;
 
-        public GenAlgTrainingSessionRecorder(int incrementToTestWith)
+        public GenAlgTrainingSessionRecorder(int incrementToTestWith,int scoreToReach)
         {
             _incrementToTestWith = incrementToTestWith;
 
@@ -55,6 +57,11 @@ namespace SimpleGame.Metrics
             Results = new List<GenAlgSnapshot>();
             GenTimer = new Stopwatch();
             TotalTimer = new Stopwatch();
+
+            if(scoreToReach>0)
+            {
+                ScoreToReach = scoreToReach;
+            }
         }
 
         public void LogGeneration(int avgScore,int bestScore,long timeTaken)
@@ -66,13 +73,13 @@ namespace SimpleGame.Metrics
                 TimeTakenInMillis = timeTaken
             });
 
-            if(_incrementToTestWith > 0 && GenerationCounter % _incrementToTestWith==0)
+            if(_incrementToTestWith > 0 && _generationCounter % _incrementToTestWith==0)
             {
-                var result = new GenAlgSnapshot(GenerationCounter,AverageIncreasePerGen,AverageGenerationTime,LearningPerSecond,bestScore);
+                var result = new GenAlgSnapshot(_generationCounter, AverageIncreasePerGen,AverageGenerationTime,LearningPerSecond,bestScore);
                 Results.Add(result);
             }
 
-            GenerationCounter++;
+            _generationCounter++;
         }
 
         public override string ToString()

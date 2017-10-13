@@ -15,6 +15,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
         private double _mutationRate;
         private DeciderType _deciderType;
 
+        protected bool _earlyStopFlag = false;
+        protected int _generationCounter;
+
         public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,int numOfTimesToTestASpecies,double mutationRate,DeciderType deciderType)
         {
             _numGenerations = numGenerations;
@@ -35,11 +38,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             currentGeneration.PopulateWithRandoms(game.IOInfo,_deciderType);
 
-            for (int generationCounter=0; generationCounter < _numGenerations; generationCounter++)
+            for (_generationCounter = 0; _generationCounter < _numGenerations && !_earlyStopFlag; _generationCounter++)
             {
                 var avg = RunGeneration(game, trainableState,currentGeneration);
 
-                if(showGameProgress && ((generationCounter % demonstrateEveryXIterations) == 0) && generationCounter!=0)
+                if(showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
                 {
                     game.Demonstrate(currentGeneration.GetBestSpecies(), provider.GetStateForDemonstration());
                     //trainableState.Reset();
@@ -47,10 +50,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
                 if(printBasicInfo)
                 {
-                    Console.WriteLine("Generation " + (generationCounter + 1) + ". Best " + currentGeneration.GetBestSpecies().Score + " Avg: " + avg);
+                    Console.WriteLine("Generation " + (_generationCounter + 1) + ". Best " + currentGeneration.GetBestSpecies().Score + " Avg: " + avg);
                 }
             }
 
+            _earlyStopFlag = false;
             return currentGeneration.GetBestSpecies();
         }
 

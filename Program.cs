@@ -22,27 +22,27 @@ namespace SimpleGame
             var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
 
-            /*var paramaters = new GenAlgTestingStartParamaters
+            var paramaters = new GenAlgTestingStartParamaters
             (
-                timesToTestEachConfiguration:50,
+                timesToTestEachConfiguration:1,
                 incrementToRecord:101,
-                numGenerationParamaters:BuildList(70),
-                percentToKillParamaters:BuildList(10),
-                generationSizeParamaters:BuildList(10, 20, 30),
-                iterationsOfTestingPerSpeciesParamaters:BuildList(1),
-                mutationPercentParamaters:BuildList(10),
+                numGenerationParamaters: BuildList(100),
+                percentToKillParamaters: BuildList(10),
+                generationSizeParamaters: BuildList(20),
+                iterationsOfTestingPerSpeciesParamaters: BuildList(1),
+                mutationPercentParamaters: BuildList(10),
                 deciderTypeParamaters:BuildList((int)DeciderType.LazyMatrix)
             );
 
-            for(int i=0;i<4; i++)
+            for(int i=0;i<5; i++)
             {
-                var results = SimpleGameTester.TestGeneticAlgorithm(paramaters, new PacmanManager(), new PacmanStateProvider());
-                results.PrintAndLog(logger);
+                var results = SimpleGameTester.TestGeneticAlgorithm(paramaters, new PacmanManager(), new PacmanStateProvider(),scoreToReach: 0);
+                results.PrintAndLogScoreTest(logger);
             }
 
             Console.WriteLine("Done.");
             Console.ReadLine();
-            return;*/
+            return;
 
 
 
@@ -51,7 +51,7 @@ namespace SimpleGame
 
             var genAlg = new GeneticAlgorithmRunner
             (
-                numGenerations: 1000,
+                numGenerations: 1000000,
                 numToKill: 1,
                 numInGeneration: 10,
                 numOfTimesToTestASpecies: 1,
@@ -69,9 +69,8 @@ namespace SimpleGame
             Console.ReadLine();
             Console.WriteLine("Starting");*/
 
-            //var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: false, demonstrateEveryXIterations: 250);
-
-            var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\test.dc");
+            var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: false, demonstrateEveryXIterations: 250);
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\test.dc");
 
             /*Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();*/
@@ -79,7 +78,7 @@ namespace SimpleGame
             var state = stateProvider.GetStateForDemonstration();
             runner.Demonstrate(decider, state);
 
-            decider.SaveToFile("C:\\ProjectLogs\\test.dc");
+            decider.SaveToFile("C:\\ProjectLogs\\test4.dc");
 
 
 
