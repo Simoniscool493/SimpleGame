@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,35 @@ namespace SimpleGame.Metrics
 {
     class GenAlgTestingOverallResults : Dictionary<int[], GenAlgTestResults>
     {
-        public void PrintToScreen()
+        public GenAlgTestingStartParamaters StartingParamaters;
+
+        static string[] paramaterNames = { "gens", "%ToKill", "genSize", "tests/Spec", "mut%", "dType" };
+
+        public GenAlgTestingOverallResults(GenAlgTestingStartParamaters paramaters)
         {
-            foreach(var it in this)
+            StartingParamaters = paramaters;
+        }
+
+        public void PrintAndLog(ILog logger)
+        {
+            string startMessage = "Logging testing results. Each configuration tested " + StartingParamaters.TimesToTestEachConfiguration + " times.";
+
+            logger.Debug(startMessage);
+            Console.WriteLine(startMessage);
+
+            foreach (var it in this)
             {
                 string arrayAsString = "";
 
-                foreach(int i in it.Key)
+                for(int i=0;i<it.Key.Length;i++)
                 {
-                    arrayAsString = arrayAsString + i + " ";
+                    arrayAsString = arrayAsString + paramaterNames[i] + ":" + it.Key[i] + " ";
                 }
 
-                Console.WriteLine(arrayAsString + " " + it.Value.ToString());
+                string toPrint = arrayAsString + " " + it.Value.ToString();
+
+                logger.Debug(toPrint);
+                Console.WriteLine(toPrint);
             }
         }
     }

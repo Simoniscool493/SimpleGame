@@ -17,7 +17,7 @@ namespace SimpleGame.Metrics
 
         public override string ToString()
         {
-            return $"LPS: {AverageLearningPerSecond.ToString("0.0")} Best: {BestFinalScore} Avg: {AverageFinalScore} Worst: {WorstFinalScore} Gentime: {AverageGenerationTimeInMillis.ToString("0.0")}";
+            return $"LPS: {AverageLearningPerSecond.ToString("0.0")} Best: {BestFinalScore} Avg: {AverageFinalScore.ToString("0.0")} Worst: {WorstFinalScore} Gentime: {AverageGenerationTimeInMillis.ToString("0.0")}";
         }
     }
 }

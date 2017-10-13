@@ -15,7 +15,7 @@ namespace SimpleGame.Metrics
     {
         public static GenAlgTestingOverallResults TestGeneticAlgorithm(GenAlgTestingStartParamaters parameterList, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider)
         {
-            var output = new GenAlgTestingOverallResults();
+            var output = new GenAlgTestingOverallResults(parameterList);
             var allPermutations = parameterList.GetAllPermutations();
 
             foreach(var perm in allPermutations)
@@ -39,6 +39,11 @@ namespace SimpleGame.Metrics
 
             int numToKillParamater = (int)Math.Floor(((percentToKillParamater / (double)100) * generationSizeParamater));
             double mutationRateParamater = mutationPercentParamater / (double)100;
+
+            if(numToKillParamater<1)
+            {
+                throw new Exception("No species are being killed.");
+            }
 
             var genAlg = new EvaluationGeneticAlgorithmRunner
             (

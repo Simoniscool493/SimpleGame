@@ -19,10 +19,22 @@ namespace SimpleGame.Metrics
                 return $"Best: {BestScore} Average: {AverageScore} Time in millis: {TimeTakenInMillis}";
             }
         }
+        public double jk { get { return 4; } }
 
         public double AverageIncreasePerGen => ((double)(Record.Last().AverageScore - Record.First().AverageScore)) / (double)Record.Count;
         public double AverageGenerationTime => Record.Select(gt => gt.TimeTakenInMillis).Average();
-        public double LearningPerSecond => (double)(Record.Last().BestScore) / (double)(TotalTimeTaken.TotalSeconds);
+        public double LearningPerSecond
+        {
+            get
+            {
+                if(TotalTimeTaken.TotalSeconds==0)
+                {
+                    return 0;
+                }
+
+                return ((double)(Record.Last().BestScore) - (double)(Record.First().BestScore)) / (double)(TotalTimeTaken.TotalSeconds);
+            }
+        }
         public int BestScore => Record.Last().BestScore;
 
         public TimeSpan TotalTimeTaken;

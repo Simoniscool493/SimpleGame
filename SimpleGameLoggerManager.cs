@@ -13,10 +13,16 @@ namespace SimpleGame
         public static ILog SetupLogger()
         {
             ILog logger = LogManager.GetLogger("SimpleGameFileAppender");
-            GlobalContext.Properties["LogFileName"] = @"C:\ProjectLogs\SimpleGameLog"; //log file path
+            var now = DateTime.Now;
+            GlobalContext.Properties["LogFileName"] = @"C:\ProjectLogs\SimpleGameLog_" + now.Day + "-" + now.Month + "-" + now.Year; //log file path
 
             XmlConfigurator.Configure();
 
+            logger.Debug("#########################################################################");
+            logger.Debug("#########################################################################");
+            logger.Debug("SimpleGame logging session started on " + DateTime.Now);
+            logger.Debug("#########################################################################");
+            logger.Debug("#########################################################################");
 
             return logger;
 
