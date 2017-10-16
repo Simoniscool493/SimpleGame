@@ -60,13 +60,13 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             foreach (var key in matrix1.GetKeys())
             {
-                if (r.Next() > mutationRate)
+                if (r.NextDouble() < mutationRate)
                 {
                     var value = outputValues.GetValue(r.Next(0, outputValues.Length));
                     var valueAsIntArray = new int[] { ((int)value) };
                     childMatrix[key] = new DiscreteDataPayload(matrix1.IOInfo.OutputInfo.PayloadType, valueAsIntArray);
                 }
-                else if (r.Next() > 0.5)
+                else if (r.NextDouble() > 0.5)
                 {
                     childMatrix[key] = matrix1.Decide(key);
                 }

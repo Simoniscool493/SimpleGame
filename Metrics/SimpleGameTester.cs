@@ -6,6 +6,7 @@ using SimpleGame.Games.SimplePacman;
 using SimpleGame.Metrics.GenAlg.Results;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +18,18 @@ namespace SimpleGame.Metrics
         public static GenAlgTestingOverallResults TestGeneticAlgorithm(GenAlgTestingStartParamaters parameterList, IDiscreteGameManager runner, IDiscreteGameStateProvider stateProvider, int scoreToReach)
         {
             var output = new GenAlgTestingOverallResults(parameterList,scoreToReach);
+            var watch = new Stopwatch();
+            watch.Start();
+
             var allPermutations = parameterList.GetAllPermutations();
 
             foreach (var perm in allPermutations)
             {
                 output[perm] = TestSingleSetOfParamaters(parameterList.TimesToTestEachConfiguration, parameterList.IncrementToRecord, perm, runner, stateProvider,scoreToReach);
             }
+
+            watch.Stop();
+            output.totalTimeTaken = watch.Elapsed;
 
             return output;
         }
