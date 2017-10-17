@@ -16,6 +16,8 @@ namespace SimpleGame.AI.GeneticAlgorithm
         public IDiscreteDecider BaseDecider;
         public int Score;
 
+        public int NumGenes => BaseDecider.NumGenes;
+
         private DeciderType _deciderType;
 
         public DiscreteIOInfo IOInfo => BaseDecider.IOInfo;

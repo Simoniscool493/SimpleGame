@@ -49,6 +49,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 //currentGeneration.MutationRate = _mutationRate + mutationRateModifier;
 
                 var avg = RunGeneration(game, trainableState,currentGeneration);
+                currentGeneration.MutationRate = 1.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes / 5.0);
 
                 if (showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
                 {
@@ -86,9 +87,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private void PrintBasicInfo(Generation currentGeneration)
         {
-            var basicinfo = $"{_generationCounter + 1}. Best {currentGeneration.BestSpecies.Score} Avg:{currentGeneration.AverageScore} Worst:{currentGeneration.WorstScore}";
+            string info = $"{_generationCounter + 1}. Best {currentGeneration.BestSpecies.Score} Avg:{currentGeneration.AverageScore} Worst:{currentGeneration.WorstScore}";
 
-            string arrayAsString = "";
+            /*string arrayAsString = "";
 
             foreach (int score in currentGeneration.ThisGeneration.Select(sp => sp.Score).OrderBy(i => i).Reverse())
             {
@@ -104,7 +105,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 arrayAsString = arrayAsString + " " + score;
             }
 
-            Console.WriteLine(basicinfo + '\t' + arrayAsString);
+            info = info + '\t' + arrayAsString;*/
+
+            Console.WriteLine(info);
         }
 
     }

@@ -10,6 +10,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
     {
         protected IDecisionMatrix matrix;
         public DiscreteIOInfo IOInfo { get; }
+        public int NumGenes => matrix.NumGenes;
 
         public MatrixDecider(IDecisionMatrix d,DiscreteIOInfo ioInfo)
         {

@@ -8,6 +8,7 @@ namespace SimpleGame.Deciders.Discrete
     class RandomDiscreteDecider : IDiscreteDecider
     {
         public DiscreteIOInfo IOInfo { get; }
+        public int NumGenes => 1;
         private Random _r;
 
         public RandomDiscreteDecider(Random r,DiscreteIOInfo ioInfo)

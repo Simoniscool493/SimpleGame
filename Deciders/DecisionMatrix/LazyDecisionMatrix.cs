@@ -16,6 +16,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
         private Dictionary<DiscreteDataPayload, DiscreteDataPayload> _theMatrix;
 
         public DiscreteIOInfo IOInfo { get; }
+        public int NumGenes => _theMatrix.Count();
 
         public LazyDecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix,DiscreteIOInfo ioInfo)
         {

@@ -32,7 +32,7 @@ namespace SimpleGame
             (
                 numGenerations: 1000000,
                 numToKill: 2,
-                numInGeneration: 20,
+                numInGeneration: 5,
                 numOfTimesToTestASpecies: 1,
                 mutationRate: -1,
                 deciderType: DeciderType.LazyMatrix
@@ -43,15 +43,16 @@ namespace SimpleGame
             var tester = new SimpleGameTester();
 
             var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
-            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\test.dc");
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\2390.dc");
 
             Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();
 
+            decider.SaveToFile("C:\\ProjectLogs\\Simaneel.dc");
+
             var state = stateProvider.GetStateForDemonstration();
             runner.Demonstrate(decider, state);
 
-            decider.SaveToFile("C:\\ProjectLogs\\TrueRandom.dc");
 
 
 

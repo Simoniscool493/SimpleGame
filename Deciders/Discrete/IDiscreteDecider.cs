@@ -11,5 +11,7 @@ namespace SimpleGame.Deciders.Discrete
         DiscreteDataPayload Decide(DiscreteDataPayload input);
 
         void SaveToFile(string filename);
+
+        int NumGenes { get; }
     }
 }

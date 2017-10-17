@@ -93,6 +93,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
                     {
                         species.Score = game.Score(species, state);
 
+                        if(species.Score>2070)
+                        {
+
+                        }
+
                         species.IsScored = true;
                         state.Reset();
                     }
