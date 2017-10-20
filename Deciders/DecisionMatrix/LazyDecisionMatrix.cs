@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SimpleGame.DataPayloads.DiscreteData;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using SimpleGame.AI.GeneticAlgorithm;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
@@ -56,5 +57,9 @@ namespace SimpleGame.Deciders.DecisionMatrix
             saver.Close();
         }
 
+        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
+        {
+            return DecisionMatrix.MatrixCross(this, (IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
+        }
     }
 }

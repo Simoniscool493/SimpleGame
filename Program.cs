@@ -15,6 +15,7 @@ using SimpleGame.Deciders.Discrete;
 using System.Collections;
 using System.Linq;
 using System.Diagnostics;
+using SimpleGame.Deciders.HeuristicBuilder;
 
 namespace SimpleGame
 {
@@ -22,7 +23,27 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-            var logger = SimpleGameLoggerManager.SetupLogger();
+            var runner = new PacmanManager();
+
+            var randomDecider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
+            var randomAvg = SuccessTesting(randomDecider, 100);
+            var heuristicAvgs = new Dictionary<string, double>();
+
+            for(int i=0;i<20;i++)
+            {
+                var heuristicDecider = new HeuristicBuildingDecider(new Random(), runner.IOInfo);
+                heuristicDecider.AddRandomHeuristics(10);
+                var heuristicAvg = SuccessTesting(heuristicDecider, 100);
+
+                heuristicAvgs[heuristicDecider.Heuristics.First().ToString()] = heuristicAvg;
+            }
+
+            Console.WriteLine();
+
+
+
+
+            /*var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
 
             //StandardTests(logger);
@@ -30,9 +51,9 @@ namespace SimpleGame
 
             var genAlg = new GeneticAlgorithmRunner
             (
-                numGenerations: 1000000,
-                numToKill: 2,
-                numInGeneration: 5,
+                numGenerations: 1000,
+                numToKill: 80,
+                numInGeneration: 100,
                 numOfTimesToTestASpecies: 1,
                 mutationRate: -1,
                 deciderType: DeciderType.LazyMatrix
@@ -42,18 +63,34 @@ namespace SimpleGame
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
             var tester = new SimpleGameTester();
 
-            var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
-            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\2390.dc");
+            //var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
+            var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\No_Ghosts_1560.dc");
+
+            //Console.WriteLine();
+            decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
 
             Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();
 
-            decider.SaveToFile("C:\\ProjectLogs\\Simaneel.dc");
 
             var state = stateProvider.GetStateForDemonstration();
             runner.Demonstrate(decider, state);
 
+            var scores = new List<int>();
+            int best = 0;
+            double avg = 0;
+            int worst = 0;
 
+            for(int i=0;i<1;i++)
+            {
+                var score = runner.Score(decider, stateProvider.GetStateForNextGeneration());
+                scores.Add(score);
+                avg = scores.Average();
+                best = scores.Max();
+                worst = scores.Min();
+
+
+            }
 
 
             return;
@@ -67,7 +104,7 @@ namespace SimpleGame
 
 
             Console.WriteLine("Finished.");
-            Console.ReadLine();
+            Console.ReadLine();*/
         }
 
         public static List<int> BuildList(params int[] p)
@@ -100,7 +137,7 @@ namespace SimpleGame
                 percentToKillParamaters: BuildList(10),
                 generationSizeParamaters: BuildList(10,20),
                 iterationsOfTestingPerSpeciesParamaters: BuildList(1),
-                mutationPercentParamaters: BuildList(-1),
+                mutationPercentParamaters: BuildList(5,10),
                 deciderTypeParamaters: BuildList((int)DeciderType.LazyMatrix)
             );
 
@@ -118,7 +155,7 @@ namespace SimpleGame
                 percentToKillParamaters: BuildList(10),
                 generationSizeParamaters: BuildList(10,20),
                 iterationsOfTestingPerSpeciesParamaters: BuildList(1),
-                mutationPercentParamaters: BuildList(-1),
+                mutationPercentParamaters: BuildList(5,10),
                 deciderTypeParamaters: BuildList((int)DeciderType.LazyMatrix)
             );
 
@@ -138,22 +175,21 @@ namespace SimpleGame
             Console.ReadLine();
         }
 
-        public static void RandomTesting()
+        public static double SuccessTesting(IDiscreteDecider decider,int numTimes)
         {
             var runner = new PacmanManager();
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
-            var decider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
             var state = stateProvider.GetStateForNextGeneration();
 
             List<int> scores = new List<int>();
 
-            for(int i=0;i<1000;i++)
+            for(int i=0;i< numTimes; i++)
             {
                 scores.Add(runner.Score(decider, state));
                 state.Reset();
             }
 
-            var avg = (scores).Average();
+            return (scores).Average();
         }
     }
 }

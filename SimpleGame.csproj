@@ -52,6 +52,8 @@
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayload.cs" />
     <Compile Include="Deciders\DecisionMatrix\DecisionMatrix.cs" />
     <Compile Include="Deciders\DecisionMatrix\MatrixDecider.cs" />
+    <Compile Include="Deciders\HeuristicBuilder\Heuristic.cs" />
+    <Compile Include="Deciders\HeuristicBuilder\HeuristicBuildingDecider.cs" />
     <Compile Include="Games\Direction.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoard.cs" />
     <Compile Include="Games\FoodEatingGame\FoodEatingGameBoardIOAdapter.cs" />

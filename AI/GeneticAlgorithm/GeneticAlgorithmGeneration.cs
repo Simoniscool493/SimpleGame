@@ -79,48 +79,45 @@ namespace SimpleGame.AI.GeneticAlgorithm
                         break;
                 }
 
-                Add(new GeneticAlgorithmSpecies(startingDecider, deciderType));
+                Add(new GeneticAlgorithmSpecies(startingDecider));
             }
         }
 
         public void ScoreGeneration(IDiscreteGameManager game, IDiscreteGameState state, int numOfTimesToTestASpecies)
         {
-            foreach (var species in ThisGeneration)
+            if(numOfTimesToTestASpecies == 1)
             {
-                if (!species.IsScored)
+                foreach (var species in ThisGeneration)
                 {
-                    if (numOfTimesToTestASpecies == 1)
+                    if (!species.IsScored)
                     {
                         species.Score = game.Score(species, state);
-
-                        if(species.Score>2070)
-                        {
-
-                        }
-
-                        species.IsScored = true;
                         state.Reset();
-                    }
-                    else
-                    {
-                        var scoreList = new List<int>();
-
-                        for (int i = 0; i < numOfTimesToTestASpecies; i++)
-                        {
-                            scoreList.Add(game.Score(species, state));
-                            state.Reset();
-                        }
-
-                        species.Score = scoreList.Sum() / numOfTimesToTestASpecies;
+                        species.IsScored = true;
                     }
                 }
             }
+            else
+            {
+                foreach (var species in ThisGeneration)
+                {
+                    var scoreList = new List<int>();
 
+                    for (int i = 0; i < numOfTimesToTestASpecies; i++)
+                    {
+                        scoreList.Add(game.Score(species, state));
+                        state.Reset();
+                    }
+
+                    species.Score = scoreList.Sum() / numOfTimesToTestASpecies;
+                    species.IsScored = true;
+                }
+            }
         }
 
         public void Kill(int numToKill)
         {
-            var sortredGen = ThisGeneration.OrderBy(species => species.Score);
+            var sortredGen = ThisGeneration.OrderBy(species => species.Score).ToArray();
 
             for(int i=0;i<numToKill;i++)
             {
@@ -159,7 +156,13 @@ namespace SimpleGame.AI.GeneticAlgorithm
         {
             // totalWeight is the sum of all brokers' weight
             var scoredSpecies = ThisGeneration.Where(s => s.IsScored);
-            int randomNumber = _r.Next(0, scoredSpecies.Select(s => s.Score).Sum());
+            int totalWeights = scoredSpecies.Select(s => s.Score).Sum();
+            int randomNumber = _r.Next(0, totalWeights);
+
+            if(totalWeights==0)
+            {
+                return ThisGeneration.First();
+            }
 
             GeneticAlgorithmSpecies selectedSpecies = null;
             foreach (GeneticAlgorithmSpecies sp in scoredSpecies)

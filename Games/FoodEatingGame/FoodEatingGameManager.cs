@@ -23,8 +23,8 @@ namespace SimpleGame.Games.FoodEatingGame
 
             IOInfo = new DiscreteIOInfo
             (
-                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),4),
-                outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1)
+                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),4, new string[] { "Top","Bottom","Left","Right","IsThereFood" }),
+                outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1, new string[] { "Output" })
             );
         }
 

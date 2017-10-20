@@ -1,4 +1,5 @@
-﻿using SimpleGame.DataPayloads.DiscreteData;
+﻿using SimpleGame.AI.GeneticAlgorithm;
+using SimpleGame.DataPayloads.DiscreteData;
 using System;
 using System.Runtime.Serialization;
 
@@ -13,5 +14,7 @@ namespace SimpleGame.Deciders.Discrete
         void SaveToFile(string filename);
 
         int NumGenes { get; }
+
+        GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r);
     }
 }

@@ -9,10 +9,14 @@ namespace SimpleGame.DataPayloads.DiscreteData
         public int PayloadLength;
         public Type PayloadType;
 
-        public DiscreteDataPayloadInfo(Type pType,int pLength)
+        public string[] PositionNames;
+
+        public DiscreteDataPayloadInfo(Type pType,int pLength,string[] positionNames)
         {
             PayloadLength = pLength;
             PayloadType = pType;
+
+            PositionNames = positionNames;
         }
 
         public DiscreteDataPayload GetRandomInstance(Random r)

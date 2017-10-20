@@ -49,7 +49,8 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 //currentGeneration.MutationRate = _mutationRate + mutationRateModifier;
 
                 var avg = RunGeneration(game, trainableState,currentGeneration);
-                currentGeneration.MutationRate = 1.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes / 5.0);
+                currentGeneration.MutationRate = 5.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes);
+                //currentGeneration.MutationRate = r.NextDouble();
 
                 if (showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
                 {

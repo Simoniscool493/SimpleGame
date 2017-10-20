@@ -3,6 +3,7 @@ using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using SimpleGame.AI.GeneticAlgorithm;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
@@ -31,5 +32,9 @@ namespace SimpleGame.Deciders.DecisionMatrix
             saver.Close();
         }
 
+        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
+        {
+            return matrix.Cross(species2, mutationRate, r);
+        }
     }
 }
