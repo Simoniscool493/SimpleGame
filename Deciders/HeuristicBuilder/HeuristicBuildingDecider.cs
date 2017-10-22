@@ -37,7 +37,7 @@ namespace SimpleGame.Deciders
 
             if(decision == null)
             {
-                return IOInfo.OutputInfo.GetRandomInstance(_r);
+                return IOInfo.OutputInfo.GetDefualtInstance();
             }
 
             return decision;
@@ -69,5 +69,62 @@ namespace SimpleGame.Deciders
         {
             throw new NotImplementedException();
         }
+
+        public HeuristicBuildingDecider GetSingleMutated()
+        {
+            var decider = this.CloneAllHeuristics();
+
+            var giveTakeOrChange = _r.NextDouble();
+
+            if(giveTakeOrChange<0.70)
+            {
+                if (decider.Heuristics.Any())
+                {
+                    var geneNumToChange = _r.Next(0, decider.Heuristics.Count);
+
+                    if (giveTakeOrChange < 0.60)
+                    {
+                        decider.Heuristics.RemoveAt(geneNumToChange);
+                    }
+                    else
+                    {
+                        var geneToChange = decider.Heuristics.ElementAt(geneNumToChange);
+                        geneToChange.Mutate(_r);
+                    }
+                }
+            }
+            else if(giveTakeOrChange<0.90)
+            {
+                decider.AddRandomHeuristics(1);
+            }
+            else
+            {
+                Shuffle(decider.Heuristics, _r);
+            }
+
+            return decider;
+        }
+
+        public HeuristicBuildingDecider CloneAllHeuristics()
+        {
+            var decider = new HeuristicBuildingDecider(this._r,this.IOInfo);
+            decider.Heuristics = new List<Heuristic>(Heuristics);
+
+            return decider;
+        }
+
+        public static void Shuffle(IList<Heuristic> list,Random r)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = r.Next(n + 1);
+                Heuristic value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
     }
 }

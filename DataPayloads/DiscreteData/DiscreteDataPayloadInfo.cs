@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleGame.DataPayloads.DiscreteData
 {
@@ -32,6 +33,18 @@ namespace SimpleGame.DataPayloads.DiscreteData
                 }
 
                 return new DiscreteDataPayload(PayloadType,output.ToArray());
+            }
+
+            throw new Exception();
+        }
+
+        public DiscreteDataPayload GetDefualtInstance()
+        {
+            if (PayloadType.IsEnum)
+            {
+                var value = (int)PayloadType.GetEnumValues().GetValue(0);
+
+                return new DiscreteDataPayload(PayloadType, value);
             }
 
             throw new Exception();

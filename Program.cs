@@ -27,16 +27,43 @@ namespace SimpleGame
 
             var randomDecider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
             var randomAvg = SuccessTesting(randomDecider, 100);
-            var heuristicAvgs = new Dictionary<string, double>();
+            var heuristicDecidersByScore = new Dictionary<HeuristicBuildingDecider, double>();
+            var r = new Random();
 
-            for(int i=0;i<20;i++)
+            for(int i=0;i<1000;i++)
             {
-                var heuristicDecider = new HeuristicBuildingDecider(new Random(), runner.IOInfo);
-                heuristicDecider.AddRandomHeuristics(10);
-                var heuristicAvg = SuccessTesting(heuristicDecider, 100);
+                var heuristicDecider = new HeuristicBuildingDecider(r, runner.IOInfo);
+                heuristicDecider.AddRandomHeuristics(5);
+                var heuristicAvg = SuccessTesting(heuristicDecider, 1);
 
-                heuristicAvgs[heuristicDecider.Heuristics.First().ToString()] = heuristicAvg;
+                heuristicDecidersByScore[heuristicDecider] = heuristicAvg;
             }
+
+            var best = heuristicDecidersByScore.OrderBy(kv=>kv.Value).Reverse().First();
+
+            for(int i=0;i<100000;i++)
+            {
+                heuristicDecidersByScore.Clear();
+                heuristicDecidersByScore[best.Key] = best.Value;
+
+                for (int j=0;j<10;j++)
+                {
+                    var heuristicDecider = best.Key.GetSingleMutated().GetSingleMutated();
+                    var heuristicAvg = SuccessTesting(heuristicDecider, 1);
+                    heuristicDecidersByScore[heuristicDecider] = heuristicAvg;
+                }
+                
+
+
+
+                best = heuristicDecidersByScore.OrderBy(kv => kv.Value).Reverse().First();
+                Console.WriteLine("Score: " + best.Value + " Genes: " + best.Key.NumGenes);
+            }
+
+            var stateProvider = (PacmanStateProvider)runner.StateProvider;
+            var state = stateProvider.GetStateForDemonstration();
+            runner.Demonstrate(best.Key, state);
+
 
             Console.WriteLine();
 

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace SimpleGame.Deciders.HeuristicBuilder
 {
-    public class Heuristic
+    public struct Heuristic
     {
         public int PositionInPayload;
         public int ExpectedInput;
@@ -23,6 +23,14 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             ExpectedOutput = exOutput;
 
             IOInfo = ioInfo;
+        }
+
+        public void Mutate(Random r)
+        {
+            var outputEnumTypes = IOInfo.OutputInfo.PayloadType.GetEnumValues();
+            var newExpectedOutput = (int)outputEnumTypes.GetValue(r.Next(0, outputEnumTypes.Length));
+
+            ExpectedOutput = newExpectedOutput;
         }
 
         public static Heuristic CreateRandom(Random r, DiscreteIOInfo ioInfo)
