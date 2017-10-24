@@ -23,54 +23,7 @@ namespace SimpleGame
     {
         static void Main(string[] args)
         {
-            var runner = new PacmanManager();
-
-            var randomDecider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
-            var randomAvg = SuccessTesting(randomDecider, 100);
-            var heuristicDecidersByScore = new Dictionary<HeuristicBuildingDecider, double>();
-            var r = new Random();
-
-            for(int i=0;i<1000;i++)
-            {
-                var heuristicDecider = new HeuristicBuildingDecider(r, runner.IOInfo);
-                heuristicDecider.AddRandomHeuristics(5);
-                var heuristicAvg = SuccessTesting(heuristicDecider, 1);
-
-                heuristicDecidersByScore[heuristicDecider] = heuristicAvg;
-            }
-
-            var best = heuristicDecidersByScore.OrderBy(kv=>kv.Value).Reverse().First();
-
-            for(int i=0;i<100000;i++)
-            {
-                heuristicDecidersByScore.Clear();
-                heuristicDecidersByScore[best.Key] = best.Value;
-
-                for (int j=0;j<10;j++)
-                {
-                    var heuristicDecider = best.Key.GetSingleMutated().GetSingleMutated();
-                    var heuristicAvg = SuccessTesting(heuristicDecider, 1);
-                    heuristicDecidersByScore[heuristicDecider] = heuristicAvg;
-                }
-                
-
-
-
-                best = heuristicDecidersByScore.OrderBy(kv => kv.Value).Reverse().First();
-                Console.WriteLine("Score: " + best.Value + " Genes: " + best.Key.NumGenes);
-            }
-
-            var stateProvider = (PacmanStateProvider)runner.StateProvider;
-            var state = stateProvider.GetStateForDemonstration();
-            runner.Demonstrate(best.Key, state);
-
-
-            Console.WriteLine();
-
-
-
-
-            /*var logger = SimpleGameLoggerManager.SetupLogger();
+            var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
 
             //StandardTests(logger);
@@ -79,22 +32,22 @@ namespace SimpleGame
             var genAlg = new GeneticAlgorithmRunner
             (
                 numGenerations: 1000,
-                numToKill: 80,
-                numInGeneration: 100,
+                numToKill: 15,
+                numInGeneration: 30,
                 numOfTimesToTestASpecies: 1,
                 mutationRate: -1,
-                deciderType: DeciderType.LazyMatrix
+                deciderType: DeciderType.HeuristicBuilder
             );
 
             var runner = new PacmanManager();
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
             var tester = new SimpleGameTester();
 
-            //var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
-            var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\No_Ghosts_1560.dc");
+            var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\No_Ghosts_1560.dc");
 
             //Console.WriteLine();
-            decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
+            //decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
 
             Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();
@@ -131,7 +84,7 @@ namespace SimpleGame
 
 
             Console.WriteLine("Finished.");
-            Console.ReadLine();*/
+            Console.ReadLine();
         }
 
         public static List<int> BuildList(params int[] p)

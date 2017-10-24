@@ -37,5 +37,7 @@ namespace SimpleGame.Deciders.Discrete
 
             //return new GeneticAlgorithmSpecies(new RandomDiscreteDecider(r, IOInfo), DeciderType.Random);
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

@@ -61,5 +61,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
         {
             return DecisionMatrix.MatrixCross(this, (IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

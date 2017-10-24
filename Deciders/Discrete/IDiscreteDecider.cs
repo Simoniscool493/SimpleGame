@@ -16,5 +16,7 @@ namespace SimpleGame.Deciders.Discrete
         int NumGenes { get; }
 
         GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r);
+
+        void PostGenerationProcessing();
     }
 }

@@ -36,5 +36,8 @@ namespace SimpleGame.Deciders.DecisionMatrix
         {
             return matrix.Cross(species2, mutationRate, r);
         }
+
+        public void PostGenerationProcessing() { }
+
     }
 }

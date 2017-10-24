@@ -8,22 +8,34 @@ using System.Diagnostics;
 
 namespace SimpleGame.Deciders.HeuristicBuilder
 {
-    public struct Heuristic
+    public class Heuristic
     {
-        public int PositionInPayload;
-        public int ExpectedInput;
+        public static int MaxConditions = 10;
+        public static int MaxExceptions = 10;
+
+        public List<Tuple<int, int>> Conditions;
+        public List<Tuple<int, int>> Exceptions;
+
         public int ExpectedOutput;
+
+        public int UseCount;
+        public int ConsecutiveGensNotUsed;
 
         private DiscreteIOInfo IOInfo;
 
-        public Heuristic(int position,int exInput,int exOutput,DiscreteIOInfo ioInfo)
+        public Heuristic(int exOutput,DiscreteIOInfo ioInfo)
         {
-            PositionInPayload = position;
-            ExpectedInput = exInput;
+            Conditions = new List<Tuple<int, int>>();
+            Exceptions = new List<Tuple<int, int>>();
             ExpectedOutput = exOutput;
 
             IOInfo = ioInfo;
+            Exceptions = new List<Tuple<int, int>>();
+
+            UseCount = 0;
+            ConsecutiveGensNotUsed = 0;
         }
+
 
         public void Mutate(Random r)
         {
@@ -31,30 +43,84 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             var newExpectedOutput = (int)outputEnumTypes.GetValue(r.Next(0, outputEnumTypes.Length));
 
             ExpectedOutput = newExpectedOutput;
+
+            /*var exceptionTask = r.Next(0, 3);
+            if(exceptionTask == 0)
+            {
+                RemoveExceptions(1, r);
+            }
+            if(exceptionTask == 1)
+            {
+                AddExceptions(1, r);
+            }*/
         }
 
-        public static Heuristic CreateRandom(Random r, DiscreteIOInfo ioInfo)
+        public void AddExceptions(int numExceptions,Random r)
         {
-            var position = r.Next(0, ioInfo.InputInfo.PayloadLength);
+            for(int i=0; Exceptions.Count < MaxExceptions && i < numExceptions;i++)
+            {
+                var feature = IOInfo.InputInfo.GetSingleFeature(r);
+                Exceptions.Add(feature);
+            }
+        }
 
-            var inputEnumTypes = ioInfo.InputInfo.PayloadType.GetEnumValues();
-            var outputEnumTypes = ioInfo.OutputInfo.PayloadType.GetEnumValues();
+        public void RemoveExceptions(int numExceptions, Random r)
+        {
+            for (int i = 0; Exceptions.Any() && i < numExceptions; i++)
+            {
+                var randomException = r.Next(0, Exceptions.Count);
+                Exceptions.RemoveAt(randomException);
+            }
+        }
 
-            var expectedInput = (int)inputEnumTypes.GetValue(r.Next(0,inputEnumTypes.Length));
-            var expectedOutput = (int)outputEnumTypes.GetValue(r.Next(0, outputEnumTypes.Length));
+        public void AddConditions(int numConditions, Random r)
+        {
+            for (int i = 0; Conditions.Count < MaxConditions && i < numConditions; i++)
+            {
+                var feature = IOInfo.InputInfo.GetSingleFeature(r);
+                Conditions.Add(feature);
+            }
+        }
 
-            return new Heuristic(position, expectedInput, expectedOutput,ioInfo);
+        public void RemoveConditions(int numConditions, Random r)
+        {
+            for (int i = 0; Conditions.Count > 1 && i < numConditions; i++)
+            {
+                var randomCondition = r.Next(0, Conditions.Count);
+                Conditions.RemoveAt(randomCondition);
+            }
+        }
 
+        public static Heuristic CreateRandom(Random r, DiscreteIOInfo ioInfo,int numConditions,int numExceptions)
+        {
+            var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
+            var h = new Heuristic(expectedOutput,ioInfo);
+
+            h.AddConditions(numConditions, r);
+            h.AddExceptions(numExceptions, r);
+            return h;
+        }
+
+        public static Heuristic CreateHeuristicForThisInput(Random r, DiscreteIOInfo ioInfo,DiscreteDataPayload input,int numConditions)
+        {
+            var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
+            var h = new Heuristic(expectedOutput, ioInfo);
+
+            for (int i=0;i<numConditions;i++)
+            {
+                var position = r.Next(0, ioInfo.InputInfo.PayloadLength);
+                var expectedInput = input.Data[position];
+                h.Conditions.Add(new Tuple<int, int>(position, expectedInput));
+            }
+
+            return h;
         }
 
         public override string ToString()
         {
-            var positionName = IOInfo.InputInfo.PositionNames[PositionInPayload];
-
-            var inputName = Enum.GetName(IOInfo.InputInfo.PayloadType, ExpectedInput);
             var outputName = Enum.GetName(IOInfo.OutputInfo.PayloadType, ExpectedOutput);
 
-            return $"{positionName} = {inputName} => {outputName}";
+            return $"Conditions: {Conditions.Count} Exceptions: {Exceptions.Count} Uses: {UseCount} => {outputName}";
         }
     }
 }

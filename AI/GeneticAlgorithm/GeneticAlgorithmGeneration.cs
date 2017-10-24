@@ -77,6 +77,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
                     case DeciderType.Random:
                         startingDecider = new RandomDiscreteDecider(_r, gameIOInfo);
                         break;
+                    case DeciderType.HeuristicBuilder:
+                        startingDecider = new HeuristicBuildingDecider(_r, gameIOInfo);
+                        break;
                 }
 
                 Add(new GeneticAlgorithmSpecies(startingDecider));
@@ -131,6 +134,14 @@ namespace SimpleGame.AI.GeneticAlgorithm
             {
                 var newSpecies = GetNewSpeciesFromSpeciesInThisGeneration();
                 ThisGeneration.Add(newSpecies);
+            }
+        }
+
+        public void PostGenerationProcessing()
+        {
+            foreach(var s in ThisGeneration)
+            {
+                s.BaseDecider.PostGenerationProcessing();
             }
         }
 

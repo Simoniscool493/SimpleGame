@@ -123,5 +123,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
 
             return new GeneticAlgorithmSpecies(new DecisionMatrix(childMatrix, matrix1.IOInfo));
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

@@ -46,5 +46,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             serializer.Serialize(saver, this);
             saver.Close();
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

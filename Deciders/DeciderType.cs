@@ -10,6 +10,7 @@ namespace SimpleGame.Deciders
     {
         Matrix,
         LazyMatrix,
-        Random
+        Random,
+        HeuristicBuilder
     }
 }
