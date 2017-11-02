@@ -63,5 +63,27 @@ namespace SimpleGame.Deciders.DecisionMatrix
         }
 
         public void PostGenerationProcessing() { }
+
+        public string GetRaw()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var i in _theMatrix)
+            {
+                string data = "";
+                foreach (var c in i.Key.Data)
+                {
+                    data = data + " " + c;
+                }
+                data = data + '\t';
+
+                data = data + i.Value.SingleItem.ToString();
+
+                sb.AppendLine(data);
+            }
+
+            return sb.ToString();
+        }
+
     }
 }

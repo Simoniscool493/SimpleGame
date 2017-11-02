@@ -39,5 +39,11 @@ namespace SimpleGame.Deciders.DecisionMatrix
 
         public void PostGenerationProcessing() { }
 
+        public string GetRaw()
+        {
+            return matrix.GetRaw();
+        }
+
+
     }
 }

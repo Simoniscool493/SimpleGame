@@ -12,7 +12,7 @@ namespace SimpleGame.Deciders.Discrete
         public int NumGenes => 1;
         private Random _r;
 
-        public RandomDiscreteDecider(Random r,DiscreteIOInfo ioInfo)
+        public RandomDiscreteDecider(Random r, DiscreteIOInfo ioInfo)
         {
             IOInfo = ioInfo;
             _r = r;
@@ -39,5 +39,10 @@ namespace SimpleGame.Deciders.Discrete
         }
 
         public void PostGenerationProcessing() { }
+
+        public string GetRaw()
+        {
+            return "Random Decider";
+        }
     }
 }

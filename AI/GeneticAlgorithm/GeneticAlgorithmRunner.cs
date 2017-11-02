@@ -4,6 +4,8 @@ using SimpleGame.Games;
 using SimpleGame.Metrics;
 using System.Linq;
 using System;
+using System.IO;
+using System.Text;
 
 namespace SimpleGame.AI.GeneticAlgorithm
 {
@@ -45,11 +47,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             for (_generationCounter = 0; _generationCounter < _numGenerations && !_earlyStopFlag; _generationCounter++)
             {
-                //var mutationRateModifier = 100;//(noChangeCounter / 100);
-                //currentGeneration.MutationRate = _mutationRate + mutationRateModifier;
 
                 var avg = RunGeneration(game, trainableState,currentGeneration);
-                currentGeneration.MutationRate = 1;// 5.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes);
+                currentGeneration.MutationRate = 5.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes);
                 //currentGeneration.MutationRate = r.NextDouble();
 
                 if (showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
@@ -68,10 +68,33 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 }
 
                 prevAvg = avg;
+
+                var path = Path.Combine(Program.LogsPath,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
+
+                //WriteGenerationRaw(currentGeneration);
             }
 
             _earlyStopFlag = false;
+            sw?.Close();
             return currentGeneration.BestSpecies;
+        }
+
+        private StreamWriter sw;
+
+        private void WriteGenerationRaw(Generation g)
+        {
+            if (sw == null) { sw = new StreamWriter(Path.Combine(Program.LogsPath, "GenAlgLogs", $"{_deciderType.ToString()}")); }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Generation " + _generationCounter + "\n");
+            foreach(var sp in g.ThisGeneration)
+            {
+                sb.Append("\n\n" + sp.GetRaw());
+            }
+
+            sb.Append("\n\n\n");
+
+            sw.WriteLine(sb.ToString());
         }
 
         protected virtual int RunGeneration(IDiscreteGameManager game,IDiscreteGameState state,Generation currentGeneration)

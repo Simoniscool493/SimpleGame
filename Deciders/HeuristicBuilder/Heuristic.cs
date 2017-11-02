@@ -8,6 +8,7 @@ using System.Diagnostics;
 
 namespace SimpleGame.Deciders.HeuristicBuilder
 {
+    [Serializable()]
     public class Heuristic
     {
         public static int MaxConditions = 10;
@@ -101,7 +102,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             return h;
         }
 
-        public static Heuristic CreateHeuristicForThisInput(Random r, DiscreteIOInfo ioInfo,DiscreteDataPayload input,int numConditions)
+        public static Heuristic CreateHeuristicRandomlyFromThisInput(Random r, DiscreteIOInfo ioInfo,DiscreteDataPayload input,int numConditions)
         {
             var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
             var h = new Heuristic(expectedOutput, ioInfo);
@@ -116,11 +117,39 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             return h;
         }
 
+        public static Heuristic CreateExactHeuristicFromThisInput(Random r, DiscreteIOInfo ioInfo, DiscreteDataPayload input)
+        {
+            var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
+            var h = new Heuristic(expectedOutput, ioInfo);
+
+            for (int i = 0; i < ioInfo.InputInfo.PayloadLength; i++)
+            {
+                h.Conditions.Add(new Tuple<int,int>(i, input.Data[i]));
+            }
+
+            return h;
+        }
+
+
+        public DiscreteDataPayload RecreatePayloadWithConditions()
+        {
+            int[] inputInfo = new int[IOInfo.InputInfo.PayloadLength];
+
+            foreach(var h in Conditions)
+            {
+                inputInfo[h.Item1] = h.Item2;
+            }
+
+            return new DiscreteDataPayload(IOInfo.InputInfo.PayloadType,inputInfo);
+        }
+
+
         public override string ToString()
         {
             var outputName = Enum.GetName(IOInfo.OutputInfo.PayloadType, ExpectedOutput);
 
             return $"Conditions: {Conditions.Count} Exceptions: {Exceptions.Count} Uses: {UseCount} => {outputName}";
         }
+
     }
 }

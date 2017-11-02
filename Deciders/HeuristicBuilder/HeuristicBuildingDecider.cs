@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.HeuristicBuilder;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleGame.Deciders
 {
+    [Serializable()]
     public class HeuristicBuildingDecider : IDiscreteDecider
     {
         public static int maxGenes = 100;
@@ -30,10 +33,13 @@ namespace SimpleGame.Deciders
 
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
         {
-            HeuristicBuildingDecider child = new HeuristicBuildingDecider(r, IOInfo);
-
             var parent1Heuristics = Heuristics;
             var parent2Heuristics = ((HeuristicBuildingDecider)species2.BaseDecider).Heuristics;
+
+            return CrossWithMatrixLogic(this, ((HeuristicBuildingDecider)species2.BaseDecider), mutationRate, r);
+            ///TODO: this is the old cross
+            /*HeuristicBuildingDecider child = new HeuristicBuildingDecider(r, IOInfo);
+
 
             foreach(var h in parent1Heuristics)
             {
@@ -58,25 +64,101 @@ namespace SimpleGame.Deciders
                 child.Heuristics.RemoveAt(numToKill);
             }
 
-            return new GeneticAlgorithmSpecies(child);
+            return new GeneticAlgorithmSpecies(child);*/
+
+
+        }
+
+        private GeneticAlgorithmSpecies CrossWithMatrixLogic(HeuristicBuildingDecider decider1, HeuristicBuildingDecider decider2, double mutationRate, Random r)
+        {
+            var heuristics1 = decider1.Heuristics;
+            var heuristics2 = decider2.Heuristics;
+
+            var outputValues = IOInfo.OutputInfo.EnumValues;
+            var childDecider = new HeuristicBuildingDecider(r, IOInfo);
+            var childHeuristics = childDecider.Heuristics;
+
+            foreach (var h in heuristics1)
+            {
+                if (r.NextDouble() < mutationRate)
+                {
+                    var value = outputValues.GetValue(r.Next(0, outputValues.Length));
+                    var valueAsIntArray = new int[] { ((int)value) };
+
+                    var mutatedH = new Heuristic((int)value, IOInfo);
+                    mutatedH.Conditions = new List<Tuple<int, int>>(h.Conditions);
+                    mutatedH.Exceptions = new List<Tuple<int, int>>(h.Exceptions);
+                    mutatedH.UseCount = h.UseCount;
+
+                    childHeuristics.Add(mutatedH);
+                }
+                else if (r.NextDouble() > 0.5)
+                {
+                    var parentH = decider1.GetExactHeuristicOrRandomForThisInput(h.RecreatePayloadWithConditions());
+
+                    var childH = new Heuristic(parentH.ExpectedOutput, IOInfo);
+                    childH.Conditions = new List<Tuple<int, int>>(parentH.Conditions);
+                    childH.Exceptions = new List<Tuple<int, int>>(parentH.Exceptions);
+                    childH.UseCount = parentH.UseCount;
+                    childDecider.Heuristics.Add(childH);
+                }
+                else
+                {
+                    var parentH = decider2.GetExactHeuristicOrRandomForThisInput(h.RecreatePayloadWithConditions());
+
+                    var childH = new Heuristic(parentH.ExpectedOutput, IOInfo);
+                    childH.Conditions = new List<Tuple<int, int>>(parentH.Conditions);
+                    childH.Exceptions = new List<Tuple<int, int>>(parentH.Exceptions);
+                    childH.UseCount = parentH.UseCount;
+                    childDecider.Heuristics.Add(childH);
+                }
+            }
+
+            /*foreach (var key in matrix2.GetKeys())
+            {
+                if (!matrix1.ContainsKey(key))
+                {
+                    childMatrix[key] = matrix2.Decide(key);
+                }
+            }*/
+
+            return new GeneticAlgorithmSpecies(childDecider);
+
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)
         {
-            DiscreteDataPayload decision = DecideBasedOnHeuristics(input);
+            var h = GetHeuristicFromListFor(input);
 
-            if(decision == null)
+            if(h==null)
             {
-                Heuristic heuristic = Heuristic.CreateHeuristicForThisInput(_r, IOInfo, input,HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
-                Heuristics.Add(heuristic);
-
-                return new DiscreteDataPayload(IOInfo.OutputInfo.PayloadType, heuristic.ExpectedOutput);
+                //h = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
+                h = GetExactHeuristicOrRandomForThisInput(input);
+                Heuristics.Add(h);
             }
+            DiscreteDataPayload decision = new DiscreteDataPayload(IOInfo.OutputInfo.PayloadType, h.ExpectedOutput);
 
             return decision;
         }
 
-        public DiscreteDataPayload DecideBasedOnHeuristics(DiscreteDataPayload input)
+        public Heuristic GetExactHeuristicOrRandomForThisInput(DiscreteDataPayload input)
+        {
+            Heuristic decidedHeuristic = GetHeuristicFromListFor(input);
+            if (decidedHeuristic != null)
+            {
+                return decidedHeuristic;
+            }
+            else
+            {
+                Heuristic h = Heuristic.CreateExactHeuristicFromThisInput(_r, IOInfo, input);
+                //Heuristic heuristic = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
+
+                Heuristics.Add(h);
+                return h;
+            }
+        }
+
+        public Heuristic GetHeuristicFromListFor(DiscreteDataPayload input)
         {
             Heuristic heuristicToUse = null;
 
@@ -107,7 +189,7 @@ namespace SimpleGame.Deciders
             if(heuristicToUse != null)
             {
                 heuristicToUse.UseCount++;
-                return new DiscreteDataPayload(IOInfo.OutputInfo.PayloadType, heuristicToUse.ExpectedOutput);
+                return heuristicToUse;
             }
 
             return null;
@@ -126,9 +208,12 @@ namespace SimpleGame.Deciders
             }
         }
 
-        public void SaveToFile(string filename)
+        public void SaveToFile(string fileName)
         {
-            throw new NotImplementedException();
+            Stream saver = File.OpenWrite(fileName);
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(saver, this);
+            saver.Close();
         }
 
         public HeuristicBuildingDecider GetMutated(int steps)
@@ -184,6 +269,8 @@ namespace SimpleGame.Deciders
 
         public void PostGenerationProcessing()
         {
+            //TODO put this back maybe
+            return;
             List<Heuristic> toRemove = new List<Heuristic>();
             foreach(var h in Heuristics)
             {
@@ -219,5 +306,25 @@ namespace SimpleGame.Deciders
             }
         }
 
+        public string GetRaw()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach(var h in Heuristics)
+            {
+                string data = "";
+                foreach(var c in h.Conditions)
+                {
+                    data = data + " " + c.Item2;
+                }
+                data = data + '\t';
+
+                data = data + h.ExpectedOutput.ToString();
+
+                sb.AppendLine(data);
+            }
+
+            return sb.ToString();
+        }
     }
 }

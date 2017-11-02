@@ -11,7 +11,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         public const int ConditionsToAddToRandomHeuristic = 2;
         public const int ExceptionsToAddToRandomHeuristic = 1;
 
-        public const int ConditionsToAddToHeuristicFromInput = 2;
+        public const int ConditionsToAddToHeuristicFromInput = 8;
 
         public const double OddsOfRemovingHeuristicWhenMutating = 0.6;
         public const double OddsOfChangingHeuristicOutputWhenMutating = 0.3;

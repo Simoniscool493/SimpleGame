@@ -48,5 +48,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
         }
 
         public void PostGenerationProcessing() { }
+
+        public string GetRaw()
+        {
+            return $"Species score: {Score}\n" + BaseDecider.GetRaw();
+        }
+
     }
 }

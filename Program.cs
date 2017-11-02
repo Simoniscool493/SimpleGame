@@ -21,40 +21,53 @@ namespace SimpleGame
 {
     class Program
     {
+        public const string LogsPath = "C:\\ProjectLogs\\";
+
         static void Main(string[] args)
         {
+            //Testing();
+
             var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
 
             //StandardTests(logger);
             //return;
 
-            var genAlg = new GeneticAlgorithmRunner
-            (
-                numGenerations: 1000,
-                numToKill: 15,
-                numInGeneration: 30,
-                numOfTimesToTestASpecies: 1,
-                mutationRate: -1,
-                deciderType: DeciderType.HeuristicBuilder
-            );
-
             var runner = new PacmanManager();
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
-            var tester = new SimpleGameTester();
 
-            var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
-            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\No_Ghosts_1560.dc");
+
+            for (int i=0;i<1;i++)
+            {
+                var genAlg = new GeneticAlgorithmRunner
+                (
+                    numGenerations: 1000,
+                    numToKill: 10,
+                    numInGeneration: 30,
+                    numOfTimesToTestASpecies: 1,
+                    mutationRate: -1,
+                    deciderType: DeciderType.LazyMatrix
+                );
+
+                var tester = new SimpleGameTester();
+
+                var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
+                decider.SaveToFile($"C:\\ProjectLogs\\ADecider.dc");
+
+
+            }
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GenAlgLogs\\10_(750)");
 
             //Console.WriteLine();
-            //decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
 
             Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();
 
+            //decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
+
 
             var state = stateProvider.GetStateForDemonstration();
-            runner.Demonstrate(decider, state);
+            //runner.Demonstrate(decider, state);
 
             var scores = new List<int>();
             int best = 0;
@@ -63,13 +76,11 @@ namespace SimpleGame
 
             for(int i=0;i<1;i++)
             {
-                var score = runner.Score(decider, stateProvider.GetStateForNextGeneration());
-                scores.Add(score);
+                //var score = runner.Score(decider, stateProvider.GetStateForNextGeneration());
+                //scores.Add(score);
                 avg = scores.Average();
                 best = scores.Max();
                 worst = scores.Min();
-
-
             }
 
 
@@ -170,6 +181,89 @@ namespace SimpleGame
             }
 
             return (scores).Average();
+        }
+
+        static void Testing()
+        {
+            var list0 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 3) };
+            var list1 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 3) };
+            var list2 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 3), new Tuple<int, int>(1, 2) };
+            var list3 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 4) };
+
+            var _0and1 = list0.SequenceEqual(list1);
+            var _1and1 = list1.SequenceEqual(list1);
+            var _1and2 = ScrambledEquals(list1,list2);
+            var _1and3 = list1.SequenceEqual(list3);
+            var _2and3 = list2.SequenceEqual(list3);
+
+            var info = new PacmanManager().IOInfo;
+
+            var heuristic1 = new Heuristic(0, info);
+            heuristic1.Conditions.Add(new Tuple<int, int>(0, 10));
+            heuristic1.Conditions.Add(new Tuple<int, int>(1, 9));
+            heuristic1.Conditions.Add(new Tuple<int, int>(2, 8));
+            heuristic1.Conditions.Add(new Tuple<int, int>(3, 7));
+
+            var heuristic2 = new Heuristic(1, info);
+            heuristic2.Conditions.Add(new Tuple<int, int>(4, 10));
+            heuristic2.Conditions.Add(new Tuple<int, int>(5, 9));
+            heuristic2.Conditions.Add(new Tuple<int, int>(6, 8));
+            heuristic2.Conditions.Add(new Tuple<int, int>(7, 7));
+
+            var heuristic3 = new Heuristic(2, info);
+            heuristic3.Conditions.Add(new Tuple<int, int>(1, 10));
+            heuristic3.Conditions.Add(new Tuple<int, int>(2, 9));
+            heuristic3.Conditions.Add(new Tuple<int, int>(3, 8));
+            heuristic3.Conditions.Add(new Tuple<int, int>(4, 7));
+
+            var heuristic4 = new Heuristic(3, info);
+            heuristic4.Conditions.Add(new Tuple<int, int>(2, 10));
+            heuristic4.Conditions.Add(new Tuple<int, int>(3, 9));
+            heuristic4.Conditions.Add(new Tuple<int, int>(4, 8));
+            heuristic4.Conditions.Add(new Tuple<int, int>(5, 7));
+
+            var heuristicDecider1 = new HeuristicBuildingDecider(new Random(1), info);
+            var heuristicDecider2 = new HeuristicBuildingDecider(new Random(1), info);
+
+            var species1 = new GeneticAlgorithmSpecies(heuristicDecider1);
+            var species2 = new GeneticAlgorithmSpecies(heuristicDecider2);
+
+            heuristicDecider1.Heuristics.Add(heuristic1);
+            heuristicDecider1.Heuristics.Add(heuristic2);
+            heuristicDecider2.Heuristics.Add(heuristic3);
+            heuristicDecider2.Heuristics.Add(heuristic4);
+
+            var heuristicDecider3 = species1.Cross(species2, 0.1, new Random(1));
+
+
+        }
+
+        public static bool ScrambledEquals<T>(IEnumerable<T> list1, IEnumerable<T> list2)
+        {
+            var cnt = new Dictionary<T, int>();
+            foreach (T s in list1)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]++;
+                }
+                else
+                {
+                    cnt.Add(s, 1);
+                }
+            }
+            foreach (T s in list2)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return cnt.Values.All(c => c == 0);
         }
     }
 }

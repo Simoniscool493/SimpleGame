@@ -10,7 +10,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
         public int PayloadLength;
 
         public Type PayloadType;
-        private Array _enumValues;
+        public Array EnumValues;
 
         public string[] PositionNames;
 
@@ -21,7 +21,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
             PositionNames = positionNames;
 
-            _enumValues = PayloadType.GetEnumValues();
+            EnumValues = PayloadType.GetEnumValues();
         }
 
         public DiscreteDataPayload GetRandomInstance(Random r)
@@ -32,7 +32,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
                 for(int i=0;i< PayloadLength; i++)
                 {
-                    output.Add((int)_enumValues.GetValue(r.Next(0, _enumValues.Length)));
+                    output.Add((int)EnumValues.GetValue(r.Next(0, EnumValues.Length)));
                 }
 
                 return new DiscreteDataPayload(PayloadType,output.ToArray());
@@ -44,7 +44,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
         public Tuple<int,int> GetSingleFeature(Random r)
         {
             var position = r.Next(0, PayloadLength);
-            var value = (int)_enumValues.GetValue(r.Next(0, _enumValues.Length));
+            var value = (int)EnumValues.GetValue(r.Next(0, EnumValues.Length));
 
             return new Tuple<int, int>(position, value);
         }
@@ -53,7 +53,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
         {
             if (PayloadType.IsEnum)
             {
-                var value = (int)_enumValues.GetValue(0);
+                var value = (int)EnumValues.GetValue(0);
 
                 return new DiscreteDataPayload(PayloadType, value);
             }

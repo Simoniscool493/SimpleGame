@@ -13,6 +13,8 @@ namespace SimpleGame.Deciders.Discrete
 
         void SaveToFile(string filename);
 
+        string GetRaw();
+
         int NumGenes { get; }
 
         GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r);
