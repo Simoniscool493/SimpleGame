@@ -9,6 +9,7 @@ using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.HeuristicBuilder;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using SimpleGame.Deciders.Discrete.HeuristicBuilder;
 
 namespace SimpleGame.Deciders
 {
@@ -33,44 +34,9 @@ namespace SimpleGame.Deciders
 
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
         {
-            var parent1Heuristics = Heuristics;
-            var parent2Heuristics = ((HeuristicBuildingDecider)species2.BaseDecider).Heuristics;
+            var decider1 = this;
+            var decider2 = ((HeuristicBuildingDecider)species2.BaseDecider);
 
-            return CrossWithMatrixLogic(this, ((HeuristicBuildingDecider)species2.BaseDecider), mutationRate, r);
-            ///TODO: this is the old cross
-            /*HeuristicBuildingDecider child = new HeuristicBuildingDecider(r, IOInfo);
-
-
-            foreach(var h in parent1Heuristics)
-            {
-                child.Heuristics.Add(h);
-            }
-
-            foreach(var h in parent2Heuristics)
-            {
-                child.Heuristics.Add(h);
-            }
-
-            Shuffle(child.Heuristics,r);
-
-            if(_r.NextDouble()< mutationRate)
-            {
-                child = child.GetMutated(HeuristicBuildingConstants.NumStepsToMutateChildDecider);
-            }
-
-            while (child.Heuristics.Count > maxGenes)
-            {
-                var numToKill = r.Next(0, child.Heuristics.Count);
-                child.Heuristics.RemoveAt(numToKill);
-            }
-
-            return new GeneticAlgorithmSpecies(child);*/
-
-
-        }
-
-        private GeneticAlgorithmSpecies CrossWithMatrixLogic(HeuristicBuildingDecider decider1, HeuristicBuildingDecider decider2, double mutationRate, Random r)
-        {
             var heuristics1 = decider1.Heuristics;
             var heuristics2 = decider2.Heuristics;
 
@@ -114,16 +80,9 @@ namespace SimpleGame.Deciders
                 }
             }
 
-            /*foreach (var key in matrix2.GetKeys())
-            {
-                if (!matrix1.ContainsKey(key))
-                {
-                    childMatrix[key] = matrix2.Decide(key);
-                }
-            }*/
+            //no code yet exists to add parent 2's heuristics
 
             return new GeneticAlgorithmSpecies(childDecider);
-
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)
@@ -150,7 +109,7 @@ namespace SimpleGame.Deciders
             }
             else
             {
-                Heuristic h = Heuristic.CreateExactHeuristicFromThisInput(_r, IOInfo, input);
+                Heuristic h = HeuristicFactory.CreateExactHeuristicFromThisInput(_r, IOInfo, input);
                 //Heuristic heuristic = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
 
                 Heuristics.Add(h);
@@ -199,21 +158,13 @@ namespace SimpleGame.Deciders
         {
             for(int i=0;i<numToAdd;i++)
             {
-                var newHeuristic = Heuristic.CreateRandom(_r, IOInfo,
+                var newHeuristic = HeuristicFactory.CreateRandom(_r, IOInfo,
                     HeuristicBuildingConstants.ConditionsToAddToRandomHeuristic,
                     HeuristicBuildingConstants.ExceptionsToAddToRandomHeuristic);
 
                 var position = _r.Next(0, Heuristics.Count);
                 Heuristics.Insert(position, newHeuristic);
             }
-        }
-
-        public void SaveToFile(string fileName)
-        {
-            Stream saver = File.OpenWrite(fileName);
-            BinaryFormatter serializer = new BinaryFormatter();
-            serializer.Serialize(saver, this);
-            saver.Close();
         }
 
         public HeuristicBuildingDecider GetMutated(int steps)

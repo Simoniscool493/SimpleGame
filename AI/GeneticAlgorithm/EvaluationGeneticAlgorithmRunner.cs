@@ -13,12 +13,11 @@ namespace SimpleGame.AI.GeneticAlgorithm
     {
         public GenAlgTrainingSessionRecorder Recorder;
 
-        public EvaluationGeneticAlgorithmRunner(int numGenerations, int numToKill, int numInGeneration, int numOfTimesToTestASpecies, double mutationRate, DeciderType deciderType, GenAlgTrainingSessionRecorder recorder)
+        public EvaluationGeneticAlgorithmRunner(int numGenerations, int numToKill, int numInGeneration, int numOfTimesToTestASpecies, double mutationRate, DiscreteDeciderType deciderType, GenAlgTrainingSessionRecorder recorder)
             : base(numGenerations, numToKill, numInGeneration, numOfTimesToTestASpecies, mutationRate, deciderType)
         {
             Recorder = recorder;
         }
-
 
         protected override int RunGeneration(IDiscreteGameManager game, IDiscreteGameState state, Generation currentGeneration)
         {
@@ -26,10 +25,12 @@ namespace SimpleGame.AI.GeneticAlgorithm
             var gen = base.RunGeneration(game, state, currentGeneration);
             Recorder.GenTimer.Stop();
 
-            Recorder.LogGeneration(
+            Recorder.LogGeneration
+            (
                 currentGeneration.AverageScore,
                 currentGeneration.BestSpecies.Score,
-                Recorder.GenTimer.ElapsedMilliseconds);
+                Recorder.GenTimer.ElapsedMilliseconds
+            );
 
             Recorder.GenTimer.Reset();
 

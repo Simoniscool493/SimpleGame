@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
-    class DecisionMatrix : IDecisionMatrix
+    class BasicDecisionMatrix : IDecisionMatrix
     {
         private static Random r = new Random();
 
@@ -20,7 +20,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => _theMatrix.Count();
 
-        public DecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix, DiscreteIOInfo ioInfo)
+        public BasicDecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix, DiscreteIOInfo ioInfo)
         {
             _theMatrix = matrix;
             IOInfo = IOInfo;
@@ -56,21 +56,13 @@ namespace SimpleGame.Deciders.DecisionMatrix
                 isRunning = permutator.TryIncrement(0);
             }
 
-            return new DecisionMatrix(matrix, IOInfo);
+            return new BasicDecisionMatrix(matrix, IOInfo);
         }
 
         public static IDecisionMatrix GetLazyIOMapping(Random r, DiscreteIOInfo IOInfo)
         {
             var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
             return new LazyDecisionMatrix(matrix, IOInfo);
-        }
-
-        public void SaveToFile(string fileName)
-        {
-            Stream saver = File.OpenWrite(fileName);
-            BinaryFormatter serializer = new BinaryFormatter();
-            serializer.Serialize(saver, this);
-            saver.Close();
         }
 
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
@@ -123,7 +115,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
                 return new GeneticAlgorithmSpecies(new LazyDecisionMatrix(childMatrix, matrix1.IOInfo));
             }
 
-            return new GeneticAlgorithmSpecies(new DecisionMatrix(childMatrix, matrix1.IOInfo));
+            return new GeneticAlgorithmSpecies(new BasicDecisionMatrix(childMatrix, matrix1.IOInfo));
         }
 
         public void PostGenerationProcessing() { }

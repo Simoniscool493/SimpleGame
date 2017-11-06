@@ -23,19 +23,9 @@ namespace SimpleGame.Deciders.Discrete
             return IOInfo.OutputInfo.GetRandomInstance(_r);
         }
 
-        public void SaveToFile(string fileName)
-        {
-            Stream saver = File.OpenWrite(fileName);
-            BinaryFormatter serializer = new BinaryFormatter();
-            serializer.Serialize(saver, this);
-            saver.Close();
-        }
-
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
         {
             throw new Exception("Crossing Random Matrixes has no effect");
-
-            //return new GeneticAlgorithmSpecies(new RandomDiscreteDecider(r, IOInfo), DeciderType.Random);
         }
 
         public void PostGenerationProcessing() { }

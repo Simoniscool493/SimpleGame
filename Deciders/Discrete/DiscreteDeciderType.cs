@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Deciders
 {
-    public enum DeciderType
+    public enum DiscreteDeciderType
     {
-        Matrix,
+        BasicMatrix,
         LazyMatrix,
         Random,
         HeuristicBuilder

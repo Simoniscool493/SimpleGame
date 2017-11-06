@@ -60,7 +60,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             _r = r;
         }
 
-        public void PopulateWithRandoms(DiscreteIOInfo gameIOInfo, DeciderType deciderType)
+        public void PopulateWithRandoms(DiscreteIOInfo gameIOInfo, DiscreteDeciderType deciderType)
         {
             while (ThisGeneration.Count < _maxSize)
             {
@@ -68,16 +68,16 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
                 switch (deciderType)
                 {
-                    case DeciderType.Matrix:
-                        startingDecider = DecisionMatrix.GetRandomIOMapping(_r, gameIOInfo);
+                    case DiscreteDeciderType.BasicMatrix:
+                        startingDecider = BasicDecisionMatrix.GetRandomIOMapping(_r, gameIOInfo);
                         break;
-                    case DeciderType.LazyMatrix:
-                        startingDecider = DecisionMatrix.GetLazyIOMapping(_r, gameIOInfo);
+                    case DiscreteDeciderType.LazyMatrix:
+                        startingDecider = BasicDecisionMatrix.GetLazyIOMapping(_r, gameIOInfo);
                         break;
-                    case DeciderType.Random:
+                    case DiscreteDeciderType.Random:
                         startingDecider = new RandomDiscreteDecider(_r, gameIOInfo);
                         break;
-                    case DeciderType.HeuristicBuilder:
+                    case DiscreteDeciderType.HeuristicBuilder:
                         startingDecider = new HeuristicBuildingDecider(_r, gameIOInfo);
                         break;
                 }
@@ -147,9 +147,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private GeneticAlgorithmSpecies GetNewSpeciesFromSpeciesInThisGeneration()
         {
-            //var parent1 = ThisGeneration[_r.Next(0, ThisGeneration.Count())];
-            //var parent2 = ThisGeneration[_r.Next(0, ThisGeneration.Count())];
-
             var parent1 = GetSpeciesBasedOnScoreWeighing(HighestOrLowest.Highest);
             var parent2 = GetSpeciesBasedOnScoreWeighing(HighestOrLowest.Highest);
 

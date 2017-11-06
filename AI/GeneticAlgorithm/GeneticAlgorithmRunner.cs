@@ -16,12 +16,12 @@ namespace SimpleGame.AI.GeneticAlgorithm
         private int _numInGeneration;
         private int _numOfTimesToTestASpecies;
         private double _mutationRate;
-        private DeciderType _deciderType;
+        private DiscreteDeciderType _deciderType;
         private bool _printBasicInfo;
         protected bool _earlyStopFlag = false;
         protected int _generationCounter;
 
-        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,int numOfTimesToTestASpecies,double mutationRate,DeciderType deciderType)
+        public GeneticAlgorithmRunner(int numGenerations,int numToKill,int numInGeneration,int numOfTimesToTestASpecies,double mutationRate,DiscreteDeciderType deciderType)
         {
             _numGenerations = numGenerations;
             _numToKillPerGeneration = numToKill;
@@ -47,15 +47,13 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
             for (_generationCounter = 0; _generationCounter < _numGenerations && !_earlyStopFlag; _generationCounter++)
             {
-
                 var avg = RunGeneration(game, trainableState,currentGeneration);
                 currentGeneration.MutationRate = 5.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes);
-                //currentGeneration.MutationRate = r.NextDouble();
 
                 if (showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
                 {
-                    game.Demonstrate(currentGeneration.BestSpecies, provider.GetStateForDemonstration());
-                    //trainableState.Reset();
+                    PrintBasicInfo(currentGeneration);
+                    //game.Demonstrate(currentGeneration.BestSpecies, provider.GetStateForDemonstration());
                 }
 
                 if(avg <= prevAvg)
@@ -70,8 +68,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 prevAvg = avg;
 
                 var path = Path.Combine(Program.LogsPath,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
-
-                //WriteGenerationRaw(currentGeneration);
             }
 
             _earlyStopFlag = false;

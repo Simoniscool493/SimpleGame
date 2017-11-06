@@ -10,9 +10,7 @@ namespace SimpleGame.Permutation
     class DiscreteDataPayloadPermutator : PermutationMechanism
     {
         public int NumberOfEnumValues;
-
         private Array _enumValues;
-        private DiscreteDataPayloadInfo inputInfo;
 
         public override int GetNumberOfValues(int currentPlaceInList)
         {

@@ -24,11 +24,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
             BaseDecider = matrix;
         }
 
-        public override string ToString()
-        {
-            return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString();
-        }
-
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2,double mutationRate,Random r)
         {
             return BaseDecider.Cross(species2, mutationRate, r);
@@ -39,14 +34,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
             return BaseDecider.Decide(input);
         }
 
-        public void SaveToFile(string fileName)
-        {
-            Stream saver = File.OpenWrite(fileName);
-            BinaryFormatter serializer = new BinaryFormatter();
-            serializer.Serialize(saver, this);
-            saver.Close();
-        }
-
         public void PostGenerationProcessing() { }
 
         public string GetRaw()
@@ -54,5 +41,9 @@ namespace SimpleGame.AI.GeneticAlgorithm
             return $"Species score: {Score}\n" + BaseDecider.GetRaw();
         }
 
+        public override string ToString()
+        {
+            return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString();
+        }
     }
 }

@@ -37,26 +37,23 @@ namespace SimpleGame
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
 
 
-            for (int i=0;i<1;i++)
-            {
-                var genAlg = new GeneticAlgorithmRunner
-                (
-                    numGenerations: 1000,
-                    numToKill: 10,
-                    numInGeneration: 30,
-                    numOfTimesToTestASpecies: 1,
-                    mutationRate: -1,
-                    deciderType: DeciderType.LazyMatrix
-                );
+            var genAlg = new GeneticAlgorithmRunner
+            (
+                numGenerations: 100000,
+                numToKill: 10,
+                numInGeneration: 30,
+                numOfTimesToTestASpecies: 1,
+                mutationRate: -1,
+                deciderType: DiscreteDeciderType.LazyMatrix
+            );
 
-                var tester = new SimpleGameTester();
+            var tester = new SimpleGameTester();
 
-                var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 250);
-                decider.SaveToFile($"C:\\ProjectLogs\\ADecider.dc");
-
-
-            }
-            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GenAlgLogs\\10_(750)");
+            var decider = genAlg.Train(runner, stateProvider, showGameProgress: true, printBasicInfo: false, demonstrateEveryXIterations: 1000);
+            decider.SaveToFile($"C:\\ProjectLogs\\ADecider.dc");
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\2810.dc");
+            //var state = stateProvider.GetStateForNextGeneration();
+            //var score = runner.Score(decider, state);
 
             //Console.WriteLine();
 
@@ -67,7 +64,7 @@ namespace SimpleGame
 
 
             var state = stateProvider.GetStateForDemonstration();
-            //runner.Demonstrate(decider, state);
+            runner.Demonstrate(decider, state);
 
             var scores = new List<int>();
             int best = 0;
@@ -129,7 +126,7 @@ namespace SimpleGame
                 generationSizeParamaters: BuildList(10,20),
                 iterationsOfTestingPerSpeciesParamaters: BuildList(1),
                 mutationPercentParamaters: BuildList(5,10),
-                deciderTypeParamaters: BuildList((int)DeciderType.LazyMatrix)
+                deciderTypeParamaters: BuildList((int)DiscreteDeciderType.LazyMatrix)
             );
 
             for (int i = 0; i < 3; i++)
@@ -147,7 +144,7 @@ namespace SimpleGame
                 generationSizeParamaters: BuildList(10,20),
                 iterationsOfTestingPerSpeciesParamaters: BuildList(1),
                 mutationPercentParamaters: BuildList(5,10),
-                deciderTypeParamaters: BuildList((int)DeciderType.LazyMatrix)
+                deciderTypeParamaters: BuildList((int)DiscreteDeciderType.LazyMatrix)
             );
 
             for (int i = 0; i < 2; i++)

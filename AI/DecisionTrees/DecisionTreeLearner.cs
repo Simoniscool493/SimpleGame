@@ -6,7 +6,7 @@ namespace SimpleGame.AI.DecisionTrees
 {
     class DecisionTreeLearner
     {
-        private static int NumberOfPoints = 50;
+        /*private static int NumberOfPoints = 50;
         private static int NumberOfTreesToGenerate = 40;
         private static int NumberOfPointsToMutateForTrainingData = 30;
         private static int TreeDepth = 5;
@@ -406,7 +406,7 @@ namespace SimpleGame.AI.DecisionTrees
 
         private static void PrintTreeNode(TreeNode t,int width,int height)
         {
-        }
+        }*/
     }
 }
 

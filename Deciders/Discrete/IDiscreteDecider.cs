@@ -1,7 +1,9 @@
 ﻿using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.DataPayloads.DiscreteData;
 using System;
+using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SimpleGame.Deciders.Discrete
 {
@@ -11,8 +13,6 @@ namespace SimpleGame.Deciders.Discrete
 
         DiscreteDataPayload Decide(DiscreteDataPayload input);
 
-        void SaveToFile(string filename);
-
         string GetRaw();
 
         int NumGenes { get; }
@@ -20,5 +20,16 @@ namespace SimpleGame.Deciders.Discrete
         GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r);
 
         void PostGenerationProcessing();
+    }
+
+    public static class DiscreteDeciderExtensions
+    {
+        public static void SaveToFile(this IDiscreteDecider decider,string fileName)
+        {
+            Stream saver = File.OpenWrite(fileName);
+            BinaryFormatter serializer = new BinaryFormatter();
+            serializer.Serialize(saver, decider);
+            saver.Close();
+        }
     }
 }

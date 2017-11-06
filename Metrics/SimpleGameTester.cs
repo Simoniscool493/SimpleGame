@@ -52,7 +52,7 @@ namespace SimpleGame.Metrics
             var generationSizeParamater = paramaters[2];
             var iterationsOfTestingPerSpeciesParamater = paramaters[3];
             var mutationPercentParamater = paramaters[4];
-            var deciderTypeParamater = (DeciderType)paramaters[5];
+            var deciderTypeParamater = (DiscreteDeciderType)paramaters[5];
 
             int numToKillParamater = (int)Math.Floor(((percentToKillParamater / (double)100) * generationSizeParamater));
             double mutationRateParamater = mutationPercentParamater / (double)100;

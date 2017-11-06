@@ -49,17 +49,9 @@ namespace SimpleGame.Deciders.DecisionMatrix
             return _theMatrix.ContainsKey(d);
         }
 
-        public void SaveToFile(string fileName)
-        {
-            Stream saver = File.OpenWrite(fileName);
-            BinaryFormatter serializer = new BinaryFormatter();
-            serializer.Serialize(saver, this);
-            saver.Close();
-        }
-
         public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
         {
-            return DecisionMatrix.MatrixCross(this, (IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
+            return BasicDecisionMatrix.MatrixCross(this, (IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
         }
 
         public void PostGenerationProcessing() { }
