@@ -7,6 +7,9 @@ using SimpleGame.DataPayloads.DiscreteData;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using SimpleGame.AI.GeneticAlgorithm;
+using SimpleGame.AI;
+using SimpleGame.Deciders.Discrete.DecisionMatrix;
+using SimpleGame.Deciders.Discrete;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
@@ -49,12 +52,15 @@ namespace SimpleGame.Deciders.DecisionMatrix
             return _theMatrix.ContainsKey(d);
         }
 
-        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
+        public IDiscreteDecider CrossMutate(IDiscreteDecider decider, double mutationRate, Random r)
         {
-            return BasicDecisionMatrix.MatrixCross(this, (IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
+            return DecisionMatrixFactory.MatrixCrossMutate(this, (IDecisionMatrix)(decider), mutationRate, r);
         }
 
-        public void PostGenerationProcessing() { }
+        public IDiscreteDecider GetMutated(double mutationRate, Random r)
+        {
+            throw new NotImplementedException();
+        }
 
         public string GetRaw()
         {

@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace SimpleGame.AI.GeneticAlgorithm
+namespace SimpleGame.AI
 {
     [Serializable()]
-    public class GeneticAlgorithmSpecies : IDiscreteDecider
+    public class DeciderSpecies : IDiscreteDecider
     {
         public bool IsScored = false;
         public IDiscreteDecider BaseDecider;
@@ -19,22 +19,26 @@ namespace SimpleGame.AI.GeneticAlgorithm
         public DiscreteIOInfo IOInfo => BaseDecider.IOInfo;
         public int NumGenes => BaseDecider.NumGenes;
 
-        public GeneticAlgorithmSpecies(IDiscreteDecider matrix)
+        public DeciderSpecies(IDiscreteDecider matrix)
         {
             BaseDecider = matrix;
         }
 
-        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2,double mutationRate,Random r)
+        public IDiscreteDecider CrossMutate(IDiscreteDecider species2,double mutationRate,Random r)
         {
-            return BaseDecider.Cross(species2, mutationRate, r);
+            return new DeciderSpecies(BaseDecider.CrossMutate(((DeciderSpecies)species2).BaseDecider, mutationRate, r));
+        }
+
+        public IDiscreteDecider GetMutated(double mutationRate, Random r)
+        {
+            var species = new DeciderSpecies(BaseDecider.GetMutated(mutationRate,r));
+            return species;
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)
         {
             return BaseDecider.Decide(input);
         }
-
-        public void PostGenerationProcessing() { }
 
         public string GetRaw()
         {
@@ -45,5 +49,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
         {
             return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString();
         }
+
     }
 }

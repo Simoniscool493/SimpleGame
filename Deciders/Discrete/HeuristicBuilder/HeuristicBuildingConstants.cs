@@ -18,7 +18,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         public const double OddsOfAddingNewHeuristicWhenMutating = 0.2;
         public const double OddsOfShufflingWhenMutating = 0.05;
 
-        public const int MaxAllowedGensWithNoHeuristicUses = 4;
+        public const int MaxAllowedGensWithNoHeuristicUses = 5;
         public const int NumStepsToMutateChildDecider = 2;
 
     }

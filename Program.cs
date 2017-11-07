@@ -16,6 +16,7 @@ using System.Collections;
 using System.Linq;
 using System.Diagnostics;
 using SimpleGame.Deciders.HeuristicBuilder;
+using SimpleGame.AI;
 
 namespace SimpleGame
 {
@@ -25,7 +26,7 @@ namespace SimpleGame
 
         static void Main(string[] args)
         {
-            //Testing();
+            Testing2();
 
             var logger = SimpleGameLoggerManager.SetupLogger();
             logger.Debug("Simple Game Logger Created");
@@ -42,39 +43,35 @@ namespace SimpleGame
                 numGenerations: 100000,
                 numToKill: 10,
                 numInGeneration: 30,
-                numOfTimesToTestASpecies: 1,
+                numOfTimesToTestASpecies: 3,
                 mutationRate: -1,
-                deciderType: DiscreteDeciderType.LazyMatrix
+                deciderType: DiscreteDeciderType.HeuristicBuilder
             );
 
             var tester = new SimpleGameTester();
 
-            var decider = genAlg.Train(runner, stateProvider, showGameProgress: true, printBasicInfo: false, demonstrateEveryXIterations: 1000);
-            decider.SaveToFile($"C:\\ProjectLogs\\ADecider.dc");
-            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\2810.dc");
-            //var state = stateProvider.GetStateForNextGeneration();
-            //var score = runner.Score(decider, state);
+            var decider = genAlg.Train(runner, stateProvider, showGameProgress: false, printBasicInfo: true, demonstrateEveryXIterations: 100);
+            //decider.SaveToFile($"C:\\ProjectLogs\\ADecider.dc");
+            //var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\General_Solution_1790.dc");
 
             //Console.WriteLine();
 
             Console.WriteLine("Ready to demonstrate. Please press enter.");
             Console.ReadLine();
 
-            //decider.SaveToFile($"C:\\ProjectLogs\\No_Ghosts_1560.dc");
 
-
-            var state = stateProvider.GetStateForDemonstration();
-            runner.Demonstrate(decider, state);
+            //var state = stateProvider.GetStateForDemonstration();
+            //runner.Demonstrate(decider, state);
 
             var scores = new List<int>();
             int best = 0;
             double avg = 0;
             int worst = 0;
 
-            for(int i=0;i<1;i++)
+            for(int i=0;i<1000;i++)
             {
-                //var score = runner.Score(decider, stateProvider.GetStateForNextGeneration());
-                //scores.Add(score);
+                var score = runner.Score(decider, stateProvider.GetStateForNextGeneration());
+                scores.Add(score);
                 avg = scores.Average();
                 best = scores.Max();
                 worst = scores.Min();
@@ -182,7 +179,7 @@ namespace SimpleGame
 
         static void Testing()
         {
-            var list0 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 3) };
+            /*var list0 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 3) };
             var list1 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 3) };
             var list2 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 3), new Tuple<int, int>(1, 2) };
             var list3 = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 2), new Tuple<int, int>(1, 4) };
@@ -230,7 +227,28 @@ namespace SimpleGame
             heuristicDecider2.Heuristics.Add(heuristic3);
             heuristicDecider2.Heuristics.Add(heuristic4);
 
-            var heuristicDecider3 = species1.Cross(species2, 0.1, new Random(1));
+            var heuristicDecider3 = species1.Cross(species2, 0.1, new Random(1));*/
+
+
+        }
+
+        public static void Testing2()
+        {
+            var r = new Random();
+            var runner = new PacmanManager();
+            var stateProvider = (PacmanStateProvider)runner.StateProvider;
+            var learner = new SinglePathMutationRunner(runner, stateProvider);
+            learner.CurrentBest = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));
+            learner.GenerationSize = 100;
+            learner.MutationRate = 0.05;
+            learner.TimesToTestPerSpecies = 1;
+
+            learner.Optimize(20, r);
+
+
+            var state = stateProvider.GetStateForDemonstration();
+            runner.Demonstrate(learner.CurrentBest, state);
+
 
 
         }

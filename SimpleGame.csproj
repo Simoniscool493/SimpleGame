@@ -38,13 +38,15 @@
   <ItemGroup>
     <Compile Include="AI\DecisionTrees\DecisionTreeLearner.cs" />
     <Compile Include="AI\GeneticAlgorithm\EvaluationGeneticAlgorithmRunner.cs" />
-    <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmSpecies.cs" />
+    <Compile Include="AI\DeciderSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="Deciders\Discrete\DecisionMatrix\DecisionMatrixFactory.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderType.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\IDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\LazyDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderLoader.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicDeciderFactory.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicFactory.cs" />
     <Compile Include="Deciders\Discrete\RandomDiscreteDecider.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayloadInfo.cs" />
@@ -53,7 +55,7 @@
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayload.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\BasicDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\Heuristic.cs" />
-    <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicBuilderTestingCode.cs" />
+    <Compile Include="AI\SinglePathMutation\SinglePathMutationRunner.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicBuildingConstants.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicBuildingDecider.cs" />
     <Compile Include="Games\Direction.cs" />

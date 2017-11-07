@@ -37,15 +37,35 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             ConsecutiveGensNotUsed = 0;
         }
 
+        public Heuristic GetCopy()
+        {
+            var newH = new Heuristic(ExpectedOutput, IOInfo);
+            newH.Conditions = new List<Tuple<int, int>>(Conditions);
+            newH.Exceptions = new List<Tuple<int, int>>(Exceptions);
+            newH.UseCount = UseCount;
+            newH.ConsecutiveGensNotUsed = ConsecutiveGensNotUsed;
+
+            return newH;
+        }
+
+        public Heuristic GetMutated(Random r)
+        {
+            var newH = GetCopy();
+            newH.Mutate(r);
+
+            return newH;
+        }
 
         public void Mutate(Random r)
         {
-            var outputEnumTypes = IOInfo.OutputInfo.PayloadType.GetEnumValues();
+            var outputEnumTypes = IOInfo.OutputInfo.EnumValues;
             var newExpectedOutput = (int)outputEnumTypes.GetValue(r.Next(0, outputEnumTypes.Length));
 
             ExpectedOutput = newExpectedOutput;
+            ConsecutiveGensNotUsed = 0;
+            UseCount = 0;
 
-            //TODO code to mutate in exceptions
+            //TODO code to mutate conditons and exceptions
         }
 
         public void AddExceptions(int numExceptions,Random r)

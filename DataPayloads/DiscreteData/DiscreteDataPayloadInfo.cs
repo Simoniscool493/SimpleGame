@@ -22,10 +22,26 @@ namespace SimpleGame.DataPayloads.DiscreteData
             PositionNames = positionNames;
 
             EnumValues = PayloadType.GetEnumValues();
+
+            if(EnumValues!=null)
+            {
+                isEnumValuesSet = true;
+            }
+            else
+            {
+                Console.WriteLine();
+            }
         }
+
+        bool isEnumValuesSet = false;
 
         public DiscreteDataPayload GetRandomInstance(Random r)
         {
+            if(EnumValues ==null)
+            {
+                EnumValues = PayloadType.GetEnumValues();
+            }
+
             if(PayloadType.IsEnum)
             {
                 var output = new List<int>();

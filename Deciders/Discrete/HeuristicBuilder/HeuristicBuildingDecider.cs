@@ -10,6 +10,7 @@ using SimpleGame.Deciders.HeuristicBuilder;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using SimpleGame.Deciders.Discrete.HeuristicBuilder;
+using SimpleGame.AI;
 
 namespace SimpleGame.Deciders
 {
@@ -23,66 +24,23 @@ namespace SimpleGame.Deciders
 
         public List<Heuristic> Heuristics;
 
-        private Random _r;
+        public Random R;
 
         public HeuristicBuildingDecider(Random r,DiscreteIOInfo ioInfo)
         {
             Heuristics = new List<Heuristic>();
             IOInfo = ioInfo;
-            _r = r;
+            R = r;
         }
 
-        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
+        public IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r)
         {
-            var decider1 = this;
-            var decider2 = ((HeuristicBuildingDecider)species2.BaseDecider);
+            return HeuristicDeciderFactory.CrossMutate(this, (HeuristicBuildingDecider)decider2, mutationRate, r);
+        }
 
-            var heuristics1 = decider1.Heuristics;
-            var heuristics2 = decider2.Heuristics;
-
-            var outputValues = IOInfo.OutputInfo.EnumValues;
-            var childDecider = new HeuristicBuildingDecider(r, IOInfo);
-            var childHeuristics = childDecider.Heuristics;
-
-            foreach (var h in heuristics1)
-            {
-                if (r.NextDouble() < mutationRate)
-                {
-                    var value = outputValues.GetValue(r.Next(0, outputValues.Length));
-                    var valueAsIntArray = new int[] { ((int)value) };
-
-                    var mutatedH = new Heuristic((int)value, IOInfo);
-                    mutatedH.Conditions = new List<Tuple<int, int>>(h.Conditions);
-                    mutatedH.Exceptions = new List<Tuple<int, int>>(h.Exceptions);
-                    mutatedH.UseCount = h.UseCount;
-
-                    childHeuristics.Add(mutatedH);
-                }
-                else if (r.NextDouble() > 0.5)
-                {
-                    var parentH = decider1.GetExactHeuristicOrRandomForThisInput(h.RecreatePayloadWithConditions());
-
-                    var childH = new Heuristic(parentH.ExpectedOutput, IOInfo);
-                    childH.Conditions = new List<Tuple<int, int>>(parentH.Conditions);
-                    childH.Exceptions = new List<Tuple<int, int>>(parentH.Exceptions);
-                    childH.UseCount = parentH.UseCount;
-                    childDecider.Heuristics.Add(childH);
-                }
-                else
-                {
-                    var parentH = decider2.GetExactHeuristicOrRandomForThisInput(h.RecreatePayloadWithConditions());
-
-                    var childH = new Heuristic(parentH.ExpectedOutput, IOInfo);
-                    childH.Conditions = new List<Tuple<int, int>>(parentH.Conditions);
-                    childH.Exceptions = new List<Tuple<int, int>>(parentH.Exceptions);
-                    childH.UseCount = parentH.UseCount;
-                    childDecider.Heuristics.Add(childH);
-                }
-            }
-
-            //no code yet exists to add parent 2's heuristics
-
-            return new GeneticAlgorithmSpecies(childDecider);
+        public IDiscreteDecider GetMutated(double mutationRate,Random r)
+        {
+            return HeuristicDeciderFactory.GetMutated(this, mutationRate, r);
         }
 
         public DiscreteDataPayload Decide(DiscreteDataPayload input)
@@ -109,7 +67,7 @@ namespace SimpleGame.Deciders
             }
             else
             {
-                Heuristic h = HeuristicFactory.CreateExactHeuristicFromThisInput(_r, IOInfo, input);
+                Heuristic h = HeuristicFactory.CreateExactHeuristicFromThisInput(R, IOInfo, input);
                 //Heuristic heuristic = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
 
                 Heuristics.Add(h);
@@ -158,12 +116,45 @@ namespace SimpleGame.Deciders
         {
             for(int i=0;i<numToAdd;i++)
             {
-                var newHeuristic = HeuristicFactory.CreateRandom(_r, IOInfo,
+                var newHeuristic = HeuristicFactory.CreateRandom(R, IOInfo,
                     HeuristicBuildingConstants.ConditionsToAddToRandomHeuristic,
                     HeuristicBuildingConstants.ExceptionsToAddToRandomHeuristic);
 
-                var position = _r.Next(0, Heuristics.Count);
+                var position = R.Next(0, Heuristics.Count);
                 Heuristics.Insert(position, newHeuristic);
+            }
+        }
+
+        public void RemoveRandomHeuristics(int numToTake)
+        {
+            for(int i=0;i<numToTake;i++)
+            {
+                var position = R.Next(0, Heuristics.Count);
+                Heuristics.RemoveAt(position);
+            }
+        }
+
+        public void RemoveRandomConditions(double oddsOfRemoval,Random r)
+        {
+            List<Heuristic> toRemove = new List<Heuristic>();
+
+            foreach(var h in Heuristics)
+            {
+                if(r.NextDouble()<oddsOfRemoval)
+                {
+                    var numToRemove = r.Next(0, h.Conditions.Count);
+                    h.Conditions.RemoveAt(numToRemove);
+
+                    if(h.Conditions.Count == 0)
+                    {
+                        toRemove.Add(h);
+                    }
+                }
+            }
+
+            foreach(var h in toRemove)
+            {
+                Heuristics.Remove(h);
             }
         }
 
@@ -173,27 +164,27 @@ namespace SimpleGame.Deciders
 
             for(int i=0;i<steps;i++)
             {
-                if(_r.NextDouble() < HeuristicBuildingConstants.OddsOfRemovingHeuristicWhenMutating)
+                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfRemovingHeuristicWhenMutating)
                 {
-                    var geneNumToChange = _r.Next(0, decider.Heuristics.Count);
+                    var geneNumToChange = R.Next(0, decider.Heuristics.Count);
                     decider.Heuristics.RemoveAt(geneNumToChange);
                 }
 
-                if(_r.NextDouble() < HeuristicBuildingConstants.OddsOfChangingHeuristicOutputWhenMutating)
+                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfChangingHeuristicOutputWhenMutating)
                 {
-                    var geneNumToChange = _r.Next(0, decider.Heuristics.Count);
+                    var geneNumToChange = R.Next(0, decider.Heuristics.Count);
                     var geneToChange = decider.Heuristics.ElementAt(geneNumToChange);
-                    geneToChange.Mutate(_r);
+                    geneToChange.Mutate(R);
                 }
 
-                if(_r.NextDouble() < HeuristicBuildingConstants.OddsOfAddingNewHeuristicWhenMutating)
+                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfAddingNewHeuristicWhenMutating)
                 {
                     decider.AddRandomHeuristics(1);
                 }
 
-                if (_r.NextDouble() < HeuristicBuildingConstants.OddsOfShufflingWhenMutating)
+                if (R.NextDouble() < HeuristicBuildingConstants.OddsOfShufflingWhenMutating)
                 {
-                    Shuffle(decider.Heuristics, _r);
+                    Shuffle(decider.Heuristics, R);
                 }
             } 
 
@@ -202,7 +193,7 @@ namespace SimpleGame.Deciders
 
         public HeuristicBuildingDecider CloneWithAllHeuristics()
         {
-            var decider = new HeuristicBuildingDecider(this._r,this.IOInfo);
+            var decider = new HeuristicBuildingDecider(this.R,this.IOInfo);
 
             decider.Heuristics = new List<Heuristic>();
 
@@ -220,8 +211,6 @@ namespace SimpleGame.Deciders
 
         public void PostGenerationProcessing()
         {
-            //TODO put this back maybe
-            return;
             List<Heuristic> toRemove = new List<Heuristic>();
             foreach(var h in Heuristics)
             {
@@ -239,6 +228,8 @@ namespace SimpleGame.Deciders
                     h.ConsecutiveGensNotUsed = 0;
                 }
             }
+
+            Console.WriteLine("\nRemoved " + toRemove.Count + " unused heuristics.\n");
 
             Heuristics = Heuristics.Except(toRemove).ToList();
         }

@@ -8,6 +8,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using SimpleGame.AI.GeneticAlgorithm;
 using System.Text;
+using SimpleGame.Deciders.Discrete;
+using SimpleGame.AI;
+using SimpleGame.Deciders.Discrete.DecisionMatrix;
 
 namespace SimpleGame.Deciders.DecisionMatrix
 {
@@ -41,84 +44,15 @@ namespace SimpleGame.Deciders.DecisionMatrix
             return _theMatrix.ContainsKey(d);
         }
 
-        public static IDecisionMatrix GetRandomIOMapping(Random r, DiscreteIOInfo IOInfo)
+        public IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r)
         {
-            var permutator = new DiscreteDataPayloadPermutator(IOInfo.InputInfo);
-            var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
-            var isRunning = true;
-
-            while (isRunning)
-            {
-                var input = permutator.GetAsEnum(IOInfo.InputInfo.PayloadType);
-                var randomOutput = IOInfo.OutputInfo.GetRandomInstance(r);
-                matrix[input] = randomOutput;
-
-                isRunning = permutator.TryIncrement(0);
-            }
-
-            return new BasicDecisionMatrix(matrix, IOInfo);
+            return DecisionMatrixFactory.MatrixCrossMutate(this,(IDecisionMatrix)decider2, mutationRate, r);
         }
 
-        public static IDecisionMatrix GetLazyIOMapping(Random r, DiscreteIOInfo IOInfo)
+        public IDiscreteDecider GetMutated(double mutationRate, Random r)
         {
-            var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
-            return new LazyDecisionMatrix(matrix, IOInfo);
+            throw new NotImplementedException();
         }
-
-        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
-        {
-            return MatrixCross(this,(IDecisionMatrix)(species2.BaseDecider), mutationRate, r);
-        }
-
-        public static GeneticAlgorithmSpecies MatrixCross(IDecisionMatrix matrix1, IDecisionMatrix matrix2, double mutationRate, Random r)
-        {
-            if (!((matrix1.IOInfo.InputInfo.PayloadType == matrix2.IOInfo.InputInfo.PayloadType) && matrix1.IOInfo.OutputInfo.PayloadType == matrix2.IOInfo.OutputInfo.PayloadType))
-            {
-                throw new Exception("Cannot cross matrixes of two different payload types");
-            }
-
-            var outputValues = matrix1.IOInfo.OutputInfo.PayloadType.GetEnumValues();
-            var childMatrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
-
-            foreach (var key in matrix1.GetKeys())
-            {
-                if (r.NextDouble() < mutationRate)
-                {
-                    //if(r.NextDouble()>0.2) // Experiment: remove a gene instead of mutate it
-                    //{
-                        var value = outputValues.GetValue(r.Next(0, outputValues.Length));
-                        var valueAsIntArray = new int[] { ((int)value) };
-                        childMatrix[key] = new DiscreteDataPayload(matrix1.IOInfo.OutputInfo.PayloadType, valueAsIntArray);
-                    //}
-                }
-                else if (r.NextDouble() > 0.5)
-                {
-                    childMatrix[key] = matrix1.Decide(key);
-                }
-                else
-                {
-                    childMatrix[key] = matrix2.Decide(key);
-                }
-            }
-
-
-            if (matrix1 is LazyDecisionMatrix)
-            {
-                foreach (var key in matrix2.GetKeys())
-                {
-                    if (!matrix1.ContainsKey(key))
-                    {
-                        childMatrix[key] = matrix2.Decide(key);
-                    }
-                }
-
-                return new GeneticAlgorithmSpecies(new LazyDecisionMatrix(childMatrix, matrix1.IOInfo));
-            }
-
-            return new GeneticAlgorithmSpecies(new BasicDecisionMatrix(childMatrix, matrix1.IOInfo));
-        }
-
-        public void PostGenerationProcessing() { }
 
         public string GetRaw()
         {

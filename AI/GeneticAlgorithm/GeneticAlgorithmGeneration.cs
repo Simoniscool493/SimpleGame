@@ -2,6 +2,7 @@
 using SimpleGame.Deciders;
 using SimpleGame.Deciders.DecisionMatrix;
 using SimpleGame.Deciders.Discrete;
+using SimpleGame.Deciders.Discrete.DecisionMatrix;
 using SimpleGame.Games;
 
 using System;
@@ -19,7 +20,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
         public int AverageScore => (int)Math.Round(GenerationWithoutWorst.Where(sp => sp.IsScored).Select((sp) => sp.Score).Average());
         public int WorstScore => (GenerationWithoutWorst.Where(sp => sp.IsScored).Select((sp) => sp.Score).Min());
 
-        public IEnumerable<GeneticAlgorithmSpecies> GenerationWithoutWorst
+        public IEnumerable<DeciderSpecies> GenerationWithoutWorst
         {
             get
             {
@@ -31,14 +32,14 @@ namespace SimpleGame.AI.GeneticAlgorithm
         }
 
 
-        public GeneticAlgorithmSpecies BestSpecies
+        public DeciderSpecies BestSpecies
         {
             get
             {
                 int highestScore = 0;
-                GeneticAlgorithmSpecies best = ThisGeneration[0];
+                DeciderSpecies best = ThisGeneration[0];
 
-                foreach (GeneticAlgorithmSpecies s in ThisGeneration)
+                foreach (DeciderSpecies s in ThisGeneration)
                 {
                     if (s.Score > highestScore)
                     {
@@ -51,7 +52,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             }
         }
 
-        public List<GeneticAlgorithmSpecies> ThisGeneration = new List<GeneticAlgorithmSpecies>();
+        public List<DeciderSpecies> ThisGeneration = new List<DeciderSpecies>();
 
         public Generation(int maxSize, double mutationRate, Random r)
         {
@@ -69,10 +70,10 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 switch (deciderType)
                 {
                     case DiscreteDeciderType.BasicMatrix:
-                        startingDecider = BasicDecisionMatrix.GetRandomIOMapping(_r, gameIOInfo);
+                        startingDecider = DecisionMatrixFactory.GetRandomIOMapping(_r, gameIOInfo);
                         break;
                     case DiscreteDeciderType.LazyMatrix:
-                        startingDecider = BasicDecisionMatrix.GetLazyIOMapping(_r, gameIOInfo);
+                        startingDecider = DecisionMatrixFactory.GetLazyIOMapping(_r, gameIOInfo);
                         break;
                     case DiscreteDeciderType.Random:
                         startingDecider = new RandomDiscreteDecider(_r, gameIOInfo);
@@ -82,7 +83,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
                         break;
                 }
 
-                Add(new GeneticAlgorithmSpecies(startingDecider));
+                Add(new DeciderSpecies(startingDecider));
             }
         }
 
@@ -137,30 +138,22 @@ namespace SimpleGame.AI.GeneticAlgorithm
             }
         }
 
-        public void PostGenerationProcessing()
-        {
-            foreach(var s in ThisGeneration)
-            {
-                s.BaseDecider.PostGenerationProcessing();
-            }
-        }
-
-        private GeneticAlgorithmSpecies GetNewSpeciesFromSpeciesInThisGeneration()
+        private DeciderSpecies GetNewSpeciesFromSpeciesInThisGeneration()
         {
             var parent1 = GetSpeciesBasedOnScoreWeighing(HighestOrLowest.Highest);
             var parent2 = GetSpeciesBasedOnScoreWeighing(HighestOrLowest.Highest);
 
             if(MutationRate < 0)
             {
-                return parent1.Cross(parent2, _r.NextDouble(), _r);
+                return (DeciderSpecies)(parent1.CrossMutate(parent2, _r.NextDouble(), _r));
             }
             else
             {
-                return parent1.Cross(parent2, MutationRate, _r);
+                return (DeciderSpecies)(parent1.CrossMutate(parent2, MutationRate, _r));
             }
         }
 
-        private GeneticAlgorithmSpecies GetSpeciesBasedOnScoreWeighing(HighestOrLowest highestOrLowest)
+        private DeciderSpecies GetSpeciesBasedOnScoreWeighing(HighestOrLowest highestOrLowest)
         {
             // totalWeight is the sum of all brokers' weight
             var scoredSpecies = ThisGeneration.Where(s => s.IsScored);
@@ -172,8 +165,8 @@ namespace SimpleGame.AI.GeneticAlgorithm
                 return ThisGeneration.First();
             }
 
-            GeneticAlgorithmSpecies selectedSpecies = null;
-            foreach (GeneticAlgorithmSpecies sp in scoredSpecies)
+            DeciderSpecies selectedSpecies = null;
+            foreach (DeciderSpecies sp in scoredSpecies)
             {
                 if (randomNumber < sp.Score)
                 {
@@ -187,7 +180,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             return selectedSpecies;
         }
 
-        private void Add(GeneticAlgorithmSpecies species)
+        private void Add(DeciderSpecies species)
         {
             ThisGeneration.Add(species);
         }

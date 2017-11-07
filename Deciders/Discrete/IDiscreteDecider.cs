@@ -1,4 +1,5 @@
-﻿using SimpleGame.AI.GeneticAlgorithm;
+﻿using SimpleGame.AI;
+using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.DataPayloads.DiscreteData;
 using System;
 using System.IO;
@@ -17,9 +18,9 @@ namespace SimpleGame.Deciders.Discrete
 
         int NumGenes { get; }
 
-        GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r);
+        IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r);
 
-        void PostGenerationProcessing();
+        IDiscreteDecider GetMutated(double mutationRate, Random r);
     }
 
     public static class DiscreteDeciderExtensions

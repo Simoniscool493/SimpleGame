@@ -101,7 +101,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
             if (_printBasicInfo) { PrintBasicInfo(currentGeneration); }
 
             currentGeneration.Multiply();
-            currentGeneration.PostGenerationProcessing();
 
             return currentGeneration.AverageScore;
         }

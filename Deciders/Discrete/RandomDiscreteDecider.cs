@@ -1,4 +1,5 @@
-﻿using SimpleGame.AI.GeneticAlgorithm;
+﻿using SimpleGame.AI;
+using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.DataPayloads.DiscreteData;
 using System;
 using System.IO;
@@ -23,12 +24,15 @@ namespace SimpleGame.Deciders.Discrete
             return IOInfo.OutputInfo.GetRandomInstance(_r);
         }
 
-        public GeneticAlgorithmSpecies Cross(GeneticAlgorithmSpecies species2, double mutationRate, Random r)
+        public IDiscreteDecider CrossMutate(IDiscreteDecider species2, double mutationRate, Random r)
         {
             throw new Exception("Crossing Random Matrixes has no effect");
         }
 
-        public void PostGenerationProcessing() { }
+        public IDiscreteDecider GetMutated(double mutationRate, Random r)
+        {
+            throw new Exception("Mutating Random Matrixes has no effect");
+        }
 
         public string GetRaw()
         {
