@@ -239,15 +239,18 @@ namespace SimpleGame
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
             var learner = new SinglePathMutationRunner(runner, stateProvider);
             learner.CurrentBest = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));
-            learner.GenerationSize = 100;
-            learner.MutationRate = 0.05;
+
+            learner.GenerationSize = 25;
+            learner.MaxConditionsToTake = 20;
+            learner.MaxHeuristicsToTake = 10;
             learner.TimesToTestPerSpecies = 1;
 
-            learner.Optimize(20, r);
+            learner.Optimize(30, r);
 
+            learner.CurrentBest.SaveToFile("C:\\ProjectLogs\\GoodHeuristicSets\\Random3\\2650.dc");
 
-            var state = stateProvider.GetStateForDemonstration();
-            runner.Demonstrate(learner.CurrentBest, state);
+            //var state = stateProvider.GetStateForDemonstration();
+            //runner.Demonstrate(learner.CurrentBest, state);
 
 
 

@@ -15,9 +15,12 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         public DeciderSpecies CurrentBest;
         public HeuristicBuildingDecider BestDecider => ((HeuristicBuildingDecider)CurrentBest.BaseDecider);
 
-        public double MutationRate;
+        //public double MutationRate;
         public int GenerationSize;
         public int TimesToTestPerSpecies;
+
+        public int MaxConditionsToTake;
+        public int MaxHeuristicsToTake;
 
         private IDiscreteGameManager _game;
         private IDiscreteGameStateProvider _provider;
@@ -35,7 +38,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 Console.WriteLine("\nMutating Heuristics\n");
                 LookForBetterScore(50,r);
                 Console.WriteLine("\nRemoving Heuristics\n");
-                Simplify(30);
+                Simplify(30,r);
                 Console.WriteLine("\nRemoving Conditions\n");
                 RemoveConditions(30,r);
 
@@ -73,22 +76,31 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                     CurrentBest = oldBest;
                 }
 
-                Console.WriteLine("Score: " + CurrentBest.Score + " Genes: " + CurrentBest.NumGenes + " Conditions: " + BestDecider.Heuristics.Select(h=>h.Conditions.Count).Sum());
+                Console.WriteLine("Score: " + CurrentBest.Score + " Genes: " + CurrentBest.NumGenes + " Conditions: " + BestDecider.Heuristics.Select(h => h.Conditions.Count).Sum());// + " Avg: " + deciders.Select(d=>d.Score).Average().ToString("0.0"));
             }
         }
 
 
         private void LookForBetterScore(int numIterations, Random r)
         {
-            IterateChange((() => (DeciderSpecies)CurrentBest.GetMutated(MutationRate, r)), numIterations);
+            var mutationRate = (BestDecider.NumGenes == 0) ? 0.05 : (5.0 / BestDecider.NumGenes);
+
+            IterateChange((() =>
+            {
+                var mutated = (DeciderSpecies)CurrentBest.GetMutated(mutationRate, r);
+                return mutated;
+            }),
+            numIterations);
+
         }
 
-        private void Simplify(int numIterations)
+        private void Simplify(int numIterations, Random r)
         {
             IterateChange((() => 
             {
+                var toTake = r.Next(1, MaxHeuristicsToTake);
                 var less = ((HeuristicBuildingDecider)CurrentBest.BaseDecider).CloneWithAllHeuristics();
-                less.RemoveRandomHeuristics(5);
+                less.RemoveRandomHeuristics(toTake);
                 return new DeciderSpecies(less);
             }), 
             numIterations);
@@ -96,11 +108,12 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         private void RemoveConditions(int numIterations,Random r)
         {
-            var rate = 1.0 / (BestDecider.NumGenes);
             IterateChange((() =>
             {
+                var toTake = ((double)r.Next(1, MaxConditionsToTake))/ (BestDecider.NumGenes);
+
                 var less = ((HeuristicBuildingDecider)CurrentBest.BaseDecider).CloneWithAllHeuristics();
-                less.RemoveRandomConditions(rate,r);
+                less.RemoveRandomConditions(toTake,r);
                 return new DeciderSpecies(less);
             }),
             numIterations);
