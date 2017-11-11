@@ -2,6 +2,7 @@
 using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
 using SimpleGame.Games.SimplePacman;
+using SimpleGame.Metrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 while (deciders.Count() < GenerationSize)
                 {
                     DeciderSpecies decider = processSpecies();
-                    var heuristicAvg = Program.SuccessTesting(decider, TimesToTestPerSpecies);
+                    var heuristicAvg = SimpleGameTester.SuccessTesting(decider, TimesToTestPerSpecies);
                     decider.Score = (int)heuristicAvg;
                     deciders.Add(decider);
                 }

@@ -16,6 +16,8 @@ namespace SimpleGame.AI
         public IDiscreteDecider BaseDecider;
         public int Score;
 
+        public int? RandomSeed;
+
         public DiscreteIOInfo IOInfo => BaseDecider.IOInfo;
         public int NumGenes => BaseDecider.NumGenes;
 
