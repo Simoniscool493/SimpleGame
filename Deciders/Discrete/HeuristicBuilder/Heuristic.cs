@@ -70,10 +70,23 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         public void AddExceptions(int numExceptions,Random r)
         {
-            for(int i=0; Exceptions.Count < MaxExceptions && i < numExceptions;i++)
+            for(int i=0;i<numExceptions;i++)
             {
-                var feature = IOInfo.InputInfo.GetSingleFeature(r);
-                Exceptions.Add(feature);
+                if(Conditions.Count >= IOInfo.InputInfo.PayloadLength || Exceptions.Count >= IOInfo.InputInfo.PayloadLength-1)
+                {
+                    return;
+                }
+
+                int position = -1;
+                var conditionPositions = Conditions.Select(c => c.Item1);
+
+                do
+                {
+                    position = r.Next(0, IOInfo.InputInfo.PayloadLength);
+                }
+                while (conditionPositions.Contains(position));
+
+                Exceptions.Add(new Tuple<int, int>(position, IOInfo.OutputInfo.GetRandomInstance(r).SingleItem));
             }
         }
 

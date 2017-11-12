@@ -182,6 +182,9 @@ namespace SimpleGame.Metrics
                 state.Reset();
             }
 
+            //scores.Sort();
+            //scores.Reverse();
+
             return (scores).Average();
         }
 

@@ -155,7 +155,6 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private DeciderSpecies GetSpeciesBasedOnScoreWeighing(HighestOrLowest highestOrLowest)
         {
-            // totalWeight is the sum of all brokers' weight
             var scoredSpecies = ThisGeneration.Where(s => s.IsScored);
             int totalWeights = scoredSpecies.Select(s => s.Score).Sum();
             int randomNumber = _r.Next(0, totalWeights);

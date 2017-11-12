@@ -33,15 +33,25 @@ namespace SimpleGame
             var runner = new PacmanManager();
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
 
+
+            var decider = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GoodHeuristicSets\\182_EatPellets_GeneralSolution.dc");
+            var state = stateProvider.GetStateForDemonstration();
+            runner.Demonstrate(decider, state);
+
+
             var sets = Directory.GetFiles("C:\\ProjectLogs\\GoodHeuristicSets\\").Where(f=>f.Contains(".dc"));
-            var deciders = new List<DeciderSpecies>();
+            var deciders = new Dictionary<int,string>();
 
             foreach(var file in sets)
             {
-                var decider = (DeciderSpecies)DiscreteDeciderLoader.LoadFromFile(file);
-                decider.Score = (int)SimpleGameTester.SuccessTesting(decider, 20);
-                deciders.Add(decider);
+                var decidert = (DeciderSpecies)DiscreteDeciderLoader.LoadFromFile(file);
+
+                decidert.Score = (int)SimpleGameTester.SuccessTesting(decider, 200);
+                deciders[decidert.Score] = file;
             }
+
+            var sorted = deciders.OrderBy(k => k.Key).Reverse().ToArray();
+
 
             return;
 
@@ -60,20 +70,29 @@ namespace SimpleGame
             var stateProvider = (PacmanStateProvider)runner.StateProvider;
             var learner = new SinglePathMutationRunner(runner, stateProvider);
             learner.CurrentBest = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));
+            //learner.CurrentBest = (DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GoodHeuristicSets\\2710.dc");
 
-            learner.GenerationSize = 25;
-            learner.MaxConditionsToTake = 20;
-            learner.MaxHeuristicsToTake = 10;
-            learner.TimesToTestPerSpecies = 1;
+            learner.GenerationSize = 25; //25
+            learner.MaxConditionsToTake = 20; //20
+            learner.MaxHeuristicsToTake = 10; //10
+            learner.TimesToTestPerSpecies = 1; //100
+            learner.MinimizeComplexity = true;
+            learner.IncludePreviousBestWhenIteratingForwards = true;
 
-            learner.Optimize(30, r);
+            learner.Optimize(25, r);
 
-            learner.CurrentBest.SaveToFile("C:\\ProjectLogs\\GoodHeuristicSets\\" + learner.CurrentBest.Score + "_Survive.dc");
+            //learner.CurrentBest.RandomSeed = 0;
+            //learner.CurrentBest.SaveToFile("C:\\ProjectLogs\\GoodHeuristicSets\\" + learner.CurrentBest.Score + "_Distilled.dc");
 
             ActualPacmanGameInstance.TIMER_TICK_PENALTY = 0;
             ActualPacmanGameInstance.FOOD_SCORE = 10;
             ActualPacmanGameInstance.SUPER_FOOD_SCORE = 50;
             ActualPacmanGameInstance.GHOST_EATING_SCORE = 50;
+            ActualPacmanGameInstance.GHOST_SEEING_SCORE = 0;
+            ActualPacmanGameInstance.DEATH_PENALTY = 0;
+            ActualPacmanGameInstance.WALL_BUMPING_PENALTY = 0;
+            ActualPacmanGameInstance.OLD_POSITION_PENALTY = 0;
+            ActualPacmanGameInstance.NEW_POSITION_SCORE = 0;
 
             var score = runner.Score(learner.CurrentBest, stateProvider.GetStateForNextGeneration());
 

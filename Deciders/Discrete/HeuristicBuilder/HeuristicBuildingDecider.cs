@@ -22,6 +22,13 @@ namespace SimpleGame.Deciders
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => Heuristics.Count;
 
+        public int NumConditions => Heuristics.Select(h => h.Conditions.Count).Sum();
+        public int NumExceptions => Heuristics.Select(h => h.Exceptions.Count).Sum();
+
+        public int TotalComplexity => NumConditions + NumExceptions;
+
+        public double ExceptionRate = 0;
+
         public List<Heuristic> Heuristics;
 
         public Random R;
@@ -47,32 +54,19 @@ namespace SimpleGame.Deciders
         {
             var h = GetHeuristicFromListFor(input);
 
-            if(h==null)
+            if (h==null)
             {
-                //h = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
-                h = GetExactHeuristicOrRandomForThisInput(input);
+                h = HeuristicFactory.CreateExactHeuristicFromThisInput(R, IOInfo, input);
                 Heuristics.Add(h);
             }
+            /*else if (ExceptionRate != 0 && R.NextDouble() < ExceptionRate)
+            {
+                h.AddExceptionForThisInput(R, input);
+            }*/
+
             DiscreteDataPayload decision = new DiscreteDataPayload(IOInfo.OutputInfo.PayloadType, h.ExpectedOutput);
 
             return decision;
-        }
-
-        public Heuristic GetExactHeuristicOrRandomForThisInput(DiscreteDataPayload input)
-        {
-            Heuristic decidedHeuristic = GetHeuristicFromListFor(input);
-            if (decidedHeuristic != null)
-            {
-                return decidedHeuristic;
-            }
-            else
-            {
-                Heuristic h = HeuristicFactory.CreateExactHeuristicFromThisInput(R, IOInfo, input);
-                //Heuristic heuristic = Heuristic.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, HeuristicBuildingConstants.ConditionsToAddToHeuristicFromInput);
-
-                Heuristics.Add(h);
-                return h;
-            }
         }
 
         public Heuristic GetHeuristicFromListFor(DiscreteDataPayload input)
@@ -127,6 +121,12 @@ namespace SimpleGame.Deciders
 
         public void RemoveRandomHeuristics(int numToTake)
         {
+            if(numToTake> Heuristics.Count)
+            {
+                Heuristics.Clear();
+                return;
+            }
+
             for(int i=0;i<numToTake;i++)
             {
                 var position = R.Next(0, Heuristics.Count);
@@ -191,6 +191,7 @@ namespace SimpleGame.Deciders
             return decider;
         }
 
+
         public HeuristicBuildingDecider CloneWithAllHeuristics()
         {
             var decider = new HeuristicBuildingDecider(this.R,this.IOInfo);
@@ -202,6 +203,7 @@ namespace SimpleGame.Deciders
                 var newHeuristic = new Heuristic(h.ExpectedOutput, IOInfo);
                 newHeuristic.Exceptions = new List<Tuple<int, int>>(h.Exceptions);
                 newHeuristic.Conditions = new List<Tuple<int, int>>(h.Conditions);
+                newHeuristic.UseCount = h.UseCount;
 
                 decider.Heuristics.Add(newHeuristic);
             }
@@ -232,6 +234,41 @@ namespace SimpleGame.Deciders
             Console.WriteLine("\nRemoved " + toRemove.Count + " unused heuristics.\n");
 
             Heuristics = Heuristics.Except(toRemove).ToList();
+        }
+
+        public void AddExceptions(int numToAdd)
+        {
+            for (int i = 0; i < numToAdd; i++)
+            {
+                var h = GetHeuristicBasedOnUseWeighing();
+                //var h = Heuristics.ElementAt(R.Next(0, Heuristics.Count));
+                h.AddExceptions(1, R);
+            }
+        }
+
+        private Heuristic GetHeuristicBasedOnUseWeighing()
+        {
+            int totalWeights = Heuristics.Select(h =>h.UseCount).Sum();
+            int randomNumber = R.Next(0, totalWeights);
+
+            if (totalWeights == 0)
+            {
+                throw new Exception();
+            }
+
+            Heuristic selectedHeuristic = null;
+            foreach (var h in Heuristics)
+            {
+                if (randomNumber < h.UseCount)
+                {
+                    selectedHeuristic = h;
+                    break;
+                }
+
+                randomNumber = randomNumber - h.UseCount;
+            }
+
+            return selectedHeuristic;
         }
 
 

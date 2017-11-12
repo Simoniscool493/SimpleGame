@@ -11,7 +11,8 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
     {
         public static HeuristicBuildingDecider CrossMutate(HeuristicBuildingDecider decider1,HeuristicBuildingDecider decider2, double mutationRate, Random r)
         {
-            var heuristics1 = decider1.Heuristics;
+            throw new NotImplementedException();
+            /*var heuristics1 = decider1.Heuristics;
             var heuristics2 = decider2.Heuristics;
             var IOInfo = decider1.IOInfo;
 
@@ -57,7 +58,7 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
 
             //no code yet exists to add parent 2's heuristics
 
-            return childDecider;
+            return childDecider;*/
         }
 
         public static HeuristicBuildingDecider GetMutated(HeuristicBuildingDecider decider,double mutationRate, Random r)

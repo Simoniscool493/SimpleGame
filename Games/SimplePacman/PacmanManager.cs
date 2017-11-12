@@ -46,7 +46,7 @@ namespace SimpleGame.Games.SimplePacman
             while(true)
             {
                 var status = IOADapter.GetOutput(state);
-
+                
                 if (status.Data[0]==PacmanConstants.GAME_OVER)
                 {
                     state.Dispose();
@@ -58,7 +58,7 @@ namespace SimpleGame.Games.SimplePacman
 
                 if(!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(70);
+                    Thread.Sleep(10);
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace SimpleGame.Games.SimplePacman
 
                 if (!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(100);
                 }
             }
         }
