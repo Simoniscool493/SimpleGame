@@ -18,28 +18,28 @@ namespace SimpleGame.Deciders.DecisionMatrix
     {
         private static Random r = new Random();
 
-        private Dictionary<DiscreteDataPayload, DiscreteDataPayload> _theMatrix;
+        private Dictionary<IDiscreteDataPayload, IDiscreteDataPayload> _theMatrix;
 
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => _theMatrix.Count();
 
-        public BasicDecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix, DiscreteIOInfo ioInfo)
+        public BasicDecisionMatrix(Dictionary<IDiscreteDataPayload, IDiscreteDataPayload> matrix, DiscreteIOInfo ioInfo)
         {
             _theMatrix = matrix;
             IOInfo = IOInfo;
         }
 
-        public DiscreteDataPayload Decide(DiscreteDataPayload input)
+        public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
         {
             return _theMatrix[input];
         }
 
-        public Dictionary<DiscreteDataPayload, DiscreteDataPayload>.KeyCollection GetKeys()
+        public Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>.KeyCollection GetKeys()
         {
             return _theMatrix.Keys;
         }
 
-        public bool ContainsKey(DiscreteDataPayload d)
+        public bool ContainsKey(IDiscreteDataPayload d)
         {
             return _theMatrix.ContainsKey(d);
         }

@@ -17,18 +17,18 @@ namespace SimpleGame.Deciders.DecisionMatrix
     class LazyDecisionMatrix : IDecisionMatrix
     {
         private static Random r = new Random();
-        private Dictionary<DiscreteDataPayload, DiscreteDataPayload> _theMatrix;
+        private Dictionary<IDiscreteDataPayload, IDiscreteDataPayload> _theMatrix;
 
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => _theMatrix.Count();
 
-        public LazyDecisionMatrix(Dictionary<DiscreteDataPayload, DiscreteDataPayload> matrix,DiscreteIOInfo ioInfo)
+        public LazyDecisionMatrix(Dictionary<IDiscreteDataPayload, IDiscreteDataPayload> matrix,DiscreteIOInfo ioInfo)
         {
             _theMatrix = matrix;
             IOInfo = ioInfo;
         }
 
-        public DiscreteDataPayload Decide(DiscreteDataPayload input)
+        public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
         {
             if(_theMatrix.ContainsKey(input))
             {
@@ -42,12 +42,12 @@ namespace SimpleGame.Deciders.DecisionMatrix
             }
         }
 
-        public Dictionary<DiscreteDataPayload, DiscreteDataPayload>.KeyCollection GetKeys()
+        public Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>.KeyCollection GetKeys()
         {
             return _theMatrix.Keys;
         }
 
-        public bool ContainsKey(DiscreteDataPayload d)
+        public bool ContainsKey(IDiscreteDataPayload d)
         {
             return _theMatrix.ContainsKey(d);
         }

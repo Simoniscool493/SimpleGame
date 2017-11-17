@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Pacman;
 using SimpleGame.AI;
 using SimpleGame.AI.GeneticAlgorithm;
 using SimpleGame.Deciders;
@@ -168,10 +169,9 @@ namespace SimpleGame.Metrics
             return list;
         }
 
-        public static double SuccessTesting(IDiscreteDecider decider, int numTimes)
+        public static double SuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
         {
-            var runner = new PacmanManager();
-            var stateProvider = (PacmanStateProvider)runner.StateProvider;
+            var stateProvider = runner.StateProvider;
             var state = stateProvider.GetStateForNextGeneration();
 
             List<int> scores = new List<int>();
@@ -182,11 +182,31 @@ namespace SimpleGame.Metrics
                 state.Reset();
             }
 
-            //scores.Sort();
-            //scores.Reverse();
+            scores.Sort();
+            scores.Reverse();
 
             return (scores).Average();
         }
+
+        public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
+        {
+            ActualPacmanGameInstance.IS_DETERMINISTIC = true;
+
+            var stateProvider = runner.StateProvider;
+            var state = stateProvider.GetStateForNextGeneration();
+
+            List<int> scores = new List<int>();
+
+            for (int i = 0; i < numTimes; i++)
+            {
+                stateProvider.RandomSeed = i;
+                scores.Add(runner.Score(decider, state));
+                state.Reset();
+            }
+
+            return (scores).Average();
+        }
+
 
         public static void Testing()
         {

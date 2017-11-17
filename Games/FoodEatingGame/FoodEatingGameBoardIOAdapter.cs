@@ -9,12 +9,12 @@ namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameBoardIOAdapter : IDiscreteGameIOAdapter
     {
-        public DiscreteDataPayload GetOutput(IDiscreteGameState genericState)
+        public IDiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
             return new DiscreteDataPayload(typeof(ItemAtPoint),((FoodEatingGameBoard)genericState).GetPlayerData().Cast<int>().ToArray());
         }
 
-        public void SendInput(IDiscreteGameState genericState, DiscreteDataPayload input)
+        public void SendInput(IDiscreteGameState genericState, IDiscreteDataPayload input)
         {
             var inputToSend = (Direction)input.SingleItem;
 

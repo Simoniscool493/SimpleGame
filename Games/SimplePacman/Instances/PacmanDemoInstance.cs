@@ -67,8 +67,8 @@ namespace SimpleGame.Games.SimplePacman
         {
             //stream.Write(new byte[] { PacmanConstants.STATUS_REQUEST }, 0, 1);
 
-            byte[] status = new byte[8];
-            stream.Read(status, 0, 8);
+            byte[] status = new byte[ActualPacmanGameInstance.LengthOfDataToSend];
+            stream.Read(status, 0, ActualPacmanGameInstance.LengthOfDataToSend);
 
             return status.Select(b => (int)b).ToArray();
         }

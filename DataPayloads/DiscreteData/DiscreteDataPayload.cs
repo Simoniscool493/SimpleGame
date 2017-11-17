@@ -4,9 +4,9 @@ using System.Text;
 namespace SimpleGame.DataPayloads.DiscreteData
 {
     [Serializable()]
-    public class DiscreteDataPayload
+    public class DiscreteDataPayload : IDiscreteDataPayload
     {
-        public int[] Data;
+        public int[] Data { get; }
         public Type UnderlyingType;
 
         public int SingleItem

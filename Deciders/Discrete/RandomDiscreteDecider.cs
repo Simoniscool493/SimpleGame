@@ -19,7 +19,7 @@ namespace SimpleGame.Deciders.Discrete
             _r = r;
         }
 
-        public DiscreteDataPayload Decide(DiscreteDataPayload input)
+        public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
         {
             return IOInfo.OutputInfo.GetRandomInstance(_r);
         }

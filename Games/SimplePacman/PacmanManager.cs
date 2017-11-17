@@ -7,6 +7,7 @@ using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
 using System.Threading;
 using log4net;
+using Pacman;
 
 namespace SimpleGame.Games.SimplePacman
 {
@@ -22,7 +23,7 @@ namespace SimpleGame.Games.SimplePacman
         {
             IOInfo = new DiscreteIOInfo
             (
-                inputInfo: new DiscreteDataPayloadInfo(typeof(PacmanPointData), 8, new string[] { "top1", "top2", "left1", "left2", "bottom1", "bottom2", "right1", "right2" }),
+                inputInfo: new DiscreteDataPayloadInfo(typeof(PacmanPointData), ActualPacmanGameInstance.LengthOfDataToSend, new string[] { "top1", "top2", "left1", "left2", "bottom1", "bottom2", "right1", "right2" }),
                 outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1, new string[] { "output" })
             );
 

@@ -50,7 +50,7 @@ namespace SimpleGame.Deciders
             return HeuristicDeciderFactory.GetMutated(this, mutationRate, r);
         }
 
-        public DiscreteDataPayload Decide(DiscreteDataPayload input)
+        public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
         {
             var h = GetHeuristicFromListFor(input);
 
@@ -69,7 +69,7 @@ namespace SimpleGame.Deciders
             return decision;
         }
 
-        public Heuristic GetHeuristicFromListFor(DiscreteDataPayload input)
+        public Heuristic GetHeuristicFromListFor(IDiscreteDataPayload input)
         {
             Heuristic heuristicToUse = null;
 
@@ -134,25 +134,31 @@ namespace SimpleGame.Deciders
             }
         }
 
-        public void RemoveRandomConditions(double oddsOfRemoval,Random r)
+        public void RemoveRandomConditions(double numToRemove,Random r)
         {
             List<Heuristic> toRemove = new List<Heuristic>();
 
-            foreach(var h in Heuristics)
+            for(int i=0;i<numToRemove;i++)
             {
-                if(r.NextDouble()<oddsOfRemoval)
-                {
-                    var numToRemove = r.Next(0, h.Conditions.Count);
-                    h.Conditions.RemoveAt(numToRemove);
+                var elementToTake = r.Next(0, Heuristics.Count);
+                var h = Heuristics.ElementAt(elementToTake);
 
-                    if(h.Conditions.Count == 0)
-                    {
-                        toRemove.Add(h);
-                    }
+                if (h.Conditions.Count == 0)
+                {
+                    toRemove.Add(h);
+                    break;
+                }
+
+                var conToRemove = r.Next(0, h.Conditions.Count);
+                h.Conditions.RemoveAt(conToRemove);
+
+                if (h.Conditions.Count == 0)
+                {
+                    toRemove.Add(h);
                 }
             }
 
-            foreach(var h in toRemove)
+            foreach (var h in toRemove)
             {
                 Heuristics.Remove(h);
             }

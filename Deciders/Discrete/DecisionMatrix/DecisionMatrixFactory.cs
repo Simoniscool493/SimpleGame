@@ -18,8 +18,8 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
                 throw new Exception("Cannot cross matrixes of two different payload types");
             }
 
-            var outputValues = matrix1.IOInfo.OutputInfo.PayloadType.GetEnumValues();
-            var childMatrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
+            var outputValues = matrix1.IOInfo.OutputInfo.PossibleValues;
+            var childMatrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
 
             foreach (var key in matrix1.GetKeys())
             {
@@ -61,8 +61,8 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
 
         public static IDecisionMatrix GetRandomIOMapping(Random r, DiscreteIOInfo IOInfo)
         {
-            var permutator = new DiscreteDataPayloadPermutator(IOInfo.InputInfo);
-            var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
+            var permutator = new DiscreteDataPayloadPermutator((DiscreteDataPayloadInfo)(IOInfo.InputInfo));
+            var matrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
             var isRunning = true;
 
             while (isRunning)
@@ -79,7 +79,7 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
 
         public static IDecisionMatrix GetLazyIOMapping(Random r, DiscreteIOInfo IOInfo)
         {
-            var matrix = new Dictionary<DiscreteDataPayload, DiscreteDataPayload>();
+            var matrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
             return new LazyDecisionMatrix(matrix, IOInfo);
         }
     }

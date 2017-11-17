@@ -5,10 +5,10 @@ namespace SimpleGame.DataPayloads.DiscreteData
     [Serializable()]
     public class DiscreteIOInfo
     {
-        public DiscreteDataPayloadInfo InputInfo;
-        public DiscreteDataPayloadInfo OutputInfo;
+        public IDiscreteDataPayloadInfo InputInfo;
+        public IDiscreteDataPayloadInfo OutputInfo;
 
-        public DiscreteIOInfo(DiscreteDataPayloadInfo inputInfo,DiscreteDataPayloadInfo outputInfo)
+        public DiscreteIOInfo(IDiscreteDataPayloadInfo inputInfo, IDiscreteDataPayloadInfo outputInfo)
         {
             InputInfo = inputInfo;
             OutputInfo = outputInfo;

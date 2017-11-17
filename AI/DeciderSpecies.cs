@@ -37,7 +37,7 @@ namespace SimpleGame.AI
             return species;
         }
 
-        public DiscreteDataPayload Decide(DiscreteDataPayload input)
+        public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
         {
             return BaseDecider.Decide(input);
         }

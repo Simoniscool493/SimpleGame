@@ -12,7 +12,7 @@ namespace SimpleGame.Deciders.Discrete
     {
         DiscreteIOInfo IOInfo { get; }
 
-        DiscreteDataPayload Decide(DiscreteDataPayload input);
+        IDiscreteDataPayload Decide(IDiscreteDataPayload input);
 
         string GetRaw();
 

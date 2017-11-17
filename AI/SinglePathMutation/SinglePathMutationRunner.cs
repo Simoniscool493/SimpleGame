@@ -72,7 +72,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 while (deciders.Count() < GenerationSize)
                 {
                     DeciderSpecies decider = processSpecies();
-                    var heuristicAvg = SimpleGameTester.SuccessTesting(decider, TimesToTestPerSpecies);
+                    var heuristicAvg = SimpleGameTester.SetRandomSuccessTesting(_game,decider, TimesToTestPerSpecies);
                     decider.Score = (int)heuristicAvg;
                     deciders.Add(decider);
                 }
@@ -84,6 +84,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
                 if (IncludePreviousBestWhenIteratingForwards.Value && CurrentBest.Score < oldBest.Score)
                 {
+                    oldBest.Score = (int)SimpleGameTester.SetRandomSuccessTesting(_game,oldBest, TimesToTestPerSpecies);
                     CurrentBest = oldBest;
                 }
 
@@ -98,6 +99,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 postProcess?.Invoke(CurrentBest);
 
                 Console.WriteLine("Score: " + CurrentBest.Score + " Genes: " + CurrentBest.NumGenes + " Complexity: " + (BestDecider.TotalComplexity));// + " Avg: " + deciders.Select(d=>d.Score).Average().ToString("0.0"));
+                //Console.WriteLine("Score: " + ((CurrentBest.Score * 100.0f) / 244.0f).ToString("0.00") + " Genes: " + CurrentBest.NumGenes + " Complexity: " + (BestDecider.TotalComplexity));// + " Avg: " + deciders.Select(d=>d.Score).Average().ToString("0.0"));
             }
         }
 
@@ -133,7 +135,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         {
             IterateChange((() =>
             {
-                var toTake = ((double)r.Next(1, MaxConditionsToTake))/ (BestDecider.NumGenes);
+                var toTake = r.Next(1, MaxConditionsToTake);
 
                 var less = ((HeuristicBuildingDecider)CurrentBest.BaseDecider).CloneWithAllHeuristics();
                 less.RemoveRandomConditions(toTake,r);

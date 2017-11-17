@@ -9,7 +9,7 @@ namespace SimpleGame.Games.SimplePacman
 {
     class PacmanIOAdapter : IDiscreteGameIOAdapter
     {
-        public DiscreteDataPayload GetOutput(IDiscreteGameState genericState)
+        public IDiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
             var state = (IPacmanInstance)genericState;
 
@@ -17,7 +17,7 @@ namespace SimpleGame.Games.SimplePacman
 
         }
 
-        public void SendInput(IDiscreteGameState genericState, DiscreteDataPayload input)
+        public void SendInput(IDiscreteGameState genericState, IDiscreteDataPayload input)
         {
             var state = (IPacmanInstance)genericState;
 

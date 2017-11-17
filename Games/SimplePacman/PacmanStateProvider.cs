@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pacman;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,18 @@ namespace SimpleGame.Games.SimplePacman
 {
     class PacmanStateProvider : IDiscreteGameStateProvider
     {
+        public int RandomSeed
+        {
+            get
+            {
+                return ActualPacmanGameInstance.RANDOM_SEED;
+            }
+            set
+            {
+                ActualPacmanGameInstance.RANDOM_SEED = value;
+            }
+        }
+
         public IDiscreteGameState GetStateForDemonstration()
         {
             return new PacmanDemoInstance(attachToExistingInstance: false);

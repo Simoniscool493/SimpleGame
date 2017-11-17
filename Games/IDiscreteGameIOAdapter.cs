@@ -9,9 +9,9 @@ namespace SimpleGame.Games
 {
     public interface IDiscreteGameIOAdapter
     {
-        DiscreteDataPayload GetOutput(IDiscreteGameState genericState);
+        IDiscreteDataPayload GetOutput(IDiscreteGameState genericState);
 
-        void SendInput(IDiscreteGameState genericState,DiscreteDataPayload input);
+        void SendInput(IDiscreteGameState genericState, IDiscreteDataPayload input);
 
     }
 }

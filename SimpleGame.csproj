@@ -41,6 +41,9 @@
     <Compile Include="AI\DeciderSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="DataPayloads\DiscreteData\DiscretedContinuousDataPayload.cs" />
+    <Compile Include="DataPayloads\DiscreteData\IDiscreteDataPayload.cs" />
+    <Compile Include="DataPayloads\DiscreteData\PayloadInfo\IDiscreteDataPayloadInfo.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\DecisionMatrixFactory.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderType.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\IDecisionMatrix.cs" />
@@ -49,8 +52,8 @@
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicDeciderFactory.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicFactory.cs" />
     <Compile Include="Deciders\Discrete\RandomDiscreteDecider.cs" />
-    <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayloadInfo.cs" />
-    <Compile Include="DataPayloads\DiscreteData\DiscreteIOInfo.cs" />
+    <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscreteDataPayloadInfo.cs" />
+    <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscreteIOInfo.cs" />
     <Compile Include="DataPayloads\DoublesData\DoublesDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscreteDataPayload.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\BasicDecisionMatrix.cs" />
@@ -72,6 +75,12 @@
     <Compile Include="Games\IDiscreteGameManager.cs" />
     <Compile Include="Games\FoodEatingGame\ItemAtPoint.cs" />
     <Compile Include="Games\IDiscreteGameStateProvider.cs" />
+    <Compile Include="Games\Iris\IrisDataInstance.cs" />
+    <Compile Include="Games\Iris\IrisIOAdapter.cs" />
+    <Compile Include="Games\Iris\IrisManager.cs" />
+    <Compile Include="Games\Iris\IrisSpecies.cs" />
+    <Compile Include="Games\Iris\IrisStateProvider.cs" />
+    <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscretedContinuousDataPayloadInfo.cs" />
     <Compile Include="Games\SimplePacman\Instances\IPacmanInstance.cs" />
     <Compile Include="Games\SimplePacman\PacmanConstants.cs" />
     <Compile Include="Games\SimplePacman\Instances\PacmanHeadlessInstance.cs" />

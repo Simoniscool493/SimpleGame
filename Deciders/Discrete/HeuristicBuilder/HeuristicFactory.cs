@@ -35,7 +35,7 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
             return h;
         }
 
-        public static Heuristic CreateExactHeuristicFromThisInput(Random r, DiscreteIOInfo ioInfo, DiscreteDataPayload input)
+        public static Heuristic CreateExactHeuristicFromThisInput(Random r, DiscreteIOInfo ioInfo, IDiscreteDataPayload input)
         {
             var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
             var h = new Heuristic(expectedOutput, ioInfo);
