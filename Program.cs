@@ -61,31 +61,32 @@ namespace SimpleGame
         }
 
 
-
+        public static List<Tuple<int[],int>> tested = new List<Tuple<int[], int>>();
+        public static List<Tuple<int[], int>> demoed = new List<Tuple<int[], int>>();
 
 
         public static void Testing2()
         {
             var r = new Random();
-            var runner = new IrisManager();
-            var stateProvider = (IrisStateProvider)runner.StateProvider;
+            var runner = new PacmanManager();
+            var stateProvider = runner.StateProvider;
             var learner = new SinglePathMutationRunner(runner, stateProvider);
             learner.CurrentBest = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));
-            //learner.CurrentBest = (DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GoodHeuristicSets\\182_EatPellets_GeneralSolution.dc");
+            //learner.CurrentBest = (DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\GoodHeuristicSets\\2800.dc");
 
             learner.GenerationSize = 25; //25
-            learner.MaxConditionsToTake = 20; //20
+            //learner.MaxConditionsToTake = 20; //20
             learner.MaxHeuristicsToTake = 10; //10
-            learner.TimesToTestPerSpecies = 3; //100
+            learner.TimesToTestPerSpecies = 1; //100
             learner.MinimizeComplexity = true;
             learner.IncludePreviousBestWhenIteratingForwards = true;
 
-            learner.Optimize(50, r);
+            learner.Optimize(5, r);
 
-            var score2 = SimpleGameTester.SetRandomSuccessTesting(runner,learner.CurrentBest,100);
+            //var score2 = SimpleGameTester.SetRandomSuccessTesting(runner, learner.CurrentBest, 100);
 
-            //learner.CurrentBest.RandomSeed = 4;
-            //learner.CurrentBest.SaveToFile("C:\\ProjectLogs\\GoodHeuristicSets\\" + learner.CurrentBest.Score + "_EatPelletsEvenBiggerBiggerView.dc");
+            //learner.CurrentBest.RandomSeed = 1;
+            //learner.CurrentBest.SaveToFile("C:\\ProjectLogs\\GoodHeuristicSets\\" + learner.CurrentBest.Score + ".dc");
 
             ActualPacmanGameInstance.TIMER_TICK_PENALTY = 0;
             ActualPacmanGameInstance.FOOD_SCORE = 10;
@@ -97,6 +98,8 @@ namespace SimpleGame
             ActualPacmanGameInstance.OLD_POSITION_PENALTY = 0;
             ActualPacmanGameInstance.NEW_POSITION_SCORE = 0;
 
+
+            //var score3 = SimpleGameTester.SetRandomSuccessTesting(runner, learner.CurrentBest, 100);
             var score = runner.Score(learner.CurrentBest, stateProvider.GetStateForNextGeneration());
 
             var state = stateProvider.GetStateForDemonstration();

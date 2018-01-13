@@ -9,18 +9,7 @@ namespace SimpleGame.Games.SimplePacman
 {
     class PacmanStateProvider : IDiscreteGameStateProvider
     {
-        public int RandomSeed
-        {
-            get
-            {
-                return ActualPacmanGameInstance.RANDOM_SEED;
-            }
-            set
-            {
-                ActualPacmanGameInstance.RANDOM_SEED = value;
-            }
-        }
-
+        public int RandomSeed { get; set; }
         public IDiscreteGameState GetStateForDemonstration()
         {
             return new PacmanDemoInstance(attachToExistingInstance: false);

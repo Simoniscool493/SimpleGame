@@ -22,7 +22,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         public int GenerationSize;
         public int TimesToTestPerSpecies;
 
-        public int MaxConditionsToTake;
+        //public int MaxConditionsToTake;
         public int MaxHeuristicsToTake;
 
         private IDiscreteGameManager _game;
@@ -43,7 +43,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 Console.WriteLine("\nRemoving Heuristics\n");
                 Simplify(40,r); //40 */
                 Console.WriteLine("\nRemoving Conditions\n");
-                RemoveConditions(40,r); //40 
+                RemoveConditions(40, r); //40 
 
                 //Console.WriteLine("\nAdding Exceptions\n");
                 //AddExceptions(400, r); 
@@ -135,7 +135,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         {
             IterateChange((() =>
             {
-                var toTake = r.Next(1, MaxConditionsToTake);
+                var toTake = r.Next(1,50);
 
                 var less = ((HeuristicBuildingDecider)CurrentBest.BaseDecider).CloneWithAllHeuristics();
                 less.RemoveRandomConditions(toTake,r);

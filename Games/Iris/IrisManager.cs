@@ -35,7 +35,7 @@ namespace SimpleGame.Games.Iris
             int score = 0;
             var theState = (IrisDataInstance)state;
 
-            foreach(var point in theState.evalData)
+            foreach(var point in theState.trainingData)
             {
                 var i1 = (int)(point.Feature1 * 10);
                 var i2 = (int)(point.Feature2 * 10);

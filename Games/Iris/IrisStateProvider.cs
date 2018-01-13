@@ -17,7 +17,7 @@ namespace SimpleGame.Games.Iris
 
         public IDiscreteGameState GetStateForNextGeneration()
         {
-            return new IrisDataInstance(new Random(RandomSeed));
+            return new IrisDataInstance(new Random());
         }
     }
 }

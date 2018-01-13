@@ -190,20 +190,22 @@ namespace SimpleGame.Metrics
 
         public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
         {
-            ActualPacmanGameInstance.IS_DETERMINISTIC = true;
-
+            var old = ActualPacmanGameInstance.RANDOM_SEED;
             var stateProvider = runner.StateProvider;
-            var state = stateProvider.GetStateForNextGeneration();
 
             List<int> scores = new List<int>();
 
             for (int i = 0; i < numTimes; i++)
             {
-                stateProvider.RandomSeed = i;
+                //ActualPacmanGameInstance.RANDOM_SEED = i;
+                var state = stateProvider.GetStateForNextGeneration();
+
+                ActualPacmanGameInstance.RANDOM_SEED = i;
                 scores.Add(runner.Score(decider, state));
-                state.Reset();
+                //state.Reset();
             }
 
+            ActualPacmanGameInstance.RANDOM_SEED = old;
             return (scores).Average();
         }
 

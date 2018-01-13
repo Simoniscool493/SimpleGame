@@ -11,7 +11,19 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
         public bool HasType => true;
         public Type PayloadType { get; }
-        public Array PossibleValues { get; private set; }
+
+        private Array _possibleValues;
+        public Array PossibleValues
+        {
+            get
+            {
+                if(_possibleValues==null)
+                {
+                    _possibleValues = PayloadType.GetEnumValues();
+                }
+                return _possibleValues;
+            }
+        }
 
         public string[] PositionNames;
 
@@ -22,16 +34,11 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
             PositionNames = positionNames;
 
-            PossibleValues = PayloadType.GetEnumValues();
+            _possibleValues = PayloadType.GetEnumValues();
         }
 
         public IDiscreteDataPayload GetRandomInstance(Random r)
         {
-            if(PossibleValues == null)
-            {
-                PossibleValues = PayloadType.GetEnumValues();
-            }
-
             if(PayloadType.IsEnum)
             {
                 var output = new List<int>();

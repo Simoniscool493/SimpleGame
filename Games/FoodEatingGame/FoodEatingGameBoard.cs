@@ -48,7 +48,7 @@ namespace SimpleGame.Games.FoodEatingGame
         private char[][] GetRandomGrid()
         {
             char[][] randomGrid = new char[defaultHeight][];
-            var r = new Random();
+            var r = new Random(FoodEatingGameManager.RandomSeed);
 
             for(int i=0;i< defaultHeight;i++)
             {
@@ -150,9 +150,35 @@ namespace SimpleGame.Games.FoodEatingGame
             var left = (int)GetItemAtActiveBoard(pX - 1, pY);
             var right = (int)GetItemAtActiveBoard(pX + 1, pY);
 
+            var top2 = (int)GetItemAtActiveBoard(pX, pY - 2);
+            var bottom2 = (int)GetItemAtActiveBoard(pX, pY + 2);
+            var left2 = (int)GetItemAtActiveBoard(pX - 2, pY);
+            var right2 = (int)GetItemAtActiveBoard(pX + 2, pY);
+
+            var top3 = (int)GetItemAtActiveBoard(pX, pY - 3);
+            var bottom3 = (int)GetItemAtActiveBoard(pX, pY + 3);
+            var left3 = (int)GetItemAtActiveBoard(pX - 3, pY);
+            var right3 = (int)GetItemAtActiveBoard(pX + 3, pY);
+
+            var top4 = (int)GetItemAtActiveBoard(pX, pY - 4);
+            var bottom4 = (int)GetItemAtActiveBoard(pX, pY + 4);
+            var left4 = (int)GetItemAtActiveBoard(pX - 4, pY);
+            var right4 = (int)GetItemAtActiveBoard(pX + 4, pY);
+
+            var top5 = (int)GetItemAtActiveBoard(pX, pY - 4);
+            var bottom5 = (int)GetItemAtActiveBoard(pX, pY + 4);
+            var left5 = (int)GetItemAtActiveBoard(pX - 4, pY);
+            var right5 = (int)GetItemAtActiveBoard(pX + 4, pY);
+
+            var top6 = (int)GetItemAtActiveBoard(pX, pY - 4);
+            var bottom6 = (int)GetItemAtActiveBoard(pX, pY + 4);
+            var left6 = (int)GetItemAtActiveBoard(pX - 4, pY);
+            var right6 = (int)GetItemAtActiveBoard(pX + 4, pY);
+
             var isThereFood = _foodEaten ? 1 : 0;
 
-            return new[] { top, bottom, left, right, isThereFood };
+            var output = new[] { top, top2, top3, top4, top5, top6, bottom, bottom2, bottom3, bottom4,bottom5, bottom6, left, left2, left3, left4, left5, left6, right, right2, right3, right4,right5, right6, isThereFood };
+            return output;
         }
 
         public void MovePlayer(Direction d)

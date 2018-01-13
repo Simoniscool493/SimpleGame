@@ -55,11 +55,13 @@ namespace SimpleGame.Games.SimplePacman
                 }
 
                 var direction = decider.Decide(status);
+
+                //Console.WriteLine(status.ToString() + '\t' + direction);
                 IOADapter.SendInput(state,direction);
 
                 if(!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(75);
                 }
             }
         }

@@ -8,6 +8,7 @@ namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameManager : IDiscreteGameManager
     {
+        public static int RandomSeed = 1;
         public DiscreteIOInfo IOInfo { get; }
 
         private FoodEatingGameBoardIOAdapter _IOAdapter = new FoodEatingGameBoardIOAdapter();
@@ -23,7 +24,7 @@ namespace SimpleGame.Games.FoodEatingGame
 
             IOInfo = new DiscreteIOInfo
             (
-                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),4, new string[] { "Top","Bottom","Left","Right","IsThereFood" }),
+                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),25, new string[] { "Top","Bottom","Left","Right","IsThereFood" }),
                 outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1, new string[] { "Output" })
             );
         }
@@ -50,7 +51,7 @@ namespace SimpleGame.Games.FoodEatingGame
 
             for (int i = 0; i < _timerLength; i++)
             {
-                var dataAtCurrentPosition = new DiscreteDataPayload(typeof(ItemAtPoint), IOADapter.GetOutput(s).Data.Take(4).ToArray());
+                var dataAtCurrentPosition = new DiscreteDataPayload(typeof(ItemAtPoint), IOADapter.GetOutput(s).Data.Take(IOInfo.InputInfo.PayloadLength).ToArray());
                 var direction = (Direction)p.Decide(dataAtCurrentPosition).SingleItem;
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
@@ -63,7 +64,7 @@ namespace SimpleGame.Games.FoodEatingGame
                     Console.Clear();
                     PrintCurrentState(b, numFoodEaten);
                     Console.WriteLine("Time remaining: " + (_timerLength - i));
-                    Thread.Sleep(200);
+                    Thread.Sleep(20);
                 }
             }
 
@@ -73,7 +74,7 @@ namespace SimpleGame.Games.FoodEatingGame
         public bool MoveInDirectionAndCheckIfAteFood(Direction d,FoodEatingGameBoard b)
         {
             IOADapter.SendInput(b, new DiscreteDataPayload(typeof(Direction), (int)d));
-            var wasThereFood = IOADapter.GetOutput(b).Data[4] == 1;
+            var wasThereFood = IOADapter.GetOutput(b).Data[IOInfo.InputInfo.PayloadLength-1] == 1;
 
             return wasThereFood;
         }
@@ -82,6 +83,5 @@ namespace SimpleGame.Games.FoodEatingGame
         {
             b.PrintWithPlayerPosition(foodEaten);
         }
-
     }
 }
