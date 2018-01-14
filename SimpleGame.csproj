@@ -89,6 +89,13 @@
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
+    <Compile Include="Games\SpaceInvaders\Instances\ISpaceInvadersInstance.cs" />
+    <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersDemoInstance.cs" />
+    <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersHeadlessInstance.cs" />
+    <Compile Include="Games\SpaceInvaders\SpaceInvadersIOAdapter.cs" />
+    <Compile Include="Games\SpaceInvaders\SpaceInvadersManager.cs" />
+    <Compile Include="Games\SpaceInvaders\SpaceInvadersOutput.cs" />
+    <Compile Include="Games\SpaceInvaders\SpaceInvadersStateProvider.cs" />
     <Compile Include="Metrics\GenAlg\Results\GenAlgSpecifiedGenerationNumTestResults.cs" />
     <Compile Include="Metrics\GenAlg\Results\GenAlgTestingOverallResults.cs" />
     <Compile Include="Metrics\GenAlg\GenAlgTestingStartParamaters.cs" />

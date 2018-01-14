@@ -33,6 +33,7 @@ namespace SimpleGame.Permutation
             }
 
             PermutationCounter[orderOfMagnitide]++;
+
             if (PermutationCounter[orderOfMagnitide] >= GetNumberOfValues(orderOfMagnitide))
             {
                 PermutationCounter[orderOfMagnitide] = 0;
@@ -73,7 +74,8 @@ namespace SimpleGame.Permutation
             {
                 permutations.Add(GetCurrentConfiguration());
 
-            } while (TryIncrement(0));
+            }
+            while (TryIncrement(0));
 
             return permutations;
         }
