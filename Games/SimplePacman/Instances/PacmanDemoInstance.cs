@@ -15,7 +15,6 @@ namespace SimpleGame.Games.SimplePacman
     {
         private static NamedPipeServerStream stream;
          
-        private static Random r = new Random();
         private Process pacmanProcess;
         private bool isHookedIn;
 
@@ -72,13 +71,5 @@ namespace SimpleGame.Games.SimplePacman
 
             return status.Select(b => (int)b).ToArray();
         }
-
-        private void SendRandomInput(object sender, ElapsedEventArgs e)
-        {
-            byte[] toSend = { (byte)r.Next(1, 5) };
-
-            stream.Write(toSend, 0, 1);
-        }
-
     }
 }

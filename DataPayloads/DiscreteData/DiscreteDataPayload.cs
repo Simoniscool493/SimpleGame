@@ -7,7 +7,6 @@ namespace SimpleGame.DataPayloads.DiscreteData
     public class DiscreteDataPayload : IDiscreteDataPayload
     {
         public int[] Data { get; }
-        public Type UnderlyingType;
 
         public int SingleItem
         {
@@ -22,15 +21,13 @@ namespace SimpleGame.DataPayloads.DiscreteData
             }
         }
 
-        public DiscreteDataPayload(Type underlyingType,int[] data)
+        public DiscreteDataPayload(int[] data)
         {
-            UnderlyingType = underlyingType;
             Data = data;
         }
 
-        public DiscreteDataPayload(Type underlyingType, int data)
+        public DiscreteDataPayload(int data)
         {
-            UnderlyingType = underlyingType;
             Data = new int[] { data };
         }
 

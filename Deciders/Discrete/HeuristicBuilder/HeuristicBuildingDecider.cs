@@ -64,7 +64,7 @@ namespace SimpleGame.Deciders
                 h.AddExceptionForThisInput(R, input);
             }*/
 
-            DiscreteDataPayload decision = new DiscreteDataPayload(IOInfo.OutputInfo.PayloadType, h.ExpectedOutput);
+            DiscreteDataPayload decision = new DiscreteDataPayload(h.ExpectedOutput);
 
             return decision;
         }

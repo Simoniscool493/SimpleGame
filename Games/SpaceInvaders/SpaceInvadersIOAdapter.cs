@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SimpleGame.DataPayloads.DiscreteData;
+using SimpleGame.Games.SpaceInvaders.Instances;
 
 namespace SimpleGame.Games.SpaceInvaders
 {
@@ -11,12 +12,17 @@ namespace SimpleGame.Games.SpaceInvaders
     {
         public IDiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
-            throw new NotImplementedException();
+            var state = (ISpaceInvadersInstance)genericState;
+
+            return new DiscreteDataPayload(state.GetStatus());
+
         }
 
         public void SendInput(IDiscreteGameState genericState, IDiscreteDataPayload input)
         {
-            throw new NotImplementedException();
+            var state = (ISpaceInvadersInstance)genericState;
+
+            state.SendInput(input.Data[0]);
         }
     }
 }

@@ -8,5 +8,8 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
 {
     interface ISpaceInvadersInstance : IDiscreteGameState
     {
+        int[] GetStatus();
+
+        void SendInput(int d);
     }
 }

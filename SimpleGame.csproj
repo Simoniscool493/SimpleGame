@@ -68,6 +68,8 @@
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmRunner.cs" />
     <Compile Include="AI\GeneticAlgorithm\GeneticAlgorithmGeneration.cs" />
     <Compile Include="Games\FoodEatingGame\GridConstants.cs" />
+    <Compile Include="Games\FoodEatingGame\Payloads\FoodEatingGameOutputInfo.cs" />
+    <Compile Include="Games\FoodEatingGame\Payloads\FoodEatingGameInputInfo.cs" />
     <Compile Include="Games\FoodEatingGame\SingleRandomFoodEatingGameStateProvider.cs" />
     <Compile Include="Games\IDiscreteGameIOAdapter.cs" />
     <Compile Include="Games\IDiscreteGameState.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Games\Iris\IrisSpecies.cs" />
     <Compile Include="Games\Iris\IrisStateProvider.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscretedContinuousDataPayloadInfo.cs" />
+    <Compile Include="Games\Iris\Payloads\IrisOutputInfo.cs" />
     <Compile Include="Games\SimplePacman\Instances\IPacmanInstance.cs" />
     <Compile Include="Games\SimplePacman\PacmanConstants.cs" />
     <Compile Include="Games\SimplePacman\Instances\PacmanHeadlessInstance.cs" />
@@ -89,9 +92,14 @@
     <Compile Include="Games\SimplePacman\PacmanManager.cs" />
     <Compile Include="Games\SimplePacman\PacmanPointData.cs" />
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
+    <Compile Include="Games\SimplePacman\Payloads\PacmanInputInfo.cs" />
+    <Compile Include="Games\SimplePacman\Payloads\PacmanOutputInfo.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\ISpaceInvadersInstance.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersDemoInstance.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersHeadlessInstance.cs" />
+    <Compile Include="Games\SpaceInvaders\Payloads\SpaceInvadersOutputInfo.cs" />
+    <Compile Include="Games\SpaceInvaders\Payloads\SpaceInvadersInputInfo.cs" />
+    <Compile Include="Games\SpaceInvaders\SpaceInvadersConstants.cs" />
     <Compile Include="Games\SpaceInvaders\SpaceInvadersIOAdapter.cs" />
     <Compile Include="Games\SpaceInvaders\SpaceInvadersManager.cs" />
     <Compile Include="Games\SpaceInvaders\SpaceInvadersOutput.cs" />
@@ -114,6 +122,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GamesToTestOn\CalceranosInvaders\CalceranosInvaders.csproj">
+      <Project>{1ffcf3bb-7442-4c4a-aeb0-17657476c71a}</Project>
+      <Name>CalceranosInvaders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GamesToTestOn\pacman\Pacman\Pacman.csproj">
       <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
       <Name>Pacman</Name>

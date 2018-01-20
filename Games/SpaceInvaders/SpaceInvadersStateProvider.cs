@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleGame.Games.SpaceInvaders.Instances;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,12 @@ namespace SimpleGame.Games.SpaceInvaders
 
         public IDiscreteGameState GetStateForDemonstration()
         {
-            throw new NotImplementedException();
+            return new SpaceInvadersDemoInstance();
         }
 
         public IDiscreteGameState GetStateForNextGeneration()
         {
-            throw new NotImplementedException();
+            return new SpaceInvadersHeadlessInstance();
         }
     }
 }

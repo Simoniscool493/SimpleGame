@@ -8,14 +8,32 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
 {
     class SpaceInvadersHeadlessInstance : ISpaceInvadersInstance
     {
+        CalceranosInvaders.MainForm _instance;
+
+        public SpaceInvadersHeadlessInstance()
+        {
+            Reset();
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _instance = null;
+        }
+
+        public int[] GetStatus()
+        {
+            return _instance.GetStatus();
         }
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            _instance = new CalceranosInvaders.MainForm(true,false);
+            _instance.InitializeObjects(true);
+        }
+
+        public void SendInput(int d)
+        {
+            _instance.SendInput(d);
         }
     }
 }

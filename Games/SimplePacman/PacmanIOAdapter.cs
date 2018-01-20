@@ -13,7 +13,7 @@ namespace SimpleGame.Games.SimplePacman
         {
             var state = (IPacmanInstance)genericState;
 
-            return new DiscreteDataPayload(typeof(PacmanPointData), state.GetStatus());
+            return new DiscreteDataPayload(state.GetStatus());
 
         }
 

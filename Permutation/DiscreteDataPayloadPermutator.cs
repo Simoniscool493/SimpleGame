@@ -19,9 +19,13 @@ namespace SimpleGame.Permutation
 
         public DiscreteDataPayloadPermutator(DiscreteDataPayloadInfo enumInfo)
         {
+            throw new NotImplementedException();
+
+            /*
             _enumValues = enumInfo.PayloadType.GetEnumValues();
             PermutationCounter = new int[enumInfo.PayloadLength];
             NumberOfEnumValues = enumInfo.PayloadType.GetEnumValues().Length;
+            */
         }
 
         public DiscreteDataPayload GetAsEnum(Type enumType)
@@ -35,7 +39,7 @@ namespace SimpleGame.Permutation
                 output.Add(value);
             }
 
-            return new DiscreteDataPayload(enumType, output.ToArray());
+            return new DiscreteDataPayload(output.ToArray());
         }
     }
 }

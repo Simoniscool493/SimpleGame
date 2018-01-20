@@ -11,7 +11,7 @@ namespace SimpleGame.Games.FoodEatingGame
     {
         public IDiscreteDataPayload GetOutput(IDiscreteGameState genericState)
         {
-            return new DiscreteDataPayload(typeof(ItemAtPoint),((FoodEatingGameBoard)genericState).GetPlayerData().Cast<int>().ToArray());
+            return new DiscreteDataPayload(((FoodEatingGameBoard)genericState).GetPlayerData().Cast<int>().ToArray());
         }
 
         public void SendInput(IDiscreteGameState genericState, IDiscreteDataPayload input)

@@ -58,8 +58,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         public void Mutate(Random r)
         {
-            var outputEnumTypes = IOInfo.OutputInfo.PossibleValues;
-            var newExpectedOutput = (int)outputEnumTypes.GetValue(r.Next(0, outputEnumTypes.Length));
+            var newExpectedOutput = IOInfo.OutputInfo.GetRandomInstance(r).SingleItem;
 
             ExpectedOutput = newExpectedOutput;
             ConsecutiveGensNotUsed = 0;
@@ -119,31 +118,19 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         
         public DiscreteDataPayload RecreatePayloadWithConditions()
         {
-            if(IOInfo.InputInfo.HasType)
+            int[] inputInfo = new int[IOInfo.InputInfo.PayloadLength];
+
+            foreach (var h in Conditions)
             {
-                int[] inputInfo = new int[IOInfo.InputInfo.PayloadLength];
-
-                foreach (var h in Conditions)
-                {
-                    inputInfo[h.Item1] = h.Item2;
-                }
-
-                return new DiscreteDataPayload(IOInfo.InputInfo.PayloadType, inputInfo);
+                inputInfo[h.Item1] = h.Item2;
             }
 
-            throw new Exception();
+            return new DiscreteDataPayload(inputInfo);
         }
 
         public override string ToString()
         {
-            if(IOInfo.OutputInfo.HasType)
-            {
-                var outputName = Enum.GetName(IOInfo.OutputInfo.PayloadType, ExpectedOutput);
-
-                return $"Conditions: {Conditions.Count} Exceptions: {Exceptions.Count} Uses: {UseCount} => {outputName}";
-            }
-
-            throw new Exception();
+            return $"Conditions: {Conditions.Count} Exceptions: {Exceptions.Count} Uses: {UseCount} => <NOT IMPLIMENTED>";
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
+using SimpleGame.Games.Iris.Payloads;
 
 namespace SimpleGame.Games.Iris
 {
@@ -20,8 +21,8 @@ namespace SimpleGame.Games.Iris
         {
             IOInfo = new DiscreteIOInfo
             (
-                inputInfo: new DiscretedContinuousDataPayloadInfo(3,10),
-                outputInfo: new DiscreteDataPayloadInfo(typeof(IrisSpecies), 1, new string[] { "output" })
+                inputInfo: new DiscretedContinuousDataPayloadInfo(3, 10),
+                outputInfo: new IrisOutputInfo()
             );
         }
 

@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Games.SpaceInvaders
 {
-    public enum SpaceInvadersOutput
+    class SpaceInvadersConstants
     {
-        None,
-        Left,
-        Right,
-        Shoot
+        public const int GAME_OVER = 254;
     }
 }

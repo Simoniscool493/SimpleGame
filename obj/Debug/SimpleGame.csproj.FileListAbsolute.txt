@@ -44,3 +44,5 @@ C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\nunit.
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.exe
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.pdb
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\log4net.dll
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\CalceranosInvaders.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\CalceranosInvaders.pdb

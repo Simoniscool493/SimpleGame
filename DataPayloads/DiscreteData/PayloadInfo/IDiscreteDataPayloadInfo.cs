@@ -10,11 +10,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
     {
         int PayloadLength { get; }
 
-        Array PossibleValues { get; }
-
-        bool HasType { get; }
-
-        Type PayloadType { get; }
+        bool IsSingle { get; }
 
         IDiscreteDataPayload GetRandomInstance(Random r);
 

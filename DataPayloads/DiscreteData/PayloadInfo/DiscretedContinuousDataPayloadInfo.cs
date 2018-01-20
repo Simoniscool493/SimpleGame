@@ -13,24 +13,20 @@ namespace SimpleGame.Games.Iris
         public int Granularity { get; }
 
         public bool HasType => false;
-        public Type PayloadType => null;
-
-        public Array PossibleValues { get; }
+        public bool IsSingle => (PayloadLength == 1);
 
         public DiscretedContinuousDataPayloadInfo(int length, int granularity)
         {
+            throw new NotImplementedException();
+
             PayloadLength = length;
             Granularity = granularity;
 
-            PossibleValues = Array.CreateInstance(typeof(int), granularity);
             int[] tempPossibleValues = new int[granularity];
             for(int i=0;i<granularity;i++)
             {
                 tempPossibleValues[i] = i;
             }
-
-            tempPossibleValues.CopyTo(PossibleValues,0);
-
         }
 
         public IDiscreteDataPayload GetDefualtInstance()

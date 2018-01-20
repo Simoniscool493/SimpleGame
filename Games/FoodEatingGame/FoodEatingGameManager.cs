@@ -3,6 +3,7 @@ using System.Threading;
 using System.Linq;
 using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
+using SimpleGame.Games.FoodEatingGame.Payloads;
 
 namespace SimpleGame.Games.FoodEatingGame
 {
@@ -24,8 +25,8 @@ namespace SimpleGame.Games.FoodEatingGame
 
             IOInfo = new DiscreteIOInfo
             (
-                inputInfo: new DiscreteDataPayloadInfo(typeof(ItemAtPoint),25, new string[] { "Top","Bottom","Left","Right","IsThereFood" }),
-                outputInfo: new DiscreteDataPayloadInfo(typeof(Direction), 1, new string[] { "Output" })
+                inputInfo: new FoodEatingGameInputInfo(),
+                outputInfo: new FoodEatingGameOutputInfo()
             );
         }
 
@@ -51,7 +52,7 @@ namespace SimpleGame.Games.FoodEatingGame
 
             for (int i = 0; i < _timerLength; i++)
             {
-                var dataAtCurrentPosition = new DiscreteDataPayload(typeof(ItemAtPoint), IOADapter.GetOutput(s).Data.Take(IOInfo.InputInfo.PayloadLength).ToArray());
+                var dataAtCurrentPosition = new DiscreteDataPayload(IOADapter.GetOutput(s).Data.Take(IOInfo.InputInfo.PayloadLength).ToArray());
                 var direction = (Direction)p.Decide(dataAtCurrentPosition).SingleItem;
 
                 if(MoveInDirectionAndCheckIfAteFood(direction,b))
@@ -73,7 +74,7 @@ namespace SimpleGame.Games.FoodEatingGame
 
         public bool MoveInDirectionAndCheckIfAteFood(Direction d,FoodEatingGameBoard b)
         {
-            IOADapter.SendInput(b, new DiscreteDataPayload(typeof(Direction), (int)d));
+            IOADapter.SendInput(b, new DiscreteDataPayload((int)d));
             var wasThereFood = IOADapter.GetOutput(b).Data[IOInfo.InputInfo.PayloadLength-1] == 1;
 
             return wasThereFood;

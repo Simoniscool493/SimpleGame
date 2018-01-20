@@ -13,24 +13,18 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
     {
         public static IDecisionMatrix MatrixCrossMutate(IDecisionMatrix matrix1, IDecisionMatrix matrix2, double mutationRate, Random r)
         {
-            if (!((matrix1.IOInfo.InputInfo.PayloadType == matrix2.IOInfo.InputInfo.PayloadType) && matrix1.IOInfo.OutputInfo.PayloadType == matrix2.IOInfo.OutputInfo.PayloadType))
+            if (!((matrix1.IOInfo.InputInfo == matrix2.IOInfo.InputInfo) && matrix1.IOInfo.OutputInfo == matrix2.IOInfo.OutputInfo))
             {
                 throw new Exception("Cannot cross matrixes of two different payload types");
             }
 
-            var outputValues = matrix1.IOInfo.OutputInfo.PossibleValues;
             var childMatrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
 
             foreach (var key in matrix1.GetKeys())
             {
                 if (r.NextDouble() < mutationRate)
                 {
-                    //if(r.NextDouble()>0.2) // Experiment: remove a gene instead of mutate it
-                    //{
-                    var value = outputValues.GetValue(r.Next(0, outputValues.Length));
-                    var valueAsIntArray = new int[] { ((int)value) };
-                    childMatrix[key] = new DiscreteDataPayload(matrix1.IOInfo.OutputInfo.PayloadType, valueAsIntArray);
-                    //}
+                    childMatrix[key] = matrix1.IOInfo.OutputInfo.GetRandomInstance(r);
                 }
                 else if (r.NextDouble() > 0.5)
                 {
@@ -61,6 +55,9 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
 
         public static IDecisionMatrix GetRandomIOMapping(Random r, DiscreteIOInfo IOInfo)
         {
+            throw new NotImplementedException();
+
+            /*
             var permutator = new DiscreteDataPayloadPermutator((DiscreteDataPayloadInfo)(IOInfo.InputInfo));
             var matrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
             var isRunning = true;
@@ -74,7 +71,7 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
                 isRunning = permutator.TryIncrement(0);
             }
 
-            return new BasicDecisionMatrix(matrix, IOInfo);
+            return new BasicDecisionMatrix(matrix, IOInfo);*/
         }
 
         public static IDecisionMatrix GetLazyIOMapping(Random r, DiscreteIOInfo IOInfo)

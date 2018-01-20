@@ -5,73 +5,75 @@ using System.Linq;
 namespace SimpleGame.DataPayloads.DiscreteData
 {
     [Serializable()]
-    public class DiscreteDataPayloadInfo : IDiscreteDataPayloadInfo
+    public abstract class DiscreteDataPayloadInfo : IDiscreteDataPayloadInfo
     {
-        public int PayloadLength { get; }
+        public int PayloadLength => valuePoints.Count;
+        public string[] dataPointNames;
 
-        public bool HasType => true;
-        public Type PayloadType { get; }
+        public bool IsSingle => (valuePoints.Count == 1);
 
-        private Array _possibleValues;
-        public Array PossibleValues
+        internal class ValuePoint
         {
-            get
+            List<int> possibleValues = new List<int>();
+
+            public ValuePoint(int[] values)
             {
-                if(_possibleValues==null)
+                foreach (int i in values)
                 {
-                    _possibleValues = PayloadType.GetEnumValues();
+                    possibleValues.Add(i);
                 }
-                return _possibleValues;
             }
+
+            public ValuePoint(Type enumValues)
+            {
+                var values = enumValues.GetEnumValues();
+                foreach (int i in values)
+                {
+                    possibleValues.Add(i);
+                }
+            }
+
+            public int GetRandom(Random r)
+            {
+                return possibleValues.ElementAt(r.Next(0, possibleValues.Count));
+            }
+
+            public int GetDefault()
+            {
+                return possibleValues.First();
+            }
+
         }
 
-        public string[] PositionNames;
-
-        public DiscreteDataPayloadInfo(Type pType,int pLength,string[] positionNames)
-        {
-            PayloadLength = pLength;
-            PayloadType = pType;
-
-            PositionNames = positionNames;
-
-            _possibleValues = PayloadType.GetEnumValues();
-        }
+        internal List<ValuePoint> valuePoints = new List<ValuePoint>();
 
         public IDiscreteDataPayload GetRandomInstance(Random r)
         {
-            if(PayloadType.IsEnum)
+            int[] data = new int[PayloadLength];
+
+            for(int i=0;i<PayloadLength;i++)
             {
-                var output = new List<int>();
-
-                for(int i=0;i< PayloadLength; i++)
-                {
-                    output.Add((int)PossibleValues.GetValue(r.Next(0, PossibleValues.Length)));
-                }
-
-                return new DiscreteDataPayload(PayloadType,output.ToArray());
+                data[i] = valuePoints.ElementAt(i).GetRandom(r);
             }
 
-            throw new Exception();
-        }
-
-        public Tuple<int,int> GetSingleFeature(Random r)
-        {
-            var position = r.Next(0, PayloadLength);
-            var value = (int)PossibleValues.GetValue(r.Next(0, PossibleValues.Length));
-
-            return new Tuple<int, int>(position, value);
+            return new DiscreteDataPayload(data);
         }
 
         public IDiscreteDataPayload GetDefualtInstance()
         {
-            if (PayloadType.IsEnum)
-            {
-                var value = (int)PossibleValues.GetValue(0);
+            int[] data = new int[PayloadLength];
 
-                return new DiscreteDataPayload(PayloadType, value);
+            for (int i = 0; i < PayloadLength; i++)
+            {
+                data[i] = valuePoints.ElementAt(i).GetDefault();
             }
 
-            throw new Exception();
+            return new DiscreteDataPayload(data);
+        }
+
+        public Tuple<int, int> GetSingleFeature(Random r)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         public void Optimize(int numIterations,Random r)
         {
-            double learningFactor = 0.5;
+            double learningFactor = 0.1;
 
             for(int i=0;i<numIterations;i++)
             {
