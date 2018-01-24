@@ -28,7 +28,7 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
         public void Reset()
         {
             _instance = new CalceranosInvaders.MainForm(true,false);
-            _instance.InitializeObjects(true);
+            _instance.InitializeObjects();
         }
 
         public void SendInput(int d)

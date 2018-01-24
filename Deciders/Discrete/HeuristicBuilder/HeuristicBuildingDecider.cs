@@ -57,6 +57,7 @@ namespace SimpleGame.Deciders
             if (h==null)
             {
                 h = HeuristicFactory.CreateExactHeuristicFromThisInput(R, IOInfo, input);
+                //h = HeuristicFactory.CreateHeuristicRandomlyFromThisInput(R, IOInfo, input, 20);
                 Heuristics.Add(h);
             }
             /*else if (ExceptionRate != 0 && R.NextDouble() < ExceptionRate)
@@ -240,6 +241,11 @@ namespace SimpleGame.Deciders
             Console.WriteLine("\nRemoved " + toRemove.Count + " unused heuristics.\n");
 
             Heuristics = Heuristics.Except(toRemove).ToList();
+
+            foreach (var h in Heuristics)
+            {
+                h.UseCount = 0;
+            }
         }
 
         public void AddExceptions(int numToAdd)

@@ -17,6 +17,7 @@ namespace SimpleGame.AI
         public int Score;
 
         public int? RandomSeed;
+        public int TotalComplexity => BaseDecider.TotalComplexity;
 
         public DiscreteIOInfo IOInfo => BaseDecider.IOInfo;
         public int NumGenes => BaseDecider.NumGenes;
@@ -49,8 +50,12 @@ namespace SimpleGame.AI
 
         public override string ToString()
         {
-            return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString();
+            return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString() + " Complexity: " + TotalComplexity.ToString();
         }
 
+        public void PostGenerationProcessing()
+        {
+            BaseDecider.PostGenerationProcessing();
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace SimpleGame.Deciders.Discrete
     {
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => 1;
+        public int TotalComplexity => 1;
+
         private Random _r;
 
         public RandomDiscreteDecider(Random r, DiscreteIOInfo ioInfo)
@@ -38,5 +40,7 @@ namespace SimpleGame.Deciders.Discrete
         {
             return "Random Decider";
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

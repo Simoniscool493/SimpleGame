@@ -29,12 +29,20 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (stream.IsConnected)
+            {
+                stream?.Disconnect();
+            }
+
+            invadersProcess?.Kill();
         }
 
         public int[] GetStatus()
         {
-            throw new NotImplementedException();
+            byte[] status = new byte[SpaceInvadersConstants.LengthOfStatus];
+            stream.Read(status, 0, SpaceInvadersConstants.LengthOfStatus);
+
+            return status.Select(b => (int)b).ToArray();
         }
 
         public void Reset()
@@ -49,12 +57,17 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
                 invadersProcess.Start();
             }
 
+            Console.WriteLine("Waiting for connection..");
             stream.WaitForConnection();
+            Console.WriteLine("Got connection.");
+
         }
 
         public void SendInput(int d)
         {
-            throw new NotImplementedException();
+            byte[] toSend = { (byte)(d) };
+
+            stream.Write(toSend, 0, 1);
         }
     }
 }

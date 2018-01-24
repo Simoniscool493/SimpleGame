@@ -14,6 +14,8 @@ namespace SimpleGame.Games.SpaceInvaders.Payloads
             valuePoints.Add(new ValuePoint(new []{ 0, 1 }));
             valuePoints.Add(new ValuePoint(new[] { 0, 1 }));
             valuePoints.Add(new ValuePoint(new[] { 0, 1 }));
+            valuePoints.Add(new ValuePoint(new[] { 0, 6 }));
+
         }
     }
 }

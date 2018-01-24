@@ -14,7 +14,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
         internal class ValuePoint
         {
-            List<int> possibleValues = new List<int>();
+            public List<int> possibleValues = new List<int>();
 
             public ValuePoint(int[] values)
             {
@@ -74,6 +74,24 @@ namespace SimpleGame.DataPayloads.DiscreteData
         public Tuple<int, int> GetSingleFeature(Random r)
         {
             throw new NotImplementedException();
+        }
+
+        public List<DiscreteDataPayload> AllPossibleValues()
+        {
+            if(PayloadLength == 1)
+            {
+                var values = new List<DiscreteDataPayload>();
+                var possble = valuePoints.First();
+
+                foreach(var point in possble.possibleValues)
+                {
+                    values.Add(new DiscreteDataPayload(point));
+                }
+
+                return values;
+            }
+
+            throw new NotImplementedException("Only implemented for single items");
         }
     }
 }

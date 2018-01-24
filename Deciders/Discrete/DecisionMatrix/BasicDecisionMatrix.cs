@@ -22,6 +22,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
 
         public DiscreteIOInfo IOInfo { get; }
         public int NumGenes => _theMatrix.Count();
+        public int TotalComplexity => _theMatrix.Count() * _theMatrix.First().Key.Data.Length * _theMatrix.First().Value.Data.Length;
 
         public BasicDecisionMatrix(Dictionary<IDiscreteDataPayload, IDiscreteDataPayload> matrix, DiscreteIOInfo ioInfo)
         {
@@ -74,5 +75,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
 
             return sb.ToString();
         }
+
+        public void PostGenerationProcessing() { }
     }
 }

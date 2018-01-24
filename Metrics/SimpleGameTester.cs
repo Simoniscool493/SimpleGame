@@ -169,8 +169,13 @@ namespace SimpleGame.Metrics
             return list;
         }
 
-        public static double SuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
+        public static double SuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes,bool setTheRandomSeed)
         {
+            if(true)
+            {
+                return SetRandomSuccessTesting(runner, decider, numTimes);
+            }
+
             var stateProvider = runner.StateProvider;
             var state = stateProvider.GetStateForNextGeneration();
 
@@ -188,6 +193,8 @@ namespace SimpleGame.Metrics
             return (scores).Average();
         }
 
+        public static Random r = new Random();
+
         public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
         {
             var old = ActualPacmanGameInstance.RANDOM_SEED;
@@ -195,18 +202,21 @@ namespace SimpleGame.Metrics
 
             List<int> scores = new List<int>();
 
+            //numTimes = 2;
             for (int i = 0; i < numTimes; i++)
             {
-                //ActualPacmanGameInstance.RANDOM_SEED = i;
                 var state = stateProvider.GetStateForNextGeneration();
 
                 ActualPacmanGameInstance.RANDOM_SEED = i;
+                //ActualPacmanGameInstance.RANDOM_SEED = r.Next();
+
                 scores.Add(runner.Score(decider, state));
-                //state.Reset();
             }
 
             ActualPacmanGameInstance.RANDOM_SEED = old;
-            return (scores).Average();
+
+            //var avg = scores.Average();
+            return (scores).Sum();
         }
 
 

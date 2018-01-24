@@ -18,6 +18,10 @@ namespace SimpleGame.Deciders.Discrete
 
         int NumGenes { get; }
 
+        int TotalComplexity { get; }
+
+        void PostGenerationProcessing();
+
         IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r);
 
         IDiscreteDecider GetMutated(double mutationRate, Random r);

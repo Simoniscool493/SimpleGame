@@ -13,7 +13,7 @@ namespace SimpleGame.Games.SpaceInvaders
 
         public IDiscreteGameState GetStateForDemonstration()
         {
-            return new SpaceInvadersDemoInstance();
+            return new SpaceInvadersDemoInstance(false);
         }
 
         public IDiscreteGameState GetStateForNextGeneration()
