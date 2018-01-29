@@ -94,6 +94,14 @@
     <Compile Include="Games\SimplePacman\PacmanStateProvider.cs" />
     <Compile Include="Games\SimplePacman\Payloads\PacmanInputInfo.cs" />
     <Compile Include="Games\SimplePacman\Payloads\PacmanOutputInfo.cs" />
+    <Compile Include="Games\Snake\Payloads\SnakeInputInfo.cs" />
+    <Compile Include="Games\Snake\Payloads\SnakeOutputInfo.cs" />
+    <Compile Include="Games\Snake\SnakeConstants.cs" />
+    <Compile Include="Games\Snake\SnakeIOAdapter.cs" />
+    <Compile Include="Games\Snake\SnakeManager.cs" />
+    <Compile Include="Games\Snake\SnakePointData.cs" />
+    <Compile Include="Games\Snake\SnakeState.cs" />
+    <Compile Include="Games\Snake\SnakeStateProvider.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\ISpaceInvadersInstance.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersDemoInstance.cs" />
     <Compile Include="Games\SpaceInvaders\Instances\SpaceInvadersHeadlessInstance.cs" />
@@ -129,6 +137,10 @@
     <ProjectReference Include="..\GamesToTestOn\pacman\Pacman\Pacman.csproj">
       <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
       <Name>Pacman</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GamesToTestOn\Snake\Project Files\ConsoleGraphics\ConsoleGraphics.csproj">
+      <Project>{dca5773b-49fc-410f-a270-f6db6fde8f1c}</Project>
+      <Name>ConsoleGraphics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

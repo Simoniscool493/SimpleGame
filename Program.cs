@@ -8,6 +8,7 @@ using SimpleGame.AI;
 using SimpleGame.Games.SpaceInvaders;
 using System.Collections.Generic;
 using System.Threading;
+using SimpleGame.Games.Snake;
 
 namespace SimpleGame
 {
@@ -19,7 +20,7 @@ namespace SimpleGame
         {
             PacmanTests();
 
-            var runner = new SpaceInvadersManager();
+            var runner = new SnakeManager();
             var state = runner.StateProvider.GetStateForDemonstration();
             var decider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
 
@@ -44,17 +45,17 @@ namespace SimpleGame
         {
             var r = new Random();
 
-            var runner = new PacmanManager();                                                               //Choose which game
+            var runner = new SnakeManager();                                                               //Choose which game
             var learner = new SinglePathMutationRunner(runner, runner.StateProvider, true, true, true);     //Choose learning method
             learner.BestSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));       //Create decider
 
-            learner.GenerationSize = 3;             //25
+            learner.GenerationSize = 5;             //25
             learner.MaxHeuristicsToTake = 10;       //10
-            learner.TimesToTestPerSpecies = 50;     //100
+            learner.TimesToTestPerSpecies = 7;     //100
             learner.MinimizeComplexity = true;
             learner.IncludePreviousBestWhenIteratingForwards = true;
 
-            learner.Optimize(50, 0.05, r);
+            learner.Optimize(20, 0.1, r);
 
             SpaceInvadersManager.ShouldLog = true;
 

@@ -202,9 +202,10 @@ namespace SimpleGame.Metrics
 
             List<int> scores = new List<int>();
 
-            //numTimes = 2;
+            //numTimes = 100;
             for (int i = 0; i < numTimes; i++)
             {
+                ConsoleGraphics.Program.RandomSeed = i;
                 var state = stateProvider.GetStateForNextGeneration();
 
                 ActualPacmanGameInstance.RANDOM_SEED = i;
@@ -215,6 +216,7 @@ namespace SimpleGame.Metrics
 
             ActualPacmanGameInstance.RANDOM_SEED = old;
 
+            scores.Sort();
             //var avg = scores.Average();
             return (scores).Sum();
         }
