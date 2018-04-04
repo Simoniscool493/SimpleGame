@@ -55,7 +55,7 @@ namespace SimpleGame.Games.Snake
 
                 if (!headless)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(3);
                 }
             }
         }

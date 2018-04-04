@@ -12,6 +12,7 @@ namespace SimpleGame.DataPayloads.DiscreteData
 
         public bool IsSingle => (valuePoints.Count == 1);
 
+        [Serializable()]
         internal class ValuePoint
         {
             public List<int> possibleValues = new List<int>();

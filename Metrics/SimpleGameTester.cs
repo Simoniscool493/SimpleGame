@@ -124,7 +124,7 @@ namespace SimpleGame.Metrics
 
             for (int i = 0; i < 3; i++)
             {
-                var results = SimpleGameTester.TestGeneticAlgorithm(generationTestParameters, new PacmanManager(), new PacmanStateProvider(), scoreToReach: 0);
+                var results = SimpleGameTester.TestGeneticAlgorithm(generationTestParameters, new PacmanManager(logger), new PacmanStateProvider(), scoreToReach: 0);
                 results.PrintAndLogGenerationTest(logger);
             }
 
@@ -142,10 +142,10 @@ namespace SimpleGame.Metrics
 
             for (int i = 0; i < 2; i++)
             {
-                var result1 = SimpleGameTester.TestGeneticAlgorithm(toScoreTestParameters, new PacmanManager(), new PacmanStateProvider(), scoreToReach: 500);
+                var result1 = SimpleGameTester.TestGeneticAlgorithm(toScoreTestParameters, new PacmanManager(logger), new PacmanStateProvider(), scoreToReach: 500);
                 result1.PrintAndLogScoreTest(logger);
 
-                var result2 = SimpleGameTester.TestGeneticAlgorithm(toScoreTestParameters, new PacmanManager(), new PacmanStateProvider(), scoreToReach: 600);
+                var result2 = SimpleGameTester.TestGeneticAlgorithm(toScoreTestParameters, new PacmanManager(logger), new PacmanStateProvider(), scoreToReach: 600);
                 result2.PrintAndLogScoreTest(logger);
             }
 
@@ -196,6 +196,8 @@ namespace SimpleGame.Metrics
         public static Random r = new Random();
 
         public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
+         //Maybe return a 'score' object here with multiple numbers (lowest/average etc)
+         //each number has a proirity and if higher proirity numbers match, the lower ones will be compared in order of precendence
         {
             var old = ActualPacmanGameInstance.RANDOM_SEED;
             var stateProvider = runner.StateProvider;
@@ -216,7 +218,9 @@ namespace SimpleGame.Metrics
 
             ActualPacmanGameInstance.RANDOM_SEED = old;
 
-            scores.Sort();
+            //scores.Sort();
+            //scores.Reverse();
+
             //var avg = scores.Average();
             return (scores).Sum();
         }

@@ -1,4 +1,5 @@
-﻿using SimpleGame.AI;
+﻿using log4net;
+using SimpleGame.AI;
 using SimpleGame.DataPayloads.DiscreteData;
 using SimpleGame.Deciders.Discrete;
 using SimpleGame.Games;
@@ -27,21 +28,39 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         private IDiscreteGameManager _game;
         private IDiscreteGameStateProvider _provider;
+        private ILog _logger;
+        private int totalCounter;
 
-        public SinglePathMutationRunner(IDiscreteGameManager game, IDiscreteGameStateProvider provider,bool includePreviousBest,bool minimizeComplexity,bool setTheRandomSeed)
+        private enum StatusTypeNumber
         {
+            OverallStatus = 0,
+            Mutate,
+            RemoveHeuristics,
+            RemoveConditions,
+            GreedySearch,
+            AddExceptions
+        }
+
+
+    public SinglePathMutationRunner(ILog log,IDiscreteGameManager game, IDiscreteGameStateProvider provider,bool includePreviousBest,bool minimizeComplexity,bool setTheRandomSeed)
+        {
+            _logger = log;
             _game = game;
             _provider = provider;
 
             IncludePreviousBestWhenIteratingForwards = includePreviousBest;
             MinimizeComplexity = minimizeComplexity;
             SetTheRandomSeed = setTheRandomSeed;
+            totalCounter = 0;
+
         }
 
         int prevBestTemp;
 
         public void Optimize(int numIterations,double learningFactor,Random r)
         {
+            Log("MutationRunnerConfig," + GenerationSize + "," + MaxHeuristicsToTake + "," +TimesToTestPerSpecies + "," + numIterations + "," +learningFactor);
+
             prevBestTemp = 0;
             double targetComplexity = 0;
 
@@ -56,17 +75,17 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                     targetComplexity = oldComplexity * 0.9;
                 }
 
-                Console.WriteLine("\nMutating Heuristics\n");
+                Log("\nMutating Heuristics\n");
                 MutateHeuristics((int)(50 * learningFactor), r); //50
 
-                Console.WriteLine("\nRemoving Heuristics\n");
+                Log("\nRemoving Heuristics\n");
                 RemoveHeuristics((int)(40 * learningFactor), r,false); //40 */
 
-                Console.WriteLine("\nRemoving Conditions\n");
+                Log("\nRemoving Conditions\n");
                 RemoveConditions((int)(40 * learningFactor), r,false); //40 
 
 
-                Console.WriteLine("\nLowering Complexity\n");
+                Log("\nLowering Complexity\n");
 
                 while(true)
                 {
@@ -87,7 +106,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
                 if(oldBestScore == BestSpecies.Score)
                 {
-                    Console.WriteLine("Score not increased at all in one pass. Beginning systematic search.");
+                    Log("Score not increased at all in one pass. Beginning systematic search.");
 
                     var recordedPrevScore = BestSpecies.Score;
                     var testedPrevScore = (int)SimpleGameTester.SetRandomSuccessTesting(_game, BestDecider, TimesToTestPerSpecies);
@@ -113,23 +132,25 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                     BestSpecies = oldBest;
                 }
                 prevBestTemp = BestSpecies.Score;
+
+                PrintStatus(StatusTypeNumber.OverallStatus);
             }
         }
 
         public void GreedyOptimize(int numIterations, Random r)
         {
-            Console.WriteLine("\nGreedyOptimizing\n");
+            Log("\nGreedyOptimizing\n");
             MutateHeuristics(1, r);
 
             for (int i = 0; i < numIterations; i++)
             {
                 SystematicSearch(r);
                 BestSpecies.Score = (int)SimpleGameTester.SetRandomSuccessTesting(_game, BestDecider, TimesToTestPerSpecies);
-                PrintStatus();
+                PrintStatus(StatusTypeNumber.GreedySearch);
             }
         }
 
-        private void PrintStatus()
+        private void PrintStatus(StatusTypeNumber statusTypeNumber)
         {
             var score = "Score: " + BestSpecies.Score;
 
@@ -138,10 +159,19 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 var avgScore = (int)(((double)BestSpecies.Score) / ((double)TimesToTestPerSpecies));
                 score = score + " Avg: " + avgScore;
             }
-            Console.WriteLine(score + " Genes: " + BestSpecies.NumGenes + " Complexity: " + (BestDecider.TotalComplexity));
+
+            string message = score + " Genes: " + BestSpecies.NumGenes + " Complexity: " + (BestDecider.TotalComplexity);
+            Console.WriteLine(message);
+            _logger.Info("RawData," + totalCounter++ + "," + ((int)statusTypeNumber) +  "," + BestSpecies.Score + "," + BestSpecies.NumGenes + "," + BestDecider.TotalComplexity);
         }
 
-        private void IterateChange(Func<DeciderSpecies> processSpecies, Action<DeciderSpecies> postProcess, int numIterations,bool prioritizeLoweringComplexityOverScore)
+        private void Log(string s)
+        {
+            Console.WriteLine(s);
+            _logger.Info(s);
+        }
+
+        private void IterateChange(StatusTypeNumber statusTypeNumber,Func<DeciderSpecies> processSpecies, Action<DeciderSpecies> postProcess, int numIterations,bool prioritizeLoweringComplexityOverScore)
         {
             var deciders = new List<DeciderSpecies>();
 
@@ -199,7 +229,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
                 postProcess?.Invoke(BestSpecies);
 
-                PrintStatus();
+                PrintStatus(statusTypeNumber);
             }
         }
 
@@ -207,7 +237,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
         {
             var mutationRate = (BestDecider.NumGenes == 0) ? 0.05 : ((double)r.Next(1,10)/ BestDecider.NumGenes);
 
-            IterateChange((() =>
+            IterateChange(StatusTypeNumber.Mutate,(() =>
             {
                 var mutated = (DeciderSpecies)BestSpecies.GetMutated(mutationRate, r);
                 return mutated;
@@ -219,7 +249,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         private void RemoveHeuristics(int numIterations, Random r,bool prioritizeLoweringComplexityOverScore)
         {
-            IterateChange((() => 
+            IterateChange(StatusTypeNumber.RemoveHeuristics,(() => 
             {
                 var toTake = r.Next(1, MaxHeuristicsToTake);
 
@@ -234,7 +264,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         private void RemoveConditions(int numIterations,Random r, bool prioritizeLoweringComplexityOverScore)
         {
-            IterateChange((() =>
+            IterateChange(StatusTypeNumber.RemoveConditions,(() =>
             {
                 var toTake = r.Next(1,50);
 
@@ -249,7 +279,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
 
         private void AddExceptions(int numIterations, Random r)
         {
-            IterateChange(
+            IterateChange(StatusTypeNumber.AddExceptions,
             (() =>
             {
                 var toAddExceptions = ((HeuristicBuildingDecider)BestSpecies.BaseDecider).CloneWithAllHeuristics();
@@ -265,30 +295,53 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             false);
         }
 
+        public List<HeuristicBuildingDecider> GetListOfChangedDeciders(List<HeuristicBuildingDecider> listOfOriginals)
+        {
+            var possibleValues = ((DiscreteDataPayloadInfo)(listOfOriginals.First().IOInfo.OutputInfo)).AllPossibleValues();
+            var output = new List<HeuristicBuildingDecider>();
+
+            foreach(var decider in listOfOriginals)
+            {
+                var usesToIndexesOrdered = GetOrderedUsesToIndexes(new DeciderSpecies(decider));
+
+                for (int i = 0; i < decider.Heuristics.Count; i++)
+                {
+                    for (int j = 0; j < possibleValues.Count; j++)
+                    {
+                        var deciderWithOneChangedHeuristic = decider.CloneWithAllHeuristics();
+                        deciderWithOneChangedHeuristic.Heuristics.ElementAt(usesToIndexesOrdered.ElementAt(i).Value).ExpectedOutput = possibleValues.ElementAt(j).SingleItem;
+
+                        output.Add(deciderWithOneChangedHeuristic);
+                    }
+                }
+            }
+
+            return output;
+        }
+
+
         private void SystematicSearch(Random r)
         {
-            Console.WriteLine("1: best score is " + BestSpecies.Score);
+            Log("1: best score is " + BestSpecies.Score);
             var originalBaseDecider = ((HeuristicBuildingDecider)BestSpecies.BaseDecider);
-            var usesToIndexesOrdered = GetOrderedUsesToIndexes();
+            var usesToIndexesOrdered = GetOrderedUsesToIndexes(BestSpecies);
 
-            Console.WriteLine("Checking single heursitcs-by-one...");
+            Log("Checking single heursitcs-by-one...");
 
-            var possibleValues = ((DiscreteDataPayloadInfo)(originalBaseDecider.IOInfo.OutputInfo)).AllPossibleValues();
+            var listToTest = new List<HeuristicBuildingDecider> { (HeuristicBuildingDecider)BestSpecies.BaseDecider };
+
+            NewLevel:
+
+            listToTest = GetListOfChangedDeciders(listToTest);
             var betterScores = new Dictionary<HeuristicBuildingDecider, int>();
 
-            for (int i=0;i< originalBaseDecider.Heuristics.Count;i++) 
+            foreach(var decider in listToTest)
             {
-                for(int j=0;j<possibleValues.Count;j++)
+                var score = (int)SimpleGameTester.SetRandomSuccessTesting(_game, decider, TimesToTestPerSpecies);
+
+                if (score > BestSpecies.Score)
                 {
-                    var deciderWithOneChangedHeuristic = originalBaseDecider.CloneWithAllHeuristics();
-                    deciderWithOneChangedHeuristic.Heuristics.ElementAt(usesToIndexesOrdered.ElementAt(i).Value).ExpectedOutput = possibleValues.ElementAt(j).SingleItem;
-
-                    var score = (int)SimpleGameTester.SetRandomSuccessTesting(_game, deciderWithOneChangedHeuristic, TimesToTestPerSpecies);
-
-                    if (score > BestSpecies.Score)
-                    {
-                        betterScores[deciderWithOneChangedHeuristic] = score;
-                    }
+                    betterScores[decider] = score;
                 }
             }
 
@@ -300,12 +353,31 @@ namespace SimpleGame.Deciders.HeuristicBuilder
                 BestSpecies = new DeciderSpecies(newDecider);
                 BestSpecies.Score = (int)SimpleGameTester.SetRandomSuccessTesting(_game, newDecider, TimesToTestPerSpecies);
 
-                Console.WriteLine("2: best score is " + BestSpecies.Score);
+                Log("2: best score is " + BestSpecies.Score);
                 return;
             }
+            else
+            {
+                Console.WriteLine("Heuristic change insufficent. Going one step farther.");
+                return;
 
-            Console.WriteLine("Heuristic change insufficent.");
+                goto NewLevel;
+
+            }
+
             return;
+
+
+
+
+
+
+
+
+
+
+
+
 
             Console.WriteLine("Removing extraneous complexity...");
 
@@ -345,7 +417,7 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             }
 
             originalBaseDecider = ((HeuristicBuildingDecider)BestSpecies.BaseDecider);
-            usesToIndexesOrdered = GetOrderedUsesToIndexes();
+            usesToIndexesOrdered = GetOrderedUsesToIndexes(BestSpecies);
 
             /*for (int i = 0; i < originalBaseDecider.Heuristics.Count; i++) //Remove each condition
             {
@@ -384,10 +456,10 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             Console.WriteLine("not found");
         }
 
-        private List<KeyValuePair<int,int>> GetOrderedUsesToIndexes()
+        private List<KeyValuePair<int,int>> GetOrderedUsesToIndexes(DeciderSpecies sp)
         {
-            SimpleGameTester.SetRandomSuccessTesting(_game, BestSpecies, TimesToTestPerSpecies);
-            var baseDecider = ((HeuristicBuildingDecider)BestSpecies.BaseDecider);
+            SimpleGameTester.SetRandomSuccessTesting(_game, sp, TimesToTestPerSpecies);
+            var baseDecider = ((HeuristicBuildingDecider)sp.BaseDecider);
 
             List<KeyValuePair<int, int>> usesToIndexes = new List<KeyValuePair<int, int>>();
 

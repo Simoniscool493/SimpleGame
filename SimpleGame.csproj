@@ -41,6 +41,7 @@
     <Compile Include="AI\DeciderSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="CSVWriter.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscretedContinuousDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\IDiscreteDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\IDiscreteDataPayloadInfo.cs" />

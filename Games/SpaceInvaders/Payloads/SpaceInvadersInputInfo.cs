@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Games.SpaceInvaders.Payloads
 {
+    [Serializable()]
     class SpaceInvadersInputInfo : DiscreteDataPayloadInfo
     {
         public SpaceInvadersInputInfo()

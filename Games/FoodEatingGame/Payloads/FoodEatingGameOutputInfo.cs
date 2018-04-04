@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Games.FoodEatingGame.Payloads
 {
+    [Serializable()]
     class FoodEatingGameOutputInfo : DiscreteDataPayloadInfo
     {
         public FoodEatingGameOutputInfo()

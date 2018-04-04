@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Games.SimplePacman.Payloads
 {
+    [Serializable()]
     class PacmanOutputInfo : DiscreteDataPayloadInfo
     {
         public PacmanOutputInfo()

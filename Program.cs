@@ -9,6 +9,8 @@ using SimpleGame.Games.SpaceInvaders;
 using System.Collections.Generic;
 using System.Threading;
 using SimpleGame.Games.Snake;
+using log4net;
+using SimpleGame.Games.FoodEatingGame;
 
 namespace SimpleGame
 {
@@ -18,7 +20,10 @@ namespace SimpleGame
 
         static void Main(string[] args)
         {
-            PacmanTests();
+            CSVWriter.WriteSinglePathMutationRunnerCSV(@"C:\ProjectLogs\SimpleGameLog_3-4-2018.txt", @"C:\ProjectLogs\Pacman100Games.csv");
+            return;
+            var logger = SimpleGameLoggerManager.SetupLogger();
+            PacmanTests(logger);
 
             var runner = new SnakeManager();
             var state = runner.StateProvider.GetStateForDemonstration();
@@ -35,33 +40,37 @@ namespace SimpleGame
                 scores.Add(score);
             }
 
-            PacmanTests();
+            PacmanTests(logger);
 
             Console.WriteLine("Finished.");
             Console.ReadLine();
         }
 
-        public static void PacmanTests()
+        public static void PacmanTests(ILog logger)
         {
             var r = new Random();
+            var runner = new PacmanManager(logger);                 //Choose which game
 
-            var runner = new SnakeManager();                                                               //Choose which game
-            var learner = new SinglePathMutationRunner(runner, runner.StateProvider, true, true, true);     //Choose learning method
+            //var dec = DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\testSave.sg");
+            //var loadstate = runner.StateProvider.GetStateForDemonstration();
+            //runner.DemonstrateWithLogging(dec, loadstate);
+
+            var learner = new SinglePathMutationRunner(logger,runner, runner.StateProvider, true, true, true);     //Choose learning method
             learner.BestSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));       //Create decider
 
             learner.GenerationSize = 5;             //25
             learner.MaxHeuristicsToTake = 10;       //10
-            learner.TimesToTestPerSpecies = 7;     //100
+            learner.TimesToTestPerSpecies = 50;     //100
             learner.MinimizeComplexity = true;
             learner.IncludePreviousBestWhenIteratingForwards = true;
 
-            learner.Optimize(20, 0.1, r);
+            learner.Optimize(50, 0.1, r);
 
             SpaceInvadersManager.ShouldLog = true;
 
             var score = runner.Score(learner.BestSpecies, runner.StateProvider.GetStateForNextGeneration());
-            //learner.BestSpecies.SaveToFile("C:\\ProjectLogs\\general_2000.sg");
-
+            //learner.BestSpecies.SaveToFile("C:\\ProjectLogs\\testSave.sg");
+            
             var state = runner.StateProvider.GetStateForDemonstration();
             runner.Demonstrate(learner.BestSpecies, state);
         }

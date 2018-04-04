@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SimpleGame.Games.SpaceInvaders.Payloads
 {
+    [Serializable()]
     class SpaceInvadersOutputInfo : DiscreteDataPayloadInfo
     {
         public SpaceInvadersOutputInfo()
         {
             valuePoints.Add(new ValuePoint(typeof(SpaceInvadersOutput)));
         }
-
     }
 }

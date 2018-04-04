@@ -17,8 +17,13 @@ namespace SimpleGame.Games.SimplePacman
 
         public IDiscreteGameIOAdapter IOADapter { get; } = new PacmanIOAdapter();
 
-        public PacmanManager()
+        public bool LogMode = false;
+        private ILog _logger;
+
+        public PacmanManager(ILog logger)
         {
+            _logger = logger;
+
             IOInfo = new DiscreteIOInfo
             (
                 inputInfo:  new PacmanInputInfo(),
@@ -59,7 +64,7 @@ namespace SimpleGame.Games.SimplePacman
 
                 if(!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(75);
+                    Thread.Sleep(15);
                 }
             }
         }
@@ -85,15 +90,32 @@ namespace SimpleGame.Games.SimplePacman
 
                 if (!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(15);
                 }
             }
         }
 
-
         public int Score(IDiscreteDecider decider, IDiscreteGameState state)
         {
             return Run(decider, state);
+        }
+
+        public int ScoreWithLogging(IDiscreteDecider decider, IDiscreteGameState state)
+        {
+            return RunWithLogging(_logger, decider, state);
+        }
+
+        public void DemonstrateWithLogging(IDiscreteDecider decider, IDiscreteGameState state)
+        {
+            var pacmanState = state as PacmanDemoInstance;
+            if (pacmanState == null)
+            {
+                throw new Exception("This is not a demonstration state");
+            }
+
+            state.Reset();
+
+            RunWithLogging(_logger, decider, state);
         }
     }
 }
