@@ -25,7 +25,6 @@ namespace SimpleGame
             var logger = SimpleGameLoggerManager.SetupLogger();
             PacmanTests(logger);
 
-
             var runner = new SnakeManager();
             var state = runner.StateProvider.GetStateForDemonstration();
             var decider = new RandomDiscreteDecider(new Random(), runner.IOInfo);
