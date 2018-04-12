@@ -1,0 +1,5 @@
+pacman timer = 100
+ghost timer tick = 100
+ghost killable timer tick = 200
+ghost state timer tick = 10000
+ghost home timer tick = 5
