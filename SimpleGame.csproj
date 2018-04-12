@@ -138,15 +138,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ExternalGamesCode\CalceranosInvaders\CalceranosInvaders.csproj">
+    <ProjectReference Include="ExternalGamesCode2\CalceranosInvaders\CalceranosInvaders.csproj">
       <Project>{1ffcf3bb-7442-4c4a-aeb0-17657476c71a}</Project>
       <Name>CalceranosInvaders</Name>
     </ProjectReference>
-    <ProjectReference Include="ExternalGamesCode\pacman\Pacman\Pacman.csproj">
+    <ProjectReference Include="ExternalGamesCode2\pacman\Pacman\Pacman.csproj">
       <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
       <Name>Pacman</Name>
     </ProjectReference>
-    <ProjectReference Include="ExternalGamesCode\Snake\Project Files\ConsoleGraphics\ConsoleGraphics.csproj">
+    <ProjectReference Include="ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\ConsoleGraphics.csproj">
       <Project>{dca5773b-49fc-410f-a270-f6db6fde8f1c}</Project>
       <Name>ConsoleGraphics</Name>
     </ProjectReference>

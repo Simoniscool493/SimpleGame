@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.IO.Pipes;
 using System.Threading;
 
+//Pacman C# Implementation created by Adrian Eyre. Available at https://github.com/adrianeyre/pacman
+
 namespace Pacman
 {
     public static class PacmanLauncher

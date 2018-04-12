@@ -10,6 +10,9 @@ using System.Threading;
 
 namespace ConsoleGraphics
 {
+
+    //Snake C# Implementation created by Finley Warman. Available at https://github.com/FinWarman/Snake
+
     public class Program
     {
         public bool isToScoreMode = true;

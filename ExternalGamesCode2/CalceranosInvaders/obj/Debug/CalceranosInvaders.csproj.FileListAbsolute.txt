@@ -14,3 +14,11 @@ C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCod
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode\CalceranosInvaders\obj\Debug\CalceranosInvaders.csproj.GenerateResource.Cache
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode\CalceranosInvaders\obj\Debug\CalceranosInvaders.exe
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode\CalceranosInvaders\obj\Debug\CalceranosInvaders.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\bin\Debug\CalceranosInvaders.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\bin\Debug\CalceranosInvaders.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\bin\Debug\CalceranosInvaders.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Debug\CalceranosInvaders.csprojResolveAssemblyReference.cache
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Debug\CalceranosInvaders.MainForm.resources
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Debug\CalceranosInvaders.csproj.GenerateResource.Cache
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Debug\CalceranosInvaders.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Debug\CalceranosInvaders.pdb
