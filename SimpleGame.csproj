@@ -131,25 +131,25 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GamesToTestOn\CalceranosInvaders\CalceranosInvaders.csproj">
-      <Project>{1ffcf3bb-7442-4c4a-aeb0-17657476c71a}</Project>
-      <Name>CalceranosInvaders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GamesToTestOn\pacman\Pacman\Pacman.csproj">
-      <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
-      <Name>Pacman</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GamesToTestOn\Snake\Project Files\ConsoleGraphics\ConsoleGraphics.csproj">
-      <Project>{dca5773b-49fc-410f-a270-f6db6fde8f1c}</Project>
-      <Name>ConsoleGraphics</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="log4net">
       <HintPath>packages\Log4Net\lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ExternalGamesCode\CalceranosInvaders\CalceranosInvaders.csproj">
+      <Project>{1ffcf3bb-7442-4c4a-aeb0-17657476c71a}</Project>
+      <Name>CalceranosInvaders</Name>
+    </ProjectReference>
+    <ProjectReference Include="ExternalGamesCode\pacman\Pacman\Pacman.csproj">
+      <Project>{111af909-187b-476a-84b1-7f68b7dd55fb}</Project>
+      <Name>Pacman</Name>
+    </ProjectReference>
+    <ProjectReference Include="ExternalGamesCode\Snake\Project Files\ConsoleGraphics\ConsoleGraphics.csproj">
+      <Project>{dca5773b-49fc-410f-a270-f6db6fde8f1c}</Project>
+      <Name>ConsoleGraphics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

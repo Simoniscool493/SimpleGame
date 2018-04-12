@@ -20,8 +20,8 @@ namespace SimpleGame
 
         static void Main(string[] args)
         {
-            CSVWriter.WriteSinglePathMutationRunnerCSV(@"C:\ProjectLogs\SimpleGameLog_3-4-2018.txt", @"C:\ProjectLogs\Pacman100Games.csv");
-            return;
+            //CSVWriter.WriteSinglePathMutationRunnerCSV(@"C:\ProjectLogs\SimpleGameLog_3-4-2018.txt", @"C:\ProjectLogs\Pacman100Games.csv");
+            //return;
             var logger = SimpleGameLoggerManager.SetupLogger();
             PacmanTests(logger);
 
@@ -58,9 +58,9 @@ namespace SimpleGame
             var learner = new SinglePathMutationRunner(logger,runner, runner.StateProvider, true, true, true);     //Choose learning method
             learner.BestSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo));       //Create decider
 
-            learner.GenerationSize = 5;             //25
+            learner.GenerationSize = 50;             //25
             learner.MaxHeuristicsToTake = 10;       //10
-            learner.TimesToTestPerSpecies = 50;     //100
+            learner.TimesToTestPerSpecies = 1;     //100
             learner.MinimizeComplexity = true;
             learner.IncludePreviousBestWhenIteratingForwards = true;
 

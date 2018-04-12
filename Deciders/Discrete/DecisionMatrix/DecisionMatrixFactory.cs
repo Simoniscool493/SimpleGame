@@ -57,14 +57,13 @@ namespace SimpleGame.Deciders.Discrete.DecisionMatrix
         {
             throw new NotImplementedException();
 
-            /*
-            var permutator = new DiscreteDataPayloadPermutator((DiscreteDataPayloadInfo)(IOInfo.InputInfo));
+            /*var permutator = new DiscreteDataPayloadPermutator((DiscreteDataPayloadInfo)(IOInfo.InputInfo));
             var matrix = new Dictionary<IDiscreteDataPayload, IDiscreteDataPayload>();
             var isRunning = true;
 
             while (isRunning)
             {
-                var input = permutator.GetAsEnum(IOInfo.InputInfo.PayloadType);
+                var input = permutator.GetAsEnum(IOInfo.InputInfo.GetType());
                 var randomOutput = IOInfo.OutputInfo.GetRandomInstance(r);
                 matrix[input] = randomOutput;
 
