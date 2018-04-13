@@ -513,7 +513,7 @@ namespace CalceranosInvaders
         {
             if(inputBuffer.Count!=1)
             {
-                throw new Exception();
+                return 0;
             }
 
             var output = inputBuffer[0];

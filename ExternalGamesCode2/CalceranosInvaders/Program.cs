@@ -24,7 +24,7 @@ namespace CalceranosInvaders
 	/// </summary>
 	public sealed class Program
 	{
-        public static bool isPiped = false;
+        public static bool isPiped = true;
 		/// <summary>
 		/// Program entry point.
 		/// </summary>
