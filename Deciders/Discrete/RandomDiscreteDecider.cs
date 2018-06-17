@@ -36,7 +36,7 @@ namespace SimpleGame.Deciders.Discrete
             throw new Exception("Mutating Random Matrixes has no effect");
         }
 
-        public string GetRaw()
+        public string GetFullStringRepresentation()
         {
             return "Random Decider";
         }

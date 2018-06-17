@@ -12,30 +12,24 @@ namespace SimpleGame.AI
     [Serializable()]
     public class DeciderSpecies : IDiscreteDecider
     {
-        public bool IsScored = false;
         public IDiscreteDecider BaseDecider;
-        public int Score;
-
-        public int? RandomSeed;
-        public int TotalComplexity => BaseDecider.TotalComplexity;
-
         public DiscreteIOInfo IOInfo => BaseDecider.IOInfo;
+        public int TotalComplexity => BaseDecider.TotalComplexity;
         public int NumGenes => BaseDecider.NumGenes;
 
-        public DeciderSpecies(IDiscreteDecider matrix)
-        {
-            BaseDecider = matrix;
-        }
+        public int TimesTried = 0;
+        public bool IsScored = false;
+        public int Score;
+        //TODO replace with score object
 
-        public IDiscreteDecider CrossMutate(IDiscreteDecider species2,double mutationRate,Random r)
+        public DeciderSpecies(IDiscreteDecider baseDecider)
         {
-            return new DeciderSpecies(BaseDecider.CrossMutate(((DeciderSpecies)species2).BaseDecider, mutationRate, r));
+            BaseDecider = baseDecider;
         }
 
         public IDiscreteDecider GetMutated(double mutationRate, Random r)
         {
-            var species = new DeciderSpecies(BaseDecider.GetMutated(mutationRate,r));
-            return species;
+            return new DeciderSpecies(BaseDecider.GetMutated(mutationRate, r));
         }
 
         public IDiscreteDataPayload Decide(IDiscreteDataPayload input)
@@ -43,9 +37,14 @@ namespace SimpleGame.AI
             return BaseDecider.Decide(input);
         }
 
-        public string GetRaw()
+        public void PostGenerationProcessing()
         {
-            return $"Species score: {Score}\n" + BaseDecider.GetRaw();
+            BaseDecider.PostGenerationProcessing();
+        }
+
+        public string GetFullStringRepresentation()
+        {
+            return $"Species score: {Score}\n" + BaseDecider.GetFullStringRepresentation();
         }
 
         public override string ToString()
@@ -53,9 +52,10 @@ namespace SimpleGame.AI
             return "Score: " + Score.ToString() + " Genes: " + NumGenes.ToString() + " Complexity: " + TotalComplexity.ToString();
         }
 
-        public void PostGenerationProcessing()
+        public IDiscreteDecider CrossMutate(IDiscreteDecider species2, double mutationRate, Random r)
         {
-            BaseDecider.PostGenerationProcessing();
+            throw new NotImplementedException();
+            //return new DeciderSpecies(BaseDecider.CrossMutate(((DeciderSpecies)species2).BaseDecider, mutationRate, r));
         }
     }
 }

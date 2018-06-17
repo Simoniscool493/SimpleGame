@@ -9,12 +9,15 @@ namespace SimpleGame.Games.Snake
 {
     class SnakeState : IDiscreteGameState
     {
-        private ConsoleGraphics.Program _instance;
+        private SnakeProgram _instance;
+        private int _randomSeed;
         
-        public SnakeState(bool isHeadless)
+        public SnakeState(bool isHeadless,int randomSeed)
         {
-            _instance = new ConsoleGraphics.Program();
-            _instance.Setup(isHeadless,true);
+            _instance = new SnakeProgram();
+            _instance.Setup(isHeadless,true,randomSeed);
+
+            _randomSeed = randomSeed;
         }
 
         public void Dispose()
@@ -24,7 +27,7 @@ namespace SimpleGame.Games.Snake
 
         public void Reset()
         {
-            _instance.Setup(_instance.IsHeadless,true);
+            _instance.Setup(_instance.IsHeadless,true,_randomSeed);
         }
 
         public int[] GetStatus()

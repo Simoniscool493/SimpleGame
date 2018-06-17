@@ -13,7 +13,7 @@ namespace Pacman
     [TestFixture]
     public class HighScore_Test
     {
-        public HighScore HighScore = new HighScore();
+        public HighScore HighScore = new HighScore(100);
 
         [Test]
         public void CreateHighScoreTest()

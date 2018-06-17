@@ -21,11 +21,14 @@ namespace SimpleGame.Games.FoodEatingGame
 
         private bool _foodEaten = false;
 
-        protected FoodEatingGameBoard(bool isRandom)
+        private static int _currentRandomSeed;
+        private static FoodEatingGameBoard _currentBoard;
+
+        protected FoodEatingGameBoard(bool isRandom,int randomSeed = 0)
         {
             if (isRandom)
             {
-                _baseGrid = GetRandomGrid();
+                _baseGrid = GetRandomGrid(randomSeed);
             }
             else
             {
@@ -45,10 +48,10 @@ namespace SimpleGame.Games.FoodEatingGame
             throw new NotImplementedException();
         }
 
-        private char[][] GetRandomGrid()
+        private char[][] GetRandomGrid(int randomSeed)
         {
             char[][] randomGrid = new char[defaultHeight][];
-            var r = new Random(FoodEatingGameManager.RandomSeed);
+            var r = new Random(randomSeed);
 
             for(int i=0;i< defaultHeight;i++)
             {
@@ -72,9 +75,20 @@ namespace SimpleGame.Games.FoodEatingGame
             return randomGrid;
         }
 
-        public static FoodEatingGameBoard GetRandomBoard()
+        public static FoodEatingGameBoard GetRandomBoard(int randomSeed)
         {
-            return new FoodEatingGameBoard(isRandom: true);
+            if(randomSeed == _currentRandomSeed)
+            {
+                _currentBoard.Reset();
+            }
+            else
+            {
+                _currentRandomSeed = randomSeed;
+                _currentBoard = new FoodEatingGameBoard(true, randomSeed);
+            }
+
+            return _currentBoard;
+
         }
 
         public ItemAtPoint GetItemAtActiveBoard(int x,int y)

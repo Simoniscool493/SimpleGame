@@ -10,9 +10,20 @@ namespace Pacman
 {
     public class HighScore
     {
-        public const int InitalScore = 100;
+        public int InitalScore;
         public Label HighScoreText = ActualPacmanGameInstance.IS_HEADLESS ? null : new Label();
-        public int Score = InitalScore;
+        public int Score;
+
+        public HighScore(int initial)
+        {
+            InitalScore = initial;
+            Score = initial;
+
+            if(!ActualPacmanGameInstance.IS_HEADLESS)
+            {
+                HighScoreText.Text = Score.ToString();
+            }
+        }
 
         public void CreateHighScore(Form formInstance)
         {
@@ -25,15 +36,15 @@ namespace Pacman
             HighScoreText.Width = 100;
             formInstance.Controls.Add(HighScoreText);
             HighScoreText.BringToFront();
-            UpdateHighScore();
+            UpdateHighScore(InitalScore);
         }
 
-        public void UpdateHighScore(int value = InitalScore)
+        public void UpdateHighScore(int value)
         {
             Score = value;
             if (!ActualPacmanGameInstance.IS_HEADLESS)
             {
-                HighScoreText.Text = Score.ToString();
+                //HighScoreText.Text = Score.ToString();
             }
         }
 

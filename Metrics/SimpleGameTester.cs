@@ -169,60 +169,46 @@ namespace SimpleGame.Metrics
             return list;
         }
 
-        public static double SuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes,bool setTheRandomSeed)
-        {
-            if(true)
-            {
-                return SetRandomSuccessTesting(runner, decider, numTimes);
-            }
-
-            var stateProvider = runner.StateProvider;
-            var state = stateProvider.GetStateForNextGeneration();
-
-            List<int> scores = new List<int>();
-
-            for (int i = 0; i < numTimes; i++)
-            {
-                scores.Add(runner.Score(decider, state));
-                state.Reset();
-            }
-
-            scores.Sort();
-            scores.Reverse();
-
-            return (scores).Average();
-        }
-
         public static Random r = new Random();
 
-        public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes)
+        public static double SetRandomSuccessTesting(IDiscreteGameManager runner,IDiscreteDecider decider, int numTimes,int baseSeed)
          //Maybe return a 'score' object here with multiple numbers (lowest/average etc)
          //each number has a proirity and if higher proirity numbers match, the lower ones will be compared in order of precendence
         {
-            var old = ActualPacmanGameInstance.RANDOM_SEED;
             var stateProvider = runner.StateProvider;
 
             List<int> scores = new List<int>();
 
             //numTimes = 100;
-            for (int i = 0; i < numTimes; i++)
+            for (int i = baseSeed; i < numTimes+baseSeed; i++)
             {
-                ConsoleGraphics.Program.RandomSeed = i;
-                var state = stateProvider.GetStateForNextGeneration();
-
-                ActualPacmanGameInstance.RANDOM_SEED = i;
-                //ActualPacmanGameInstance.RANDOM_SEED = r.Next();
-
+                var state = stateProvider.GetStateForTraining(i);
                 scores.Add(runner.Score(decider, state));
             }
-
-            ActualPacmanGameInstance.RANDOM_SEED = old;
 
             //scores.Sort();
             //scores.Reverse();
 
-            //var avg = scores.Average();
+            var avg = scores.Average();
             return (scores).Sum();
+        }
+
+        public static double UnsetRandomSuccessTesting(IDiscreteGameManager runner, IDiscreteDecider decider, int numTimes)
+        {
+            var r = new Random();
+
+            var stateProvider = runner.StateProvider;
+
+            List<int> scores = new List<int>();
+            for (int i = 0; i < numTimes; i++)
+            {
+                var state = stateProvider.GetStateForTraining(r.Next());
+                scores.Add(runner.Score(decider, state));
+            }
+            var best = scores.Max();
+            var worse = scores.Min();
+
+            return (scores).Average();
         }
 
 

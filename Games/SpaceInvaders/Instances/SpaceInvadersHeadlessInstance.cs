@@ -8,10 +8,12 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
 {
     class SpaceInvadersHeadlessInstance : ISpaceInvadersInstance
     {
-        CalceranosInvaders.MainForm _instance;
+        private CalceranosInvaders.MainForm _instance;
+        private int _randomSeed;
 
-        public SpaceInvadersHeadlessInstance()
+        public SpaceInvadersHeadlessInstance(int randomSeed)
         {
+            _randomSeed = randomSeed;
             Reset();
         }
 
@@ -27,7 +29,7 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
 
         public void Reset()
         {
-            _instance = new CalceranosInvaders.MainForm(true,false);
+            _instance = new CalceranosInvaders.MainForm(true,false,_randomSeed);
             _instance.InitializeObjects();
         }
 

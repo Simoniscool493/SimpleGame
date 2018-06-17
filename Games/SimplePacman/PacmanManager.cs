@@ -29,7 +29,6 @@ namespace SimpleGame.Games.SimplePacman
                 inputInfo:  new PacmanInputInfo(),
                 outputInfo: new PacmanOutputInfo()
             );
-
         }
 
         public void Demonstrate(IDiscreteDecider decider, IDiscreteGameState state)

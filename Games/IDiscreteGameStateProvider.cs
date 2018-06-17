@@ -2,10 +2,8 @@
 {
     public interface IDiscreteGameStateProvider
     {
-        int RandomSeed { get; set; }
+        IDiscreteGameState GetStateForTraining(int randomSeed);
 
-        IDiscreteGameState GetStateForNextGeneration();
-
-        IDiscreteGameState GetStateForDemonstration();
+        IDiscreteGameState GetStateForDemonstration(int randomSeed);
     }
 }

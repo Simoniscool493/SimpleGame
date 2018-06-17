@@ -71,3 +71,11 @@ C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGam
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\obj\Debug\SimpleGame.csprojResolveAssemblyReference.cache
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\obj\Debug\SimpleGame.exe
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGameCurrent\SimpleGame\obj\Debug\SimpleGame.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\moves.txt
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\species.txt
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Battles.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Battles.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Debug\Battles.exe.config
+C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.csprojResolveAssemblyReference.cache
+C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.exe
+C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\obj\Debug\SimpleGame.pdb

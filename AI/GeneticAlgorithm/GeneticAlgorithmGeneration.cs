@@ -79,7 +79,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
                         startingDecider = new RandomDiscreteDecider(_r, gameIOInfo);
                         break;
                     case DiscreteDeciderType.HeuristicBuilder:
-                        startingDecider = new HeuristicBuildingDecider(_r, gameIOInfo);
+                        startingDecider = new HeuristicBuildingDecider(_r, gameIOInfo,0);
                         break;
                 }
 

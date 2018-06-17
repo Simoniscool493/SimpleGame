@@ -55,7 +55,7 @@ namespace SimpleGame.Deciders.DecisionMatrix
             throw new NotImplementedException();
         }
 
-        public string GetRaw()
+        public string GetFullStringRepresentation()
         {
             StringBuilder sb = new StringBuilder();
 

@@ -8,16 +8,14 @@ namespace SimpleGame.Games.Iris
 {
     class IrisStateProvider : IDiscreteGameStateProvider
     {
-        public int RandomSeed { get; set; }
-
-        public IDiscreteGameState GetStateForDemonstration()
+        public IDiscreteGameState GetStateForDemonstration(int randomSeed)
         {
             throw new NotImplementedException();
         }
 
-        public IDiscreteGameState GetStateForNextGeneration()
+        public IDiscreteGameState GetStateForTraining(int randomSeed)
         {
-            return new IrisDataInstance(new Random());
+            return new IrisDataInstance(new Random(randomSeed));
         }
     }
 }

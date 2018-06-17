@@ -9,16 +9,14 @@ namespace SimpleGame.Games.SpaceInvaders
 {
     class SpaceInvadersStateProvider : IDiscreteGameStateProvider
     {
-        public int RandomSeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public IDiscreteGameState GetStateForDemonstration()
+        public IDiscreteGameState GetStateForDemonstration(int randomSeed)
         {
-            return new SpaceInvadersDemoInstance(false);
+            return new SpaceInvadersDemoInstance(false,randomSeed);
         }
 
-        public IDiscreteGameState GetStateForNextGeneration()
+        public IDiscreteGameState GetStateForTraining(int randomSeed)
         {
-            return new SpaceInvadersHeadlessInstance();
+            return new SpaceInvadersHeadlessInstance(randomSeed);
         }
     }
 }

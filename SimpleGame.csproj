@@ -41,6 +41,9 @@
     <Compile Include="AI\DeciderSpecies.cs" />
     <Compile Include="AI\IDiscreteDecisionModel.cs" />
     <Compile Include="AI\NeuralNet\NeuralNet.cs" />
+    <Compile Include="AI\SinglePathMutation\StatusTypeNumber.cs" />
+    <Compile Include="AI\SinglePathMutation\SystematicSearcher.cs" />
+    <Compile Include="AI\SinglePathMutation\SystematicSimplifier.cs" />
     <Compile Include="CSVWriter.cs" />
     <Compile Include="DataPayloads\DiscreteData\DiscretedContinuousDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\IDiscreteDataPayload.cs" />
@@ -50,8 +53,12 @@
     <Compile Include="Deciders\Discrete\DecisionMatrix\IDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\LazyDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderLoader.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\Heuristic Ensemble\HeuristicEnsembleDecider.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicDeciderFactory.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicFactory.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\OldHeuristicCode\OldHeuristic.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\OldHeuristicCode\OldHeuristicBuildingDecider.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\OldHeuristicCode\OldHeuristicFactory.cs" />
     <Compile Include="Deciders\Discrete\RandomDiscreteDecider.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscreteDataPayloadInfo.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscreteIOInfo.cs" />
@@ -85,6 +92,12 @@
     <Compile Include="Games\Iris\IrisStateProvider.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\DiscretedContinuousDataPayloadInfo.cs" />
     <Compile Include="Games\Iris\Payloads\IrisOutputInfo.cs" />
+    <Compile Include="Games\PokémonBattleEngine\BattlesGameManager.cs" />
+    <Compile Include="Games\PokémonBattleEngine\BattlesState.cs" />
+    <Compile Include="Games\PokémonBattleEngine\BattlesStateProvider.cs" />
+    <Compile Include="Games\PokémonBattleEngine\Controller\AIBattleController.cs" />
+    <Compile Include="Games\PokémonBattleEngine\IOInfo\BattlesInputInfo.cs" />
+    <Compile Include="Games\PokémonBattleEngine\IOInfo\BattlesOutputInfo.cs" />
     <Compile Include="Games\SimplePacman\Instances\IPacmanInstance.cs" />
     <Compile Include="Games\SimplePacman\PacmanConstants.cs" />
     <Compile Include="Games\SimplePacman\Instances\PacmanHeadlessInstance.cs" />
@@ -124,7 +137,7 @@
     <Compile Include="Permutation\DiscreteDataPayloadPermutator.cs" />
     <Compile Include="Permutation\PermutationMechanism.cs" />
     <Compile Include="SimpleGameLoggerManager.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="SimpleGameLauncher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

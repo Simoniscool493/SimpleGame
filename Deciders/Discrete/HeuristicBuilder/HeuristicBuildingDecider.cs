@@ -17,27 +17,27 @@ namespace SimpleGame.Deciders
     [Serializable()]
     public class HeuristicBuildingDecider : IDiscreteDecider
     {
-        public static int maxGenes = 100;
-
         public DiscreteIOInfo IOInfo { get; }
+
         public int NumGenes => Heuristics.Count;
+        public int NumConditions => Heuristics.Sum(h => h.Conditions.Count(c => c != -1));
+        public int TotalComplexity => NumConditions;
 
-        public int NumConditions => Heuristics.Select(h => h.Conditions.Count).Sum();
-        public int NumExceptions => Heuristics.Select(h => h.Exceptions.Count).Sum();
-
-        public int TotalComplexity => NumConditions + NumExceptions;
-
-        public double ExceptionRate = 0;
+        public bool ShouldMakeNewHeuristics = true;
 
         public List<Heuristic> Heuristics;
 
-        public Random R;
+        private Random _r;
+        
+        public int NumConditionsToBuildFrom { get; }
 
-        public HeuristicBuildingDecider(Random r,DiscreteIOInfo ioInfo)
+        public HeuristicBuildingDecider(Random r, DiscreteIOInfo ioInfo,int numCondidionsToBuildFrom)
         {
             Heuristics = new List<Heuristic>();
             IOInfo = ioInfo;
-            R = r;
+            _r = r;
+
+            NumConditionsToBuildFrom = numCondidionsToBuildFrom;
         }
 
         public IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r)
@@ -45,7 +45,7 @@ namespace SimpleGame.Deciders
             return HeuristicDeciderFactory.CrossMutate(this, (HeuristicBuildingDecider)decider2, mutationRate, r);
         }
 
-        public IDiscreteDecider GetMutated(double mutationRate,Random r)
+        public IDiscreteDecider GetMutated(double mutationRate, Random r)
         {
             return HeuristicDeciderFactory.GetMutated(this, mutationRate, r);
         }
@@ -54,54 +54,54 @@ namespace SimpleGame.Deciders
         {
             var h = GetHeuristicFromListFor(input);
 
-            if (h==null)
+            if (h == null)
             {
-                h = HeuristicFactory.CreateExactHeuristicFromThisInput(R, IOInfo, input);
-                //h = HeuristicFactory.CreateHeuristicRandomlyFromThisInput(R, IOInfo, input, 20);
-                Heuristics.Add(h);
+                if(ShouldMakeNewHeuristics)
+                {
+                    if(NumConditionsToBuildFrom<1)
+                    {
+                        h = HeuristicFactory.CreateExactHeuristicFromThisInput(_r, IOInfo, input);
+                    }
+                    else
+                    {
+                        h = HeuristicFactory.CreateHeuristicRandomlyFromThisInput(_r, IOInfo, input, NumConditionsToBuildFrom);
+                    }
+
+                    Heuristics.Add(h);
+                }
+                else
+                {
+                    return new DiscreteDataPayload(IOInfo.OutputInfo.GetRandomInstance(_r).SingleItem);
+                }
             }
-            /*else if (ExceptionRate != 0 && R.NextDouble() < ExceptionRate)
-            {
-                h.AddExceptionForThisInput(R, input);
-            }*/
 
             DiscreteDataPayload decision = new DiscreteDataPayload(h.ExpectedOutput);
 
             return decision;
         }
 
+
+        private static Dictionary<int, int> choices = new Dictionary<int, int>();
+
         public Heuristic GetHeuristicFromListFor(IDiscreteDataPayload input)
         {
-            Heuristic heuristicToUse = null;
+            var inputData = input.Data;
+            var inputDataLength = input.Data.Length;
 
-            foreach(var h in Heuristics)
+            foreach (var h in Heuristics)
             {
-                foreach(var con in h.Conditions)
+                for (int i = 0; i < inputDataLength; i++)
                 {
-                    if(input.Data[con.Item1] != con.Item2)
+                    if (input.Data[i] != h.Conditions[i] && h.Conditions[i] != -1)
                     {
                         goto CheckNext;
                     }
                 }
 
-                foreach (var ex in h.Exceptions)
-                {
-                    if (input.Data[ex.Item1] == ex.Item2)
-                    {
-                        goto CheckNext;
-                    }
-                }
-
-                heuristicToUse = h;
-                break;
+                h.UseCount++;
+                return h;
 
                 CheckNext: continue;
-            }
-
-            if(heuristicToUse != null)
-            {
-                heuristicToUse.UseCount++;
-                return heuristicToUse;
             }
 
             return null;
@@ -109,51 +109,51 @@ namespace SimpleGame.Deciders
 
         public void AddRandomHeuristics(int numToAdd)
         {
-            for(int i=0;i<numToAdd;i++)
+            for (int i = 0; i < numToAdd; i++)
             {
-                var newHeuristic = HeuristicFactory.CreateRandom(R, IOInfo,
+                var newHeuristic = HeuristicFactory.CreateRandom(_r, IOInfo,
                     HeuristicBuildingConstants.ConditionsToAddToRandomHeuristic,
                     HeuristicBuildingConstants.ExceptionsToAddToRandomHeuristic);
 
-                var position = R.Next(0, Heuristics.Count);
+                var position = _r.Next(0, Heuristics.Count);
                 Heuristics.Insert(position, newHeuristic);
             }
         }
 
         public void RemoveRandomHeuristics(int numToTake)
         {
-            if(numToTake> Heuristics.Count)
+            if (numToTake > Heuristics.Count)
             {
                 Heuristics.Clear();
                 return;
             }
 
-            for(int i=0;i<numToTake;i++)
+            for (int i = 0; i < numToTake; i++)
             {
-                var position = R.Next(0, Heuristics.Count);
+                var position = _r.Next(0, Heuristics.Count);
                 Heuristics.RemoveAt(position);
             }
         }
 
-        public void RemoveRandomConditions(double numToRemove,Random r)
+        public void RemoveRandomConditions(double numToRemove, Random r)
         {
             List<Heuristic> toRemove = new List<Heuristic>();
 
-            for(int i=0;i<numToRemove;i++)
+            for (int i = 0; i < numToRemove; i++)
             {
                 var elementToTake = r.Next(0, Heuristics.Count);
                 var h = Heuristics.ElementAt(elementToTake);
 
-                if (h.Conditions.Count == 0)
+                if (h.Conditions.Length == 0)
                 {
                     toRemove.Add(h);
                     break;
                 }
 
-                var conToRemove = r.Next(0, h.Conditions.Count);
-                h.Conditions.RemoveAt(conToRemove);
+                var conToRemove = r.Next(0, h.Conditions.Length);
+                h.Conditions[conToRemove] = -1;
 
-                if (h.Conditions.Count == 0)
+                if (h.Conditions.Length == 0)
                 {
                     toRemove.Add(h);
                 }
@@ -165,54 +165,15 @@ namespace SimpleGame.Deciders
             }
         }
 
-        public HeuristicBuildingDecider GetMutated(int steps)
-        {
-            HeuristicBuildingDecider decider = this.CloneWithAllHeuristics();
-
-            for(int i=0;i<steps;i++)
-            {
-                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfRemovingHeuristicWhenMutating)
-                {
-                    var geneNumToChange = R.Next(0, decider.Heuristics.Count);
-                    decider.Heuristics.RemoveAt(geneNumToChange);
-                }
-
-                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfChangingHeuristicOutputWhenMutating)
-                {
-                    var geneNumToChange = R.Next(0, decider.Heuristics.Count);
-                    var geneToChange = decider.Heuristics.ElementAt(geneNumToChange);
-                    geneToChange.Mutate(R);
-                }
-
-                if(R.NextDouble() < HeuristicBuildingConstants.OddsOfAddingNewHeuristicWhenMutating)
-                {
-                    decider.AddRandomHeuristics(1);
-                }
-
-                if (R.NextDouble() < HeuristicBuildingConstants.OddsOfShufflingWhenMutating)
-                {
-                    Shuffle(decider.Heuristics, R);
-                }
-            } 
-
-            return decider;
-        }
-
-
         public HeuristicBuildingDecider CloneWithAllHeuristics()
         {
-            var decider = new HeuristicBuildingDecider(this.R,this.IOInfo);
+            var decider = new HeuristicBuildingDecider(_r,IOInfo,NumConditionsToBuildFrom);
 
             decider.Heuristics = new List<Heuristic>();
 
-            foreach(Heuristic h in Heuristics)
+            foreach (Heuristic h in Heuristics)
             {
-                var newHeuristic = new Heuristic(h.ExpectedOutput, IOInfo);
-                newHeuristic.Exceptions = new List<Tuple<int, int>>(h.Exceptions);
-                newHeuristic.Conditions = new List<Tuple<int, int>>(h.Conditions);
-                newHeuristic.UseCount = h.UseCount;
-
-                decider.Heuristics.Add(newHeuristic);
+                decider.Heuristics.Add(h.GetCopy(false));
             }
 
             return decider;
@@ -220,93 +181,24 @@ namespace SimpleGame.Deciders
 
         public void PostGenerationProcessing()
         {
-            List<Heuristic> toRemove = new List<Heuristic>();
-            foreach(var h in Heuristics)
-            {
-                if(h.UseCount==0)
-                {
-                    h.ConsecutiveGensNotUsed++;
-
-                    if(h.ConsecutiveGensNotUsed >= HeuristicBuildingConstants.MaxAllowedGensWithNoHeuristicUses)
-                    {
-                        toRemove.Add(h);
-                    }
-                }
-                else
-                {
-                    h.ConsecutiveGensNotUsed = 0;
-                }
-            }
-
-            Console.WriteLine("\nRemoved " + toRemove.Count + " unused heuristics.\n");
-
-            Heuristics = Heuristics.Except(toRemove).ToList();
-
             foreach (var h in Heuristics)
             {
                 h.UseCount = 0;
             }
         }
 
-        public void AddExceptions(int numToAdd)
-        {
-            for (int i = 0; i < numToAdd; i++)
-            {
-                var h = GetHeuristicBasedOnUseWeighing();
-                //var h = Heuristics.ElementAt(R.Next(0, Heuristics.Count));
-                h.AddExceptions(1, R);
-            }
-        }
-
-        private Heuristic GetHeuristicBasedOnUseWeighing()
-        {
-            int totalWeights = Heuristics.Select(h =>h.UseCount).Sum();
-            int randomNumber = R.Next(0, totalWeights);
-
-            if (totalWeights == 0)
-            {
-                throw new Exception();
-            }
-
-            Heuristic selectedHeuristic = null;
-            foreach (var h in Heuristics)
-            {
-                if (randomNumber < h.UseCount)
-                {
-                    selectedHeuristic = h;
-                    break;
-                }
-
-                randomNumber = randomNumber - h.UseCount;
-            }
-
-            return selectedHeuristic;
-        }
-
-
-        public static void Shuffle(IList<Heuristic> list,Random r)
-        {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = r.Next(n + 1);
-                Heuristic value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-
-        public string GetRaw()
+        public string GetFullStringRepresentation()
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach(var h in Heuristics)
+            foreach (var h in Heuristics)
             {
                 string data = "";
-                foreach(var c in h.Conditions)
+
+                for (int i = 0; i < h.Conditions.Length; i++)
                 {
-                    data = data + " " + c.Item2;
+                    data = data + " " + h.Conditions[i];
+
                 }
                 data = data + '\t';
 
@@ -316,6 +208,11 @@ namespace SimpleGame.Deciders
             }
 
             return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            return " Genes: " + NumGenes.ToString() + " Complexity: " + TotalComplexity.ToString();
         }
     }
 }

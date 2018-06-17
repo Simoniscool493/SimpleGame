@@ -16,9 +16,9 @@ namespace Pacman
         //public static Audio audio = new Audio();
         private static FormElements formelements = new FormElements();
 
-        public PacmanScreen()
+        public PacmanScreen(int randomSeed)
         {
-            ActualPacmanGameInstance.SetUpInstance(false);
+            ActualPacmanGameInstance.SetUpInstance(false,randomSeed);
 
             Thread.Sleep(3000);
 

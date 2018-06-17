@@ -21,38 +21,56 @@ namespace Pacman
         [STAThread]
         public static void Main(string[] args)
         {
-            if(args.Contains("pipedInstance"))
+            int randomSeed = 0;
+
+            try
+            {
+                randomSeed = int.Parse(args.Last());
+            }
+            catch (Exception e)
+            {
+                System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\ProjectLogs\TheLog.txt");
+
+                if(args.Any())
+                {
+                    file.WriteLine(args.Last());
+                }
+
+                file.WriteLine(e.Message);
+                file.Close();
+            }
+
+            if (args.Contains("pipedInstance"))
             {
                 IS_PIPED = true;
-
-                StartGameWithPipe();
+                StartGameWithPipe(randomSeed);
             }
 
             if (IS_PIPED)
             {
-                StartGameWithPipe();
+                StartGameWithPipe(randomSeed);
             }
             else
             {
-                StartGame();
+                StartGame(randomSeed);
             }
         }
 
-        public static void StartGameWithPipe()
+        public static void StartGameWithPipe(int randomSeed)
         {
             stream = new NamedPipeClientStream("PacmanPipe");
             stream.Connect();
             new TaskFactory().StartNew(() => InputLoop());
 
-            StartGame();
+            StartGame(randomSeed);
         }
 
-        public static void StartGame()
+        public static void StartGame(int randomSeed)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            instance = new PacmanScreen();
+            instance = new PacmanScreen(randomSeed);
             keyDownEvent = typeof(PacmanScreen).GetMethod("OnKeyDown",BindingFlags.Instance | BindingFlags.NonPublic);
             Application.Run(instance);
         }

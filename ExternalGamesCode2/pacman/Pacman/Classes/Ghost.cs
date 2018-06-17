@@ -12,7 +12,7 @@ namespace Pacman
 {
     public class Ghost
     {
-        public static Random ran = new Random();
+        public static Random ran;
         private const int GhostTimeScared = 50;
         private const int GhostSpeedFactor = 1;
         private const int GhostAmount = 4;
@@ -29,12 +29,9 @@ namespace Pacman
         private bool GhostOn = false;
         private int ScaredTimer = 0;
 
-        public Ghost()
+        public Ghost(int randomSeed)
         {
-            if(ActualPacmanGameInstance.IS_DETERMINISTIC)
-            {
-                ran = new Random(ActualPacmanGameInstance.RANDOM_SEED);
-            }
+            ran = new Random(randomSeed);
 
             if (!ActualPacmanGameInstance.IS_HEADLESS)
             {

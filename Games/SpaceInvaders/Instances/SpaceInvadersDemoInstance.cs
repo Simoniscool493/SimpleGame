@@ -15,7 +15,9 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
         private Process invadersProcess;
         private bool isHookedIn;
 
-        public SpaceInvadersDemoInstance(bool attachToExistingInstance)
+        private int _randomSeed;
+
+        public SpaceInvadersDemoInstance(bool attachToExistingInstance,int randomSeed)
         {
             if (stream == null)
             {
@@ -23,6 +25,8 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
             }
 
             isHookedIn = attachToExistingInstance;
+
+            _randomSeed = randomSeed;
 
             Reset();
         }
@@ -53,7 +57,7 @@ namespace SimpleGame.Games.SpaceInvaders.Instances
             {
                 invadersProcess = new Process();
                 invadersProcess.StartInfo = new ProcessStartInfo(typeof(CalceranosInvaders.Program).Assembly.Location);
-                invadersProcess.StartInfo.Arguments = "pipedInstance";
+                invadersProcess.StartInfo.Arguments = "pipedInstance," + _randomSeed;
                 invadersProcess.Start();
             }
 

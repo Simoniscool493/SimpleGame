@@ -9,9 +9,12 @@ namespace SimpleGame.Games.SimplePacman
 {
     class PacmanHeadlessInstance : IPacmanInstance
     {
-        public PacmanHeadlessInstance()
+        private int _randomSeed;
+
+        public PacmanHeadlessInstance(int randomSeed)
         {
-            ActualPacmanGameInstance.SetUpInstance(true);
+            ActualPacmanGameInstance.SetUpInstance(true,randomSeed);
+            _randomSeed = randomSeed;
         }
 
         public void SendInput(Direction d)
@@ -31,7 +34,7 @@ namespace SimpleGame.Games.SimplePacman
 
         public void Reset()
         {
-            ActualPacmanGameInstance.SetUpInstance(true);
+            ActualPacmanGameInstance.SetUpInstance(true,_randomSeed);
         }
 
     }

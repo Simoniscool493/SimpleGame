@@ -1,0 +1,6 @@
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\bin\Release\CalceranosInvaders.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\bin\Release\CalceranosInvaders.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Release\CalceranosInvaders.csprojResolveAssemblyReference.cache
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Release\CalceranosInvaders.MainForm.resources
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Release\CalceranosInvaders.csproj.GenerateResource.Cache
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\ExternalGamesCode2\CalceranosInvaders\obj\Release\CalceranosInvaders.exe

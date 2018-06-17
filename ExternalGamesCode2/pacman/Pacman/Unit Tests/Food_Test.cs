@@ -14,7 +14,7 @@ namespace Pacman
 
         public Food_Test()
         {
-            Food.CreateFoodImages(new PacmanScreen());
+            Food.CreateFoodImages(new PacmanScreen(1));
         }
 
         [Test]

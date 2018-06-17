@@ -9,7 +9,6 @@ namespace SimpleGame.Games.FoodEatingGame
 {
     class FoodEatingGameManager : IDiscreteGameManager
     {
-        public static int RandomSeed = 1;
         public DiscreteIOInfo IOInfo { get; }
 
         private FoodEatingGameBoardIOAdapter _IOAdapter = new FoodEatingGameBoardIOAdapter();

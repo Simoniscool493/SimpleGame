@@ -16,7 +16,6 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
             var h = new Heuristic(expectedOutput, ioInfo);
 
             h.AddConditions(numConditions, r);
-            h.AddExceptions(numExceptions, r);
             return h;
         }
 
@@ -25,7 +24,7 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
             var expectedOutput = ioInfo.OutputInfo.GetRandomInstance(r).SingleItem;
             var h = new Heuristic(expectedOutput, ioInfo);
 
-            if(numConditions>input.Data.Length)
+            if (numConditions > input.Data.Length)
             {
                 numConditions = input.Data.Length;
             }
@@ -35,13 +34,12 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
                 top:
                 var position = r.Next(0, ioInfo.InputInfo.PayloadLength);
 
-                if(h.Conditions.Select(he=>he.Item1).Contains(position))
+                if (h.Conditions[position] != -1)
                 {
                     goto top;
                 }
 
-                var expectedInput = input.Data[position];
-                h.Conditions.Add(new Tuple<int, int>(position, expectedInput));
+                h.Conditions[position] = input.Data[position];
             }
 
             return h;
@@ -54,7 +52,7 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
 
             for (int i = 0; i < ioInfo.InputInfo.PayloadLength; i++)
             {
-                h.Conditions.Add(new Tuple<int, int>(i, input.Data[i]));
+                h.Conditions[i] = input.Data[i];
             }
 
             return h;

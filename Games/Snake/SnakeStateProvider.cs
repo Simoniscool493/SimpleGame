@@ -8,16 +8,14 @@ namespace SimpleGame.Games.Snake
 {
     class SnakeStateProvider : IDiscreteGameStateProvider
     {
-        public int RandomSeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public IDiscreteGameState GetStateForDemonstration()
+        public IDiscreteGameState GetStateForDemonstration(int randomSeed)
         {
-            return new SnakeState(false);
+            return new SnakeState(false,randomSeed);
         }
 
-        public IDiscreteGameState GetStateForNextGeneration()
+        public IDiscreteGameState GetStateForTraining(int randomSeed)
         {
-            return new SnakeState(true);
+            return new SnakeState(true,randomSeed);
         }
     }
 }

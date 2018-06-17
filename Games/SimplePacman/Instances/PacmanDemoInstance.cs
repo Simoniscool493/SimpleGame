@@ -17,8 +17,9 @@ namespace SimpleGame.Games.SimplePacman
          
         private Process pacmanProcess;
         private bool isHookedIn;
+        private int _randomSeed;
 
-        public PacmanDemoInstance(bool attachToExistingInstance)
+        public PacmanDemoInstance(bool attachToExistingInstance,int randomSeed)
         {
             if(stream==null)
             {
@@ -26,6 +27,7 @@ namespace SimpleGame.Games.SimplePacman
             }
 
             isHookedIn = attachToExistingInstance;
+            _randomSeed = randomSeed;
 
             Reset();
         }
@@ -38,7 +40,7 @@ namespace SimpleGame.Games.SimplePacman
             {
                 pacmanProcess = new Process();
                 pacmanProcess.StartInfo = new ProcessStartInfo(typeof(PacmanLauncher).Assembly.Location);
-                pacmanProcess.StartInfo.Arguments = "pipedInstance";
+                pacmanProcess.StartInfo.Arguments = "pipedInstance " + _randomSeed;
                 pacmanProcess.Start();
             }
 

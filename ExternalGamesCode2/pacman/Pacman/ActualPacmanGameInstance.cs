@@ -13,7 +13,7 @@ namespace Pacman
 {
     public class ActualPacmanGameInstance
     {
-        public static int LengthOfDataToSend = 40; //40
+        public static int LengthOfDataToSend = 32; //40
 
         public static bool ARE_GHOSTS_ACTIVE = true;
 
@@ -22,16 +22,13 @@ namespace Pacman
         public static int WALL_BUMPING_PENALTY = 0;
         public static int OLD_POSITION_PENALTY = 0;
 
-        public static int GHOST_EATING_SCORE = 50; // 50/300
+        public static int GHOST_EATING_SCORE = 0; // 50/300
         public static int GHOST_SEEING_SCORE = 0;
-        public static int FOOD_SCORE = 10; //10
-        public static int SUPER_FOOD_SCORE = 50; //50
+        public static int FOOD_SCORE = 1; //10
+        public static int SUPER_FOOD_SCORE = 1; //50
         public static int NEW_POSITION_SCORE = 0;
 
         public static int NUMLIVES = 1;//3
-
-        public static bool IS_DETERMINISTIC = true;
-        public static int RANDOM_SEED = 1;
 
         public static ActualPacmanGameInstance Instance;
 
@@ -39,6 +36,8 @@ namespace Pacman
         public static bool IS_HEADLESS;
         public static int maxtimerMax = 10000; //3000
         public static int maxTimer = maxtimerMax;
+
+        private int _randomSeed;
 
         public static void SetScoresToDefault()
         {
@@ -62,10 +61,10 @@ namespace Pacman
 
         //private ILog _logger;
 
-        public static void SetUpInstance(bool isHeadless)
+        public static void SetUpInstance(bool isHeadless,int randomSeed)
         {
             IS_HEADLESS = isHeadless;
-            Instance = new ActualPacmanGameInstance();
+            Instance = new ActualPacmanGameInstance(randomSeed);
             IS_GAME_OVER = false;
 
             if(!IS_HEADLESS)
@@ -95,14 +94,16 @@ namespace Pacman
             }
         }
 
-        public ActualPacmanGameInstance()
+        public ActualPacmanGameInstance(int randomSeed)
         {
+            _randomSeed = randomSeed;
+
             gameboard = new GameBoard();
             food = new Food();
             pacman = new Pacman();
-            ghost = new Ghost();
+            ghost = new Ghost(randomSeed);
             player = new Player();
-            highscore = new HighScore();
+            highscore = new HighScore(randomSeed);
         }
 
         public void Tick()
@@ -154,12 +155,12 @@ namespace Pacman
         public static int NoScoreCount = 0;
         public static int NoScoreTimeOut = 10;
 
-        public GameBoard gameboard = new GameBoard();
-        public Food food = new Food();
-        public Pacman pacman = new Pacman();
-        public Ghost ghost = new Ghost();
-        public Player player = new Player();
-        public HighScore highscore = new HighScore();
+        public GameBoard gameboard;
+        public Food food;
+        public Pacman pacman;
+        public Ghost ghost;
+        public Player player;
+        public HighScore highscore;
 
         public void SendInput(int k)
         {
@@ -234,9 +235,19 @@ namespace Pacman
                 pellets = Instance.gameboard.GetPelletDirections(x, y);
             }*/
 
-            var view = new List<int>()
+            var status = new List<int>()
             {
-                GetFromBoard(board,x-6,y),
+                GetFromBoard(board,x-8,y), //NO
+                GetFromBoard(board,x+8,y),
+                GetFromBoard(board,x,y-8),
+                GetFromBoard(board,x,y+8),
+
+                GetFromBoard(board,x-7,y), //NO
+                GetFromBoard(board,x+7,y),
+                GetFromBoard(board,x,y-7),
+                GetFromBoard(board,x,y+7),
+
+                GetFromBoard(board,x-6,y), 
                 GetFromBoard(board,x+6,y),
                 GetFromBoard(board,x,y-6),
                 GetFromBoard(board,x,y+6),
@@ -256,7 +267,17 @@ namespace Pacman
                 GetFromBoard(board,x,y-3),
                 GetFromBoard(board,x,y+3),
 
-                GetFromBoard(board, x-2, y-2),
+                GetFromBoard(board,x-2,y), //NO
+                GetFromBoard(board,x+2,y),
+                GetFromBoard(board,x,y-2),
+                GetFromBoard(board,x,y+2),
+
+                GetFromBoard(board,x-1,y), //NO
+                GetFromBoard(board,x+1,y),
+                GetFromBoard(board,x,y-1),
+                GetFromBoard(board,x,y+1),
+
+                /*GetFromBoard(board, x-2, y-2),
                 GetFromBoard(board, x-1, y-2),
                 GetFromBoard(board, x, y-2),
                 GetFromBoard(board, x+1, y-2),
@@ -283,11 +304,7 @@ namespace Pacman
                 GetFromBoard(board, x-1, y+2),
                 GetFromBoard(board, x, y+2),
                 GetFromBoard(board, x+1, y+2),
-                GetFromBoard(board, x+2, y+2),
-                /*pellets[0],
-                pellets[1],
-                pellets[2],
-                pellets[3],*/
+                GetFromBoard(board, x+2, y+2),*/
 
             }.ToArray();
 
@@ -302,15 +319,14 @@ namespace Pacman
             var bottom2 = GetFromBoard(board, x, y + 2);
 
             var right1 = GetFromBoard(board, x + 1, y);
-            var right2 = GetFromBoard(board, x + 2, y);
+            var right2 = GetFromBoard(board, x + 2, y);*/
 
 
 
 
-            int[] status = { top1, top2, left1, left2, bottom1, bottom2, right1, right2, pellets[0], pellets[1], pellets[2], pellets[3],pellets[4],pellets[5]};
-            */
+            //int[] status = { top1, top2, left1, left2, bottom1, bottom2, right1, right2 };
 
-            int[] status = view;
+            //int[] status = view;
             
 
             //Log("Sending game state: " + status.Select(i => i.ToString()).Aggregate((i, j) => (i + " " + j)) + " Score: " + player.Score + " Lives: " + player.Lives);

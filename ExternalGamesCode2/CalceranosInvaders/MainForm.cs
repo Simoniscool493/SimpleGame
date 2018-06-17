@@ -65,7 +65,7 @@ namespace CalceranosInvaders
 		private bool _stillInside=false;
 		private System.Drawing.Image _bunkerImageBackup;
 
-		public MainForm(bool isHeadless,bool isPiped)
+		public MainForm(bool isHeadless,bool isPiped,int randomSeed)
 		{
             UIThread = Thread.CurrentThread;
 
@@ -74,7 +74,7 @@ namespace CalceranosInvaders
 
 			InitializeComponent();
 			
-			_random = new Random(1);
+			_random = new Random(randomSeed);
 
             if(isHeadless && normalKeyInput)
             {

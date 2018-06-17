@@ -11,7 +11,7 @@ namespace Pacman
     [TestFixture]
     public class Ghost_Test
     {
-        private Ghost Ghost = new Ghost();
+        private Ghost Ghost = new Ghost(1);
 
         public Ghost_Test()
         {

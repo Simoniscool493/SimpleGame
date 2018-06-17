@@ -38,7 +38,8 @@ namespace SimpleGame.AI.GeneticAlgorithm
         {
             _printBasicInfo = printBasicInfo;
 
-            var trainableState = provider.GetStateForNextGeneration();
+            var trainableState = provider.GetStateForTraining(1);
+            //??? TODO
             var r = new Random();
 
             Generation currentGeneration = new Generation(_numInGeneration,_mutationRate ,r);
@@ -48,7 +49,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
             for (_generationCounter = 0; _generationCounter < _numGenerations && !_earlyStopFlag; _generationCounter++)
             {
                 var avg = RunGeneration(game, trainableState,currentGeneration);
-                currentGeneration.MutationRate = 5.0/(currentGeneration.BestSpecies.BaseDecider.NumGenes);
+                currentGeneration.MutationRate = 5.0/(currentGeneration.BestSpecies.NumGenes);
 
                 if (showGameProgress && ((_generationCounter % demonstrateEveryXIterations) == 0) && _generationCounter != 0)
                 {
@@ -67,7 +68,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
                 prevAvg = avg;
 
-                var path = Path.Combine(Program.LogsPath,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
+                var path = Path.Combine(SimpleGameLauncher.LogsPath,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
             }
 
             _earlyStopFlag = false;
@@ -79,13 +80,13 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private void WriteGenerationRaw(Generation g)
         {
-            if (sw == null) { sw = new StreamWriter(Path.Combine(Program.LogsPath, "GenAlgLogs", $"{_deciderType.ToString()}")); }
+            if (sw == null) { sw = new StreamWriter(Path.Combine(SimpleGameLauncher.LogsPath, "GenAlgLogs", $"{_deciderType.ToString()}")); }
 
             StringBuilder sb = new StringBuilder();
             sb.Append("Generation " + _generationCounter + "\n");
             foreach(var sp in g.ThisGeneration)
             {
-                sb.Append("\n\n" + sp.GetRaw());
+                sb.Append("\n\n" + sp.GetFullStringRepresentation());
             }
 
             sb.Append("\n\n\n");

@@ -4,29 +4,17 @@ namespace SimpleGame.Games.FoodEatingGame
 {
     class SingleRandomFoodEatingGameStateProvider : IDiscreteGameStateProvider
     {
-        public int RandomSeed
-        {
-            get
-            {
-                throw new Exception();
-            }
-            set
-            {
-                throw new Exception();
-            }
-        }
+        private FoodEatingGameBoard _singleRandomBoard;
 
-        private FoodEatingGameBoard _singleRandomBoard = FoodEatingGameBoard.GetRandomBoard();
-
-        public IDiscreteGameState GetStateForDemonstration()
+        public IDiscreteGameState GetStateForDemonstration(int randomSeed)
         {
-            _singleRandomBoard.Reset();
+            _singleRandomBoard = FoodEatingGameBoard.GetRandomBoard(randomSeed);
             return _singleRandomBoard;
         }
 
-        public IDiscreteGameState GetStateForNextGeneration()
+        public IDiscreteGameState GetStateForTraining(int randomSeed)
         {
-            _singleRandomBoard.Reset();
+            _singleRandomBoard = FoodEatingGameBoard.GetRandomBoard(randomSeed);
             return _singleRandomBoard;
         }
     }

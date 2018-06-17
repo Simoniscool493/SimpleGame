@@ -9,7 +9,27 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
 {
     class HeuristicDeciderFactory
     {
-        public static HeuristicBuildingDecider CrossMutate(HeuristicBuildingDecider decider1,HeuristicBuildingDecider decider2, double mutationRate, Random r)
+        public static HeuristicBuildingDecider GetMutated(HeuristicBuildingDecider decider,double mutationRate, Random r)
+        {
+            var mutatedDecider = new HeuristicBuildingDecider(r, decider.IOInfo,decider.NumConditionsToBuildFrom);
+
+            foreach(Heuristic h in decider.Heuristics)
+            {
+                if(r.NextDouble()<mutationRate)
+                {
+                    mutatedDecider.Heuristics.Add(h.GetMutated(r));
+                }
+                else
+                {
+                    mutatedDecider.Heuristics.Add(h.GetCopy(true));
+                }
+            }
+
+            return mutatedDecider;
+        }
+
+
+        public static HeuristicBuildingDecider CrossMutate(HeuristicBuildingDecider decider1, HeuristicBuildingDecider decider2, double mutationRate, Random r)
         {
             throw new NotImplementedException();
             /*var heuristics1 = decider1.Heuristics;
@@ -59,25 +79,6 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
             //no code yet exists to add parent 2's heuristics
 
             return childDecider;*/
-        }
-
-        public static HeuristicBuildingDecider GetMutated(HeuristicBuildingDecider decider,double mutationRate, Random r)
-        {
-            var mutatedDecider = new HeuristicBuildingDecider(decider.R, decider.IOInfo);
-
-            foreach(Heuristic h in decider.Heuristics)
-            {
-                if(r.NextDouble()<mutationRate)
-                {
-                    mutatedDecider.Heuristics.Add(h.GetMutated(r));
-                }
-                else
-                {
-                    mutatedDecider.Heuristics.Add(h.GetCopy());
-                }
-            }
-
-            return mutatedDecider;
         }
     }
 }

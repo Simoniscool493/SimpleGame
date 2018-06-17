@@ -13,18 +13,16 @@ namespace ConsoleGraphics
 
     //Snake C# Implementation created by Finley Warman. Available at https://github.com/FinWarman/Snake
 
-    public class Program
+    public class SnakeProgram
     {
         public bool isToScoreMode = true;
-        public int scoreToAimFor = 1000;
+        public int scoreToAimFor = 100;
 
         public bool IsHeadless;
         public bool IsNonKeyboard;
 
-        public static int screenWidth = 56; //56
-        public static int screenHeight = 38; //38
-
-        public static int RandomSeed = 1;
+        public static int screenWidth = 40; //56
+        public static int screenHeight = 33; //38
 
         public static int maxNoEatingTime = screenHeight*screenWidth;
 
@@ -282,7 +280,7 @@ namespace ConsoleGraphics
 
 
 
-        public void Setup(bool isHeadless,bool isNonKeyboard)
+        public void Setup(bool isHeadless,bool isNonKeyboard,int randomSeed)
         {
             IsHeadless = isHeadless;
             IsNonKeyboard = isNonKeyboard;
@@ -305,7 +303,7 @@ namespace ConsoleGraphics
             delay = 100;
             direction = "right";
             snakeLength = 8;
-            rnd = new Random(RandomSeed);
+            rnd = new Random(randomSeed);
             currentNoEatingTimerTicks = 0;
             currentTotalTimerTicks = 0;
 
@@ -326,10 +324,10 @@ namespace ConsoleGraphics
 
         static void Main(string[] args)
         {
-            var program = new Program();
+            var program = new SnakeProgram();
 
             Game:
-            program.Setup(false,false);
+            program.Setup(false,false,1);
 
             while (program.alive)
             {

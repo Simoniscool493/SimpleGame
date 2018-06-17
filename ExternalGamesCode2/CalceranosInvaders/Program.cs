@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace CalceranosInvaders
 {
@@ -32,11 +33,13 @@ namespace CalceranosInvaders
 		private static void Main(string[] args)
 		{
             var isPiped = (args.Length>0) && (args[0].Equals("pipedInstance"));
+
+            var randomSeed = int.Parse(args.Last());
             //isPiped = true;
 
             Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm(false, isPiped));
+			Application.Run(new MainForm(false, isPiped, randomSeed));
 		}
 	}
 }

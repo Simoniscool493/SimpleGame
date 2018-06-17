@@ -11,20 +11,15 @@ namespace SimpleGame.Deciders.Discrete
     public interface IDiscreteDecider
     {
         DiscreteIOInfo IOInfo { get; }
-
-        IDiscreteDataPayload Decide(IDiscreteDataPayload input);
-
-        string GetRaw();
-
         int NumGenes { get; }
-
         int TotalComplexity { get; }
 
-        void PostGenerationProcessing();
-
+        IDiscreteDataPayload Decide(IDiscreteDataPayload input);
+        IDiscreteDecider GetMutated(double mutationRate, Random r);
         IDiscreteDecider CrossMutate(IDiscreteDecider decider2, double mutationRate, Random r);
 
-        IDiscreteDecider GetMutated(double mutationRate, Random r);
+        void PostGenerationProcessing();
+        string GetFullStringRepresentation();
     }
 
     public static class DiscreteDeciderExtensions

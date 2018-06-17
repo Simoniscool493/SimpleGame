@@ -13,3 +13,13 @@ C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\nuni
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Release\SimpleGame.csprojResolveAssemblyReference.cache
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Release\SimpleGame.exe
 C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\obj\Release\SimpleGame.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\moves.txt
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\species.txt
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\Battles.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\CalceranosInvaders.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\ConsoleGraphics.exe
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\Battles.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\Battles.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\CalceranosInvaders.exe.config
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\ConsoleGraphics.pdb
+C:\Users\Simon\Desktop\College\FinalYearProject\Code\SimpleGame\bin\Release\ConsoleGraphics.exe.config
