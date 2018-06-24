@@ -17,6 +17,7 @@ using SimpleGame.Games.PokémonBattleEngine;
 using System.Diagnostics;
 using SimpleGame.Metrics;
 using SimpleGame.Deciders.Discrete.HeuristicBuilder.Heuristic_Ensemble;
+using SimpleGame.Deciders.Discrete.HeuristicBuilder.HeuristicCombining;
 
 namespace SimpleGame
 {
@@ -35,15 +36,16 @@ namespace SimpleGame
             int preferredMaxComplexity = 0;
             int preferredMinComplexity = 0;
 
-            /*List<HeuristicBuildingDecider> deciders = new List<HeuristicBuildingDecider>();
+            List<HeuristicBuildingDecider> deciders = new List<HeuristicBuildingDecider>();
             List<int> scores = new List<int>();
             List<int> scoresFinal = new List<int>();
 
             var manager = new PacmanManager(logger);
 
-            for (int i=0;i<20;i++)
+            for (int i=0;i<2;i++)
             {
                 var decider = (HeuristicBuildingDecider)((DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\Deciders\\" + i + ".dc")).BaseDecider;
+                decider.RandomSeedRange = new DeciderRandomSeedRange(i);
                 deciders.Add(decider);
                 scores.Add((int)SimpleGameTester.SetRandomSuccessTesting(manager, decider, 1, i));
             }
@@ -54,8 +56,10 @@ namespace SimpleGame
             var goodGeneral = (HeuristicBuildingDecider)((DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\Deciders\\REALLYgoodGeneraldecider.dc")).BaseDecider;
             var goodGeneralScore = (int)(SimpleGameTester.UnsetRandomSuccessTesting(manager, goodGeneral, 100));
 
+            var final = HeuristicCombiner.ExpandAndCombine(deciders,manager);
+
             var state = manager.StateProvider.GetStateForDemonstration(10);
-            manager.Demonstrate(goodGeneral, state);*/
+            manager.Demonstrate(goodGeneral, state);
 
 
 
@@ -233,9 +237,10 @@ namespace SimpleGame
                 watch.Start();
 
                 var r = new Random();
+                var randomSeedRange = new DeciderRandomSeedRange(0);
 
-                var initSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo,0));
-                var learner = new SinglePathMutationRunner(logger, r,runner, initSpecies, runner.StateProvider,false,false,1,5,2,10,10);
+                var initSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo,0,randomSeedRange));
+                var learner = new SinglePathMutationRunner(logger, r,runner, initSpecies, runner.StateProvider,false,false,randomSeedRange.RangeSize,5,2,10,10);
 
                 for (int j = 0; j < 1; j++)
                 {

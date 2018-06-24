@@ -6,6 +6,8 @@ using System.Threading;
 using log4net;
 using Pacman;
 using SimpleGame.Games.SimplePacman.Payloads;
+using SimpleGame.Deciders;
+using System.Collections.Generic;
 
 namespace SimpleGame.Games.SimplePacman
 {
@@ -86,6 +88,37 @@ namespace SimpleGame.Games.SimplePacman
                 var direction = decider.Decide(status);
                 IOADapter.SendInput(state, direction);
                 logger.Debug("Sent " + (Direction)direction.SingleItem);
+
+                if (!(state is PacmanHeadlessInstance))
+                {
+                    Thread.Sleep(40);
+                }
+            }
+        }
+
+        //public static List<int[]> listOfHandledInputs = new List<int[]>();
+
+        public IDiscreteDecider RunWhileSavingAllDecisions(HeuristicBuildingDecider decider, IDiscreteGameState state)
+        {
+            var newDecider = new HeuristicBuildingDecider(new Random(),decider.IOInfo,decider.NumConditionsToBuildFrom,decider.RandomSeedRange);
+
+            while (true)
+            {
+                var status = IOADapter.GetOutput(state);
+
+                if (status.Data[0] == PacmanConstants.GAME_OVER)
+                {
+                    state.Dispose();
+                    return newDecider;
+                }
+
+                var direction = decider.Decide(status);
+
+                newDecider.Heuristics.Add(new Deciders.HeuristicBuilder.Heuristic(direction.SingleItem,status,IOInfo));
+                //listOfHandledInputs.Add(status.Data);
+
+                //Console.WriteLine(status.ToString() + '\t' + direction);
+                IOADapter.SendInput(state, direction);
 
                 if (!(state is PacmanHeadlessInstance))
                 {

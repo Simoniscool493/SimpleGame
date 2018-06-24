@@ -36,6 +36,20 @@ namespace SimpleGame.Deciders.HeuristicBuilder
             ConsecutiveGensNotUsed = 0;
         }
 
+        public Heuristic(int exOutput, IDiscreteDataPayload input,DiscreteIOInfo ioInfo)
+        {
+            Conditions = new int[ioInfo.InputInfo.PayloadLength];
+            for (int i = 0; i < Conditions.Length; i++)
+            {
+                Conditions[i] = input.Data[i];
+            }
+
+            ExpectedOutput = exOutput;
+            IOInfo = ioInfo;
+            ConsecutiveGensNotUsed = 0;
+        }
+
+
         public Heuristic GetCopy(bool copyTemporaryData)
         {
             var newH = new Heuristic(ExpectedOutput, IOInfo) { Conditions = (int[])Conditions.Clone() };

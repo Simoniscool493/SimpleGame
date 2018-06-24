@@ -48,12 +48,14 @@
     <Compile Include="DataPayloads\DiscreteData\DiscretedContinuousDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\IDiscreteDataPayload.cs" />
     <Compile Include="DataPayloads\DiscreteData\PayloadInfo\IDiscreteDataPayloadInfo.cs" />
+    <Compile Include="DeciderRandomSeedRange.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\DecisionMatrixFactory.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderType.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\IDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DecisionMatrix\LazyDecisionMatrix.cs" />
     <Compile Include="Deciders\Discrete\DiscreteDeciderLoader.cs" />
-    <Compile Include="Deciders\Discrete\HeuristicBuilder\Heuristic Ensemble\HeuristicEnsembleDecider.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicCombining\Heuristic Ensemble\HeuristicEnsembleDecider.cs" />
+    <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicCombining\HeuristicCombiner.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicDeciderFactory.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\HeuristicFactory.cs" />
     <Compile Include="Deciders\Discrete\HeuristicBuilder\OldHeuristicCode\OldHeuristic.cs" />
@@ -151,6 +153,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2015\Projects\Battles\Battles\Battles.csproj">
+      <Project>{07c5ab8a-be02-4cf0-9f0b-1d844c5564bf}</Project>
+      <Name>Battles</Name>
+    </ProjectReference>
     <ProjectReference Include="ExternalGamesCode2\CalceranosInvaders\CalceranosInvaders.csproj">
       <Project>{1ffcf3bb-7442-4c4a-aeb0-17657476c71a}</Project>
       <Name>CalceranosInvaders</Name>

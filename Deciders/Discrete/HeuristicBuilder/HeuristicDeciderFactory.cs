@@ -11,7 +11,7 @@ namespace SimpleGame.Deciders.Discrete.HeuristicBuilder
     {
         public static HeuristicBuildingDecider GetMutated(HeuristicBuildingDecider decider,double mutationRate, Random r)
         {
-            var mutatedDecider = new HeuristicBuildingDecider(r, decider.IOInfo,decider.NumConditionsToBuildFrom);
+            var mutatedDecider = new HeuristicBuildingDecider(r, decider.IOInfo,decider.NumConditionsToBuildFrom,decider.RandomSeedRange);
 
             foreach(Heuristic h in decider.Heuristics)
             {

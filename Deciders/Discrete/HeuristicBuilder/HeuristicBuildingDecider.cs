@@ -28,14 +28,17 @@ namespace SimpleGame.Deciders
         public List<Heuristic> Heuristics;
 
         private Random _r;
-        
+        public DeciderRandomSeedRange RandomSeedRange;
+
         public int NumConditionsToBuildFrom { get; }
 
-        public HeuristicBuildingDecider(Random r, DiscreteIOInfo ioInfo,int numCondidionsToBuildFrom)
+        public HeuristicBuildingDecider(Random r, DiscreteIOInfo ioInfo,int numCondidionsToBuildFrom,DeciderRandomSeedRange randomSeedRange)
         {
             Heuristics = new List<Heuristic>();
             IOInfo = ioInfo;
             _r = r;
+
+            RandomSeedRange = randomSeedRange;
 
             NumConditionsToBuildFrom = numCondidionsToBuildFrom;
         }
@@ -167,7 +170,7 @@ namespace SimpleGame.Deciders
 
         public HeuristicBuildingDecider CloneWithAllHeuristics()
         {
-            var decider = new HeuristicBuildingDecider(_r,IOInfo,NumConditionsToBuildFrom);
+            var decider = new HeuristicBuildingDecider(_r,IOInfo,NumConditionsToBuildFrom,RandomSeedRange);
 
             decider.Heuristics = new List<Heuristic>();
 
