@@ -133,19 +133,19 @@ namespace SimpleGame
                 case 1:
                     game = new SnakeManager();
                     numIterations = 7; 
-                    generationSize = 100;
+                    generationSize = 200;
                     preferredMaxComplexity = 2000;
                     preferredMinComplexity = 100;
-                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity,preferredMinComplexity,0.2,1,0,null);
+                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity,preferredMinComplexity,0.1,1,0,null);
 
                     break;
                 case 2:
                     game = new PacmanManager(logger);
-                    numIterations = 1;
-                    generationSize = 20;
+                    numIterations = 5;
+                    generationSize = 30;
                     preferredMaxComplexity = 10000;
                     preferredMinComplexity = 5000;
-                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity, preferredMinComplexity, 0.3, 1, 0, null);
+                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity, preferredMinComplexity, 0.1, 1, 0, null);
 
                     break;
                 case 3:

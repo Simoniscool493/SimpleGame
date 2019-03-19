@@ -22,7 +22,7 @@ namespace Pacman
         public static int WALL_BUMPING_PENALTY = 0;
         public static int OLD_POSITION_PENALTY = 0;
 
-        public static int GHOST_EATING_SCORE = 0; // 50/300
+        public static int GHOST_EATING_SCORE = 5; // 50/300
         public static int GHOST_SEEING_SCORE = 0;
         public static int FOOD_SCORE = 1; //10
         public static int SUPER_FOOD_SCORE = 1; //50
