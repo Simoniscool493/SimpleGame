@@ -61,7 +61,16 @@ namespace SimpleGame.Games.SimplePacman
         {
             byte[] toSend = { (byte)(d+1) };
 
-            stream.Write(toSend, 0, 1);
+            try
+            {
+                stream.Write(toSend, 0, 1);
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("Pacman Demo Instance termimated. Press enter to quit.");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
         }
 
         public int[] GetStatus()

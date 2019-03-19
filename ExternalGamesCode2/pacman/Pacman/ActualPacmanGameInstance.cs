@@ -57,6 +57,12 @@ namespace Pacman
         public static void EndGame()
         {
             IS_GAME_OVER = true;
+
+            if(!IS_HEADLESS)
+            {
+                Thread.Sleep(5000);
+                Environment.Exit(0);
+            }
         }
 
         //private ILog _logger;

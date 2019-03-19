@@ -1,6 +1,6 @@
 # MindGame: A machine learning framework for electronic games
 
-Program entry point is at Program.cs in the main directory.<br/>
+Program entry point is at SimpleGameLauncher.cs in the SimpleGame project.<br/>
 <br/>
 Pacman C# Implementation created by Adrian Eyre. Available at https://github.com/adrianeyre/pacman<br/>
 Space Invaders C# Implementation created by Giovanni Calcerano. Available at https://www.codeproject.com/Articles/27036/C-Space-Invaders-using-WinForms-Objects<br/>

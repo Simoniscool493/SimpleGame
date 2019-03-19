@@ -68,7 +68,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
                 prevAvg = avg;
 
-                var path = Path.Combine(SimpleGameLauncher.LogsPath,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
+                var path = Path.Combine(SimpleGameLauncher.LogsFull,"GenAlgLogs", $"{_generationCounter}_({currentGeneration.BestSpecies.Score})");
             }
 
             _earlyStopFlag = false;
@@ -80,7 +80,7 @@ namespace SimpleGame.AI.GeneticAlgorithm
 
         private void WriteGenerationRaw(Generation g)
         {
-            if (sw == null) { sw = new StreamWriter(Path.Combine(SimpleGameLauncher.LogsPath, "GenAlgLogs", $"{_deciderType.ToString()}")); }
+            if (sw == null) { sw = new StreamWriter(Path.Combine(SimpleGameLauncher.LogsFull, "GenAlgLogs", $"{_deciderType.ToString()}")); }
 
             StringBuilder sb = new StringBuilder();
             sb.Append("Generation " + _generationCounter + "\n");

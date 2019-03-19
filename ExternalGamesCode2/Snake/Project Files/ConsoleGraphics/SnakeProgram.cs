@@ -15,7 +15,7 @@ namespace ConsoleGraphics
 
     public class SnakeProgram
     {
-        public bool isToScoreMode = true;
+        public bool isToScoreMode = false;
         public int scoreToAimFor = 100;
 
         public bool IsHeadless;

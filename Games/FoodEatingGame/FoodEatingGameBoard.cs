@@ -77,7 +77,7 @@ namespace SimpleGame.Games.FoodEatingGame
 
         public static FoodEatingGameBoard GetRandomBoard(int randomSeed)
         {
-            if(randomSeed == _currentRandomSeed)
+            if(randomSeed == _currentRandomSeed  && _currentBoard!=null)
             {
                 _currentBoard.Reset();
             }

@@ -65,7 +65,7 @@ namespace SimpleGame.Games.SimplePacman
 
                 if(!(state is PacmanHeadlessInstance))
                 {
-                    Thread.Sleep(40);
+                    Thread.Sleep(60);
                 }
             }
         }

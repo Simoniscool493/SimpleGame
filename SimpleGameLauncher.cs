@@ -13,7 +13,7 @@ using log4net;
 using SimpleGame.Games.FoodEatingGame;
 using SimpleGame.Games;
 using System.IO;
-using SimpleGame.Games.PokémonBattleEngine;
+//using SimpleGame.Games.PokémonBattleEngine;
 using System.Diagnostics;
 using SimpleGame.Metrics;
 using SimpleGame.Deciders.Discrete.HeuristicBuilder.Heuristic_Ensemble;
@@ -23,9 +23,13 @@ namespace SimpleGame
 {
     class SimpleGameLauncher
     {
-        public const string LogsPath = "C:\\ProjectLogs\\";
-        public const string SavePath = "C:\\ProjectLogs\\Deciders\\";
-        public const string BattlesPath = "C:\\ProjectLogs\\Deciders\\BattlesDecider.dc";
+        public const string LogsPath2 = "ProjectLogs\\";
+        public const string SavePath2 = "ProjectLogs\\Deciders\\";
+        public static string Home;
+        public static string LogsFull;
+        public static string SaveFull;
+
+        //public const string BattlesPath = "ProjectLogs\\Deciders\\BattlesDecider.dc";
 
         static void Main(string[] args)
         {
@@ -36,7 +40,14 @@ namespace SimpleGame
             int preferredMaxComplexity = 0;
             int preferredMinComplexity = 0;
 
-            List<HeuristicBuildingDecider> deciders = new List<HeuristicBuildingDecider>();
+            Home = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()).ToString();
+            LogsFull = Path.Combine(Home, LogsPath2);
+            SaveFull = Path.Combine(Home, SavePath2);
+
+            new FileInfo(LogsFull).Directory.Create();
+            new FileInfo(SaveFull).Directory.Create();
+
+            /*List<HeuristicBuildingDecider> deciders = new List<HeuristicBuildingDecider>();
             List<int> scores = new List<int>();
             List<int> scoresFinal = new List<int>();
 
@@ -61,10 +72,7 @@ namespace SimpleGame
             var state = manager.StateProvider.GetStateForDemonstration(10);
             manager.Demonstrate(goodGeneral, state);
 
-
-
-
-            /*for (int i=20;i<50;i++)
+            for (int i=20;i<50;i++)
             {
                 LearningSession
                 (
@@ -80,7 +88,7 @@ namespace SimpleGame
                     saveAsFile: i.ToString(),
                     baseRandomSeed: i
                 ); 
-            }return;*/
+            }return;
 
             LearningSession
             (
@@ -95,7 +103,7 @@ namespace SimpleGame
                 deciderConditionsToBuildFrom: 5,
                 saveAsFile: null,
                 baseRandomSeed: 0
-            );
+            );*/
 
 
             IDiscreteGameManager game;
@@ -104,17 +112,17 @@ namespace SimpleGame
             Console.WriteLine("\t1. Snake.");
             Console.WriteLine("\t2. Pac-Man.");
             Console.WriteLine("\t3. FoodEatingGame. (Console animation - screen flashes when playing)");
-            Console.WriteLine("\t4. Space Invaders.");
-            Console.WriteLine("\t5. Battles.");
+            //Console.WriteLine("\t4. Space Invaders.");
 
+            /*Console.WriteLine("\t5. Battles.");
             Console.WriteLine("\n\t6. Preprepared Battles.");
             Console.WriteLine("\n\t7. Preprepared Snake.");
-            Console.WriteLine("\t8. Preprepared Pac-Man.");
+            Console.WriteLine("\t8. Preprepared Pac-Man.");*/
 
             while (true)
             {
                 var isValid = Int32.TryParse(Console.ReadLine(), out choice);
-                if(isValid && choice > 0 && choice < 9)
+                if(isValid && choice > 0 && choice < 4)
                 {
                     break;
                 }
@@ -124,8 +132,8 @@ namespace SimpleGame
             {
                 case 1:
                     game = new SnakeManager();
-                    numIterations = 5; 
-                    generationSize = 150;
+                    numIterations = 7; 
+                    generationSize = 100;
                     preferredMaxComplexity = 2000;
                     preferredMinComplexity = 100;
                     LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity,preferredMinComplexity,0.2,1,0,null);
@@ -133,7 +141,7 @@ namespace SimpleGame
                     break;
                 case 2:
                     game = new PacmanManager(logger);
-                    numIterations = 80;
+                    numIterations = 1;
                     generationSize = 20;
                     preferredMaxComplexity = 10000;
                     preferredMinComplexity = 5000;
@@ -149,7 +157,7 @@ namespace SimpleGame
                     LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity, preferredMinComplexity, 0.2, 1, 0, null);
 
                     break;
-                case 4:
+                /*case 4:
                     game = new SpaceInvadersManager();
                     numIterations = 1;
                     generationSize = 10;
@@ -173,13 +181,13 @@ namespace SimpleGame
                     break;
                 case 7:
                     game = new SnakeManager();
-                    Demo(game, Path.Combine(SavePath, "SnakeDecider.dc"));
+                    Demo(game, Path.Combine(SaveFull, "SnakeDecider.dc"));
                     break;
                 case 8:
                     game = new PacmanManager(logger);
-                    Demo(game, Path.Combine(SavePath, "PacmanDecider.dc"));
+                    Demo(game, Path.Combine(SaveFull, "PacmanDecider.dc"));
 
-                    break;
+                    break;*/
             }
 
             Console.WriteLine("Finished.");
@@ -197,19 +205,21 @@ namespace SimpleGame
         {
             var r = new Random();
 
-            var initSpecies = ((DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\Deciders\\REALLYgoodGeneraldecider.dc"));
-            //var initSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo,deciderConditionsToBuildFrom));                           //Create decider
+            //var initSpecies = ((DeciderSpecies)DiscreteDeciderLoader.LoadFromFile("C:\\ProjectLogs\\Deciders\\REALLYgoodGeneraldecider.dc"));
+            var initSpecies = new DeciderSpecies(new HeuristicBuildingDecider(r, runner.IOInfo,deciderConditionsToBuildFrom,new DeciderRandomSeedRange(0)));                           //Create decider
             var learner = new SinglePathMutationRunner(logger,r,runner,initSpecies,runner.StateProvider,true,false,numRandomSeeds, 5,2,generationSize,10,baseRandomSeed);         //Choose learning method
 
-            //for(int i=0; i<numIterations;i++)
-            while(true)
+            for(int i=0; i<numIterations;i++)
+            //while(true)
             {
+                Console.WriteLine("Learning loop " + (i + 1) + " of " + numIterations);
+
                 learner.Optimize(1, learningRate,preferredMaxComplexity,preferredMinComplexity);
 
-                if(learner.BestSpeciesOverall.Score>23900)
+                /*if(learner.BestSpeciesOverall.Score>23900)
                 {
                     break;
-                }
+                }*/
             }
 
             var scoreFinal = (int)(SimpleGameTester.SetRandomSuccessTesting(runner, learner.BestSpeciesOverall, 50, 0));
@@ -221,8 +231,11 @@ namespace SimpleGame
 
             if (saveAsFile!=null)
             {
-                learner.BestSpecies.SaveToFile(Path.Combine(SavePath, "better100" + ".dc"));
+                learner.BestSpecies.SaveToFile(Path.Combine(SaveFull, "better100" + ".dc"));
             }
+
+            Console.WriteLine("Learning complete. Press enter to demonstrate.");
+            Console.ReadLine();
 
             var state = runner.StateProvider.GetStateForDemonstration(baseRandomSeed);
             runner.Demonstrate(learner.BestSpeciesOverall, state);
@@ -230,7 +243,7 @@ namespace SimpleGame
 
         public static void TimeTest(ILog logger)
         {
-            var runner = new BattlesGameManager();
+            var runner = new SnakeManager();
             for (int i = 0; i < 10; i++)
             {
                 var watch = new Stopwatch();
