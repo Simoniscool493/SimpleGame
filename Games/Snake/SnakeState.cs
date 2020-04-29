@@ -12,10 +12,10 @@ namespace SimpleGame.Games.Snake
         private SnakeProgram _instance;
         private int _randomSeed;
         
-        public SnakeState(bool isHeadless,int randomSeed)
+        public SnakeState(bool isHeadless,int randomSeed,bool isPlayerMode = false)
         {
             _instance = new SnakeProgram();
-            _instance.Setup(isHeadless,true,randomSeed);
+            _instance.Setup(isHeadless,!isPlayerMode,randomSeed);
 
             _randomSeed = randomSeed;
         }

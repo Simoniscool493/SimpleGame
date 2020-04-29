@@ -10,7 +10,6 @@ using System.Threading;
 
 namespace ConsoleGraphics
 {
-
     //Snake C# Implementation created by Finley Warman. Available at https://github.com/FinWarman/Snake
 
     public class SnakeProgram
@@ -21,8 +20,8 @@ namespace ConsoleGraphics
         public bool IsHeadless;
         public bool IsNonKeyboard;
 
-        public static int screenWidth = 40; //56
-        public static int screenHeight = 33; //38
+        public static int screenWidth = 40; //40
+        public static int screenHeight = 33; //33
 
         public static int maxNoEatingTime = screenHeight*screenWidth;
 
@@ -51,6 +50,11 @@ namespace ConsoleGraphics
 
         public void Tick()
         {
+            if(!IsNonKeyboard && !alive)
+            {
+                return;
+            }
+
             if (pelletOn == false)
             {
                 pelletStart:

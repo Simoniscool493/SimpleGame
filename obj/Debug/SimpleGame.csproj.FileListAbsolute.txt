@@ -103,7 +103,6 @@ C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\bin\De
 C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\bin\Debug\ConsoleGraphics.exe.config
 C:\Users\Simon\Desktop\College\Undergrad\FinalYearProject\Code\SimpleGame\bin\Debug\nunit.framework.xml
 C:\Users\Simon\Desktop\SimpleGame\obj\Debug\SimpleGame.csprojAssemblyReference.cache
-C:\Users\Simon\Desktop\SimpleGame\obj\Debug\SimpleGame.csproj.CoreCompileInputs.cache
 C:\Users\Simon\Desktop\SimpleGame\obj\Debug\SimpleGame.exe
 C:\Users\Simon\Desktop\SimpleGame\obj\Debug\SimpleGame.pdb
 C:\Users\Simon\Desktop\SimpleGame\bin\Debug\DirectShowLib-2005.dll

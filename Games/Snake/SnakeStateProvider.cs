@@ -17,5 +17,10 @@ namespace SimpleGame.Games.Snake
         {
             return new SnakeState(true,randomSeed);
         }
+
+        public SnakeState GetStateForPlay()
+        {
+            return new SnakeState(false,new Random().Next(),true);
+        }
     }
 }

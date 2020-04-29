@@ -37,6 +37,19 @@ namespace SimpleGame.Games.Snake
             return Run(decider, (SnakeState)state, true);
         }
 
+        public int Play()
+        {
+            var playState = ((SnakeStateProvider)StateProvider).GetStateForPlay();
+
+            while (true)
+            {
+                playState.Tick();
+
+                Thread.Sleep(50);
+            }
+        }
+
+
         private int Run(IDiscreteDecider decider, SnakeState state,bool headless)
         {
             while (true)
@@ -55,7 +68,7 @@ namespace SimpleGame.Games.Snake
 
                 if (!headless)
                 {
-                    Thread.Sleep(3);
+                    Thread.Sleep(3);//3
                 }
             }
         }

@@ -38,6 +38,5 @@ C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\Console
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\bin\Debug\ConsoleGraphics.exe
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\bin\Debug\ConsoleGraphics.pdb
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\obj\Debug\ConsoleGraphics.csprojAssemblyReference.cache
-C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\obj\Debug\ConsoleGraphics.csproj.CoreCompileInputs.cache
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\obj\Debug\ConsoleGraphics.exe
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\Snake\Project Files\ConsoleGraphics\obj\Debug\ConsoleGraphics.pdb

@@ -72,7 +72,6 @@ C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pac
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.PacmanScreen.resources
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.Properties.Resources.resources
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.csproj.GenerateResource.cache
-C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.csproj.CoreCompileInputs.cache
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.csproj.CopyComplete
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.exe
 C:\Users\Simon\Desktop\SimpleGame\ExternalGamesCode2\pacman\Pacman\obj\Debug\Pacman.pdb

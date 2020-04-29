@@ -109,7 +109,8 @@ namespace SimpleGame
             IDiscreteGameManager game;
 
             Console.WriteLine("Welcome to MindGame. Select a game to play.");
-            Console.WriteLine("\t1. Snake.");
+            Console.WriteLine("\t0. Snake. (Human Player)");
+            Console.WriteLine("\t1. Snake. (AI Player)");
             Console.WriteLine("\t2. Pac-Man.");
             Console.WriteLine("\t3. FoodEatingGame. (Console animation - screen flashes when playing)");
             //Console.WriteLine("\t4. Space Invaders.");
@@ -122,7 +123,7 @@ namespace SimpleGame
             while (true)
             {
                 var isValid = Int32.TryParse(Console.ReadLine(), out choice);
-                if(isValid && choice > 0 && choice < 4)
+                if(isValid && choice > -1 && choice < 4)
                 {
                     break;
                 }
@@ -130,13 +131,18 @@ namespace SimpleGame
 
             switch(choice)
             {
+                case 0:
+                    var snake = new SnakeManager();
+                    snake.Play();
+
+                    break;
                 case 1:
                     game = new SnakeManager();
-                    numIterations = 7; 
-                    generationSize = 200;
+                    numIterations = 10; 
+                    generationSize = 30;
                     preferredMaxComplexity = 2000;
                     preferredMinComplexity = 100;
-                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity,preferredMinComplexity,0.1,1,0,null);
+                    LearningSession(logger, game, numIterations, generationSize, preferredMaxComplexity,preferredMinComplexity,0.15,1,0,null);
 
                     break;
                 case 2:
